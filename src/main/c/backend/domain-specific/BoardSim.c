@@ -1,21 +1,21 @@
-#include "Calculator.h"
+#include "BoardSim.h"
 
 /* MODULE INTERNAL STATE */
 
 static Logger * _logger = NULL;
 
 /** Shutdown module's internal state. */
-void _shutdownCalculatorModule() {
+void _shutdownBoardSimModule() {
 	if (_logger != NULL) {
-		logDebugging(_logger, "Destroying module: Calculator...");
+		logDebugging(_logger, "Destroying module: BoardSim...");
 		destroyLogger(_logger);
 		_logger = NULL;
 	}
 }
 
-ModuleDestructor initializeCalculatorModule() {
-	_logger = createLogger("Calculator");
-	return _shutdownCalculatorModule;
+ModuleDestructor initializeBoardSimModule() {
+	_logger = createLogger("BoardSim");
+	return _shutdownBoardSimModule;
 }
 
 /** PRIVATE FUNCTIONS */
@@ -139,7 +139,7 @@ ComputationResult computeFactor(Factor * factor) {
 	}
 }
 
-ComputationResult executeCalculator(CompilerState * compilerState) {
+ComputationResult executeBoardSim(CompilerState * compilerState) {
 	Program * program = compilerState->abstractSyntaxtTree;
 	return computeExpression(program->expression);
 }

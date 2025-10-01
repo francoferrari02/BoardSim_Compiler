@@ -15,4 +15,17 @@
 /** Initialize module's internal state. */
 ModuleDestructor initializeFlexActionsModule();
 
+/**
+ * BoardSim lexeme actions
+ */
+CompilationStatus BoardSimKeywordLexemeAction(TokenLabel label);
+CompilationStatus BoardSimTypeLexemeAction(TokenLabel label);
+CompilationStatus BoardSimLiteralLexemeAction(TokenLabel label);
+CompilationStatus ComparisonOperatorLexemeAction(TokenLabel label);
+CompilationStatus LogicalOperatorLexemeAction(TokenLabel label);
+CompilationStatus AssignmentOperatorLexemeAction(TokenLabel label);
+CompilationStatus DelimiterLexemeAction(TokenLabel label);
+CompilationStatus IdentifierLexemeAction();
+CompilationStatus StringLiteralLexemeAction();
+
 #endif

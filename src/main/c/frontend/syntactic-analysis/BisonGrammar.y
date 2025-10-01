@@ -5,6 +5,34 @@
 #include "BisonActions.h"
 
 /**
+ * BoardSim Grammar (EBNF) based on PDF sections 6-8:
+ * 
+ * Program = {Declaration | Statement}*;
+ * Declaration = BoardDecl | PieceDecl | PlayerDecl | EventDecl | DiceDecl | RuleDecl;
+ * BoardDecl = 'board' ID ( 'loop' INT | 'graph' ) ';' {CellOrNodeDecl}*;
+ * CellOrNodeDecl = ('cell' | 'node') INT STRING {Attribute}*;
+ * Attribute = 'event' ID | 'cost' INT | 'rent' INT | 'continent' STRING | 'armies' INT | 'connected' '[' ID {',' ID}* ']';
+ * Simulate = 'simulate' INT 'turns' { 'strategy' ID } '{' {Statement}* '}';
+ * Statement = MoveStmt | ApplyStmt | IfStmt | ForStmt | SwitchStmt | LogStmt | PrintStmt | ExportStmt | Assignment;
+ * MoveStmt = 'move' ID 'to' Expr 'if' Expr ';';
+ * ApplyStmt = 'apply' ID 'if' Expr ';';
+ * IfStmt = 'if' '(' Expr ')' '{' Statement* '}' ['else' '{' Statement* '}'];
+ * ForStmt = 'for' '(' Assignment ';' Expr ';' Assignment ')' '{' Statement* '}';
+ * SwitchStmt = 'switch' '(' Expr ')' '{' {CaseStmt}* [DefaultStmt] '}';
+ * LogStmt = 'log' STRING ';' | 'log' Expr ';';
+ * PrintStmt = 'print' STRING ';' | 'print' Expr ';';
+ * ExportStmt = 'export' ID 'to' STRING ';';
+ * Assignment = ID '=' Expr ';';
+ * Expr = LogicalExpr;
+ * LogicalExpr = RelationalExpr [('&&' | '||') LogicalExpr];
+ * RelationalExpr = ArithmeticExpr [('==' | '!=' | '<' | '>' | '<=' | '>=') ArithmeticExpr];
+ * ArithmeticExpr = Term [('+' | '-') ArithmeticExpr];
+ * Term = Factor [('*' | '/' | '%') Term];
+ * Factor = ID | INT | STRING | BOOL | '(' Expr ')' | FunctionCall;
+ * FunctionCall = ID '(' [Expr {',' Expr}*] ')';
+ */
+
+/**
  * The error reporting function for Bison parser.
  *
  * @todo Add location to the grammar and "pushToken" API function.

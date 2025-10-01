@@ -1,0 +1,20 @@
+// Test type system - integers, strings, booleans
+board TestBoard loop 5;
+
+player 1 money 1000 position 0;
+dice 6 sides;
+
+// Variable declarations of different types  
+int money = 500;
+string name = "TestPlayer";
+bool hasProperty = false;
+
+simulate 1 turns {
+    if (money > 0) {
+        log "Player has money: " + money;
+    }
+    if (!hasProperty) {
+        log "Player doesn't have property";
+    }
+    print name + " completed turn";
+}

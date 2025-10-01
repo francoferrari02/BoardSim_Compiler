@@ -1,6 +1,6 @@
-[![✗](https://img.shields.io/badge/Release-v2.0.0-ffb600.svg?style=for-the-badge)](https://github.com/francoferrari02/BoardSim_Compiler/releases)
+[![✗](https://img.shields.io/badge/Release-v2.0.0-ffb600.svg?style=for-the-badge)](https://github.com/francoferrari02/BoardSim-Compiler/releases)
 
-[![✗](https://github.com/francoferrari02/BoardSim_Compiler/actions/workflows/pipeline.yaml/badge.svg?branch=production)](https://github.com/francoferrari02/BoardSim_Compiler/actions/workflows/pipeline.yaml)
+[![✗](https://github.com/francoferrari02/BoardSim-Compiler/actions/workflows/pipeline.yaml/badge.svg?branch=production)](https://github.com/francoferrari02/BoardSim-Compiler/actions/workflows/pipeline.yaml)
 
 # Flex-Bison-Compiler
 

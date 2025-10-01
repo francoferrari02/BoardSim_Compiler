@@ -9,6 +9,7 @@
 #include "../support/type/ModuleDestructor.h"
 #include "../support/type/Token.h"
 #include "../support/type/TokenLabel.h"
+#include "../support/type/CompilerState.h"
 #include "lexical-analysis/FlexScanner.h"
 #include <stdbool.h>
 #include <stdio.h>
@@ -70,6 +71,11 @@ CompilationStatus executeLexicalAnalysis(LexicalAnalyzer * lexicalAnalyzer);
  * Starts parsing the input until it reaches the end or fails.
  */
 CompilationStatus executeSyntacticAnalysis();
+
+/**
+ * Starts semantic analysis of the input until it reaches the end or fails.
+ */
+CompilationStatus executeSemanticAnalysis(CompilerState * compilerState);
 
 /**
  * Leaves the current nested lexical-analyzer context.

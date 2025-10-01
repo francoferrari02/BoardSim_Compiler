@@ -1,0 +1,26 @@
+// Example Monopoly BoardSim based on PDF specification
+board Monopoly loop 40;
+cell 0 "Go" event collect;
+cell 1 "Mediterranean Avenue" cost 60 rent 2;
+cell 2 "Community Chest";
+cell 3 "Baltic Avenue" cost 60 rent 4;
+cell 4 "Income Tax" cost 200;
+// ... more cells would be here
+
+player 1 money 1500 position 0;
+player 2 money 1500 position 0;
+
+dice 6 sides;
+
+rule buy_property if (current_cell.cost > 0 && player.money >= current_cell.cost);
+rule pay_rent if (current_cell.rent > 0 && !player.owns(current_cell));
+
+simulate 10 turns strategy random {
+    pos = (pos + roll(dice)) % 40;
+    apply buy_property if pos;
+    apply pay_rent if pos;
+    log "Turn completed for player " + player.id;
+}
+
+print "Simulation complete";
+export board to "monopoly.dot";

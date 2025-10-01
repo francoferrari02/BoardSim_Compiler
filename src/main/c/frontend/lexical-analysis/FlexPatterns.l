@@ -26,6 +26,16 @@ extern CompilationStatus ParenthesisLexemeAction(TokenLabel label);
 extern CompilationStatus SubexpressionLexemeAction();
 extern CompilationStatus UnknownLexemeAction();
 
+extern CompilationStatus BoardSimKeywordLexemeAction(TokenLabel label);
+extern CompilationStatus BoardSimTypeLexemeAction(TokenLabel label);
+extern CompilationStatus BoardSimLiteralLexemeAction(TokenLabel label);
+extern CompilationStatus ComparisonOperatorLexemeAction(TokenLabel label);
+extern CompilationStatus LogicalOperatorLexemeAction(TokenLabel label);
+extern CompilationStatus AssignmentOperatorLexemeAction(TokenLabel label);
+extern CompilationStatus DelimiterLexemeAction(TokenLabel label);
+extern CompilationStatus IdentifierLexemeAction();
+extern CompilationStatus StringLiteralLexemeAction();
+
 %}
 
 /**
@@ -43,6 +53,12 @@ extern CompilationStatus UnknownLexemeAction();
  * @see https://westes.github.io/flex/manual/Patterns.html
  */
 whitespace			[[:space:]]+
+identifier			[a-zA-Z_][a-zA-Z0-9_]*
+integer				[0-9]+
+string_literal		\"[^\"]*\"
+comment_single		//.*
+comment_multi_start	\/\*
+comment_multi_end	\*\/
 
 %%
 
@@ -64,6 +80,36 @@ whitespace			[[:space:]]+
 <MULTILINE_COMMENT>[^*]+			{ return IgnoredLexemeAction(); }
 <MULTILINE_COMMENT>.				{ return IgnoredLexemeAction(); }
 
+"board"								{ return BoardSimKeywordLexemeAction(UNKNOWN); }
+"cell"								{ return BoardSimKeywordLexemeAction(UNKNOWN); }
+"loop"								{ return BoardSimKeywordLexemeAction(UNKNOWN); }
+"graph"								{ return BoardSimKeywordLexemeAction(UNKNOWN); }
+"player"							{ return BoardSimKeywordLexemeAction(UNKNOWN); }
+"piece"								{ return BoardSimKeywordLexemeAction(UNKNOWN); }
+"event"								{ return BoardSimKeywordLexemeAction(UNKNOWN); }
+"dice"								{ return BoardSimKeywordLexemeAction(UNKNOWN); }
+"rule"								{ return BoardSimKeywordLexemeAction(UNKNOWN); }
+"simulate"							{ return BoardSimKeywordLexemeAction(UNKNOWN); }
+"move"								{ return BoardSimKeywordLexemeAction(UNKNOWN); }
+"apply"								{ return BoardSimKeywordLexemeAction(UNKNOWN); }
+"if"								{ return BoardSimKeywordLexemeAction(UNKNOWN); }
+"else"								{ return BoardSimKeywordLexemeAction(UNKNOWN); }
+"for"								{ return BoardSimKeywordLexemeAction(UNKNOWN); }
+"while"								{ return BoardSimKeywordLexemeAction(UNKNOWN); }
+"print"								{ return BoardSimKeywordLexemeAction(UNKNOWN); }
+"log"								{ return BoardSimKeywordLexemeAction(UNKNOWN); }
+"export"							{ return BoardSimKeywordLexemeAction(UNKNOWN); }
+"turns"								{ return BoardSimKeywordLexemeAction(UNKNOWN); }
+"sides"								{ return BoardSimKeywordLexemeAction(UNKNOWN); }
+"cost"								{ return BoardSimKeywordLexemeAction(UNKNOWN); }
+"rent"								{ return BoardSimKeywordLexemeAction(UNKNOWN); }
+"money"								{ return BoardSimKeywordLexemeAction(UNKNOWN); }
+"position"							{ return BoardSimKeywordLexemeAction(UNKNOWN); }
+"to"								{ return BoardSimKeywordLexemeAction(UNKNOWN); }
+"strategy"							{ return BoardSimKeywordLexemeAction(UNKNOWN); }
+"random"							{ return BoardSimKeywordLexemeAction(UNKNOWN); }
+"aggressive"						{ return BoardSimKeywordLexemeAction(UNKNOWN); }
+
 "-"									{ return ArithmeticOperatorLexemeAction(SUB); }
 "*"									{ return ArithmeticOperatorLexemeAction(MUL); }
 "/"									{ return ArithmeticOperatorLexemeAction(DIV); }
@@ -71,9 +117,18 @@ whitespace			[[:space:]]+
 
 "("									{ return ParenthesisLexemeAction(OPEN_PARENTHESIS); }
 ")"									{ return ParenthesisLexemeAction(CLOSE_PARENTHESIS); }
+"["									{ return ParenthesisLexemeAction(OPEN_BRACE); }
+"]"									{ return ParenthesisLexemeAction(CLOSE_BRACE); }
+"{"									{ return EnterImportExpressionLexemeAction(IMPORT_EXPRESSION); }
+"}"									{ return ParenthesisLexemeAction(CLOSE_BRACE); }
+";"									{ return DelimiterLexemeAction(UNKNOWN); }
+","									{ return DelimiterLexemeAction(UNKNOWN); }
 
+
+[a-zA-Z_][a-zA-Z0-9_]*				{ return UnknownLexemeAction(); }
 [[:digit:]]+						{ return IntegerLexemeAction(); }
-
+\"[^\"]*\"							{ return UnknownLexemeAction(); }
+\/\/.*								{ return IgnoredLexemeAction(); }
 {whitespace}						{ return IgnoredLexemeAction(); }
 .									{ return UnknownLexemeAction(); }
 
