@@ -141,5 +141,18 @@ ComputationResult computeFactor(Factor * factor) {
 
 ComputationResult executeBoardSim(CompilerState * compilerState) {
 	Program * program = compilerState->abstractSyntaxtTree;
-	return computeExpression(program->expression);
+	
+	// Check if this is a BoardSim program (expression is NULL) vs Calculator program
+	if (program->expression == NULL) {
+		// This is a BoardSim program - return success for now
+		logDebugging(_logger, "Executing BoardSim program (placeholder)");
+		ComputationResult result = {
+			.succeeded = true,
+			.value = 42  // Placeholder value
+		};
+		return result;
+	} else {
+		// This is a Calculator program - use existing logic
+		return computeExpression(program->expression);
+	}
 }

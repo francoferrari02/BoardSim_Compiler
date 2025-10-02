@@ -101,6 +101,63 @@ struct SimulateBlock {
 };
 
 /**
+ * Enum representing the different node types for generic linked list.
+ */
+typedef enum {
+    NODE_TYPE_BOARD_DEF,
+    NODE_TYPE_PIECE_DEF,
+    NODE_TYPE_SIMULATE_BLOCK,
+    NODE_TYPE_CELL_DEF,
+    NODE_TYPE_PLAYER_DEF,
+    NODE_TYPE_DICE_DEF,
+    NODE_TYPE_RULE_DEF,
+    NODE_TYPE_STATEMENT,
+    NODE_TYPE_EXPRESSION
+} NodeType;
+
+/**
+ * Additional BoardSim structures.
+ */
+struct CellDef {
+	int index;
+	char* name;
+	int cost;     // Optional cost attribute
+	int rent;     // Optional rent attribute
+	char* event;  // Optional event reference
+};
+
+struct PlayerDef {
+	int id;
+	int money;
+	int position;
+};
+
+struct DiceDef {
+	int sides;
+};
+
+struct RuleDef {
+	char* name;
+};
+
+/**
+ * BoardSim Program structure that can hold multiple declarations.
+ */
+struct BoardSimProgram {
+	struct ASTNode* declarations;  // Linked list of declarations
+	struct ASTNode* statements;    // Linked list of statements from simulate blocks
+};
+
+/**
+ * Typedefs for the new structures.
+ */
+typedef struct CellDef CellDef;
+typedef struct PlayerDef PlayerDef;
+typedef struct DiceDef DiceDef;
+typedef struct RuleDef RuleDef;
+typedef struct BoardSimProgram BoardSimProgram;
+
+/**
  * Node recursive super-duper-trambolik-destructors.
  */
 
@@ -120,5 +177,21 @@ void destroySimulateBlock(SimulateBlock* simulateBlock);
 
 ASTNode* createASTNode(void* data, int nodeType);
 void destroyASTNode(ASTNode* node);
+
+// Additional BoardSim node creators/destructors
+CellDef* createCellDef(int index, char* name, int cost, int rent, char* event);
+void destroyCellDef(CellDef* cellDef);
+
+PlayerDef* createPlayerDef(int id, int money, int position);
+void destroyPlayerDef(PlayerDef* playerDef);
+
+DiceDef* createDiceDef(int sides);
+void destroyDiceDef(DiceDef* diceDef);
+
+RuleDef* createRuleDef(char* name);
+void destroyRuleDef(RuleDef* ruleDef);
+
+BoardSimProgram* createBoardSimProgram();
+void destroyBoardSimProgram(BoardSimProgram* program);
 
 #endif

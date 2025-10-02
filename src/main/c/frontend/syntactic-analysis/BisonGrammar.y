@@ -93,11 +93,54 @@ void yyerror(const YYLTYPE * location, const char * message) {}
 %token <token> IGNORED
 %token <token> UNKNOWN
 
+/** BoardSim tokens. */
+%token <token> BOARD
+%token <token> CELL  
+%token <token> LOOP
+%token <token> GRAPH
+%token <token> PLAYER
+%token <token> PIECE
+%token <token> EVENT
+%token <token> DICE
+%token <token> RULE
+%token <token> SIMULATE
+%token <token> MOVE
+%token <token> APPLY
+%token <token> IF
+%token <token> ELSE
+%token <token> FOR
+%token <token> WHILE
+%token <token> PRINT
+%token <token> LOG
+%token <token> EXPORT
+%token <token> TURNS
+%token <token> SIDES
+%token <token> COST
+%token <token> RENT
+%token <token> MONEY
+%token <token> POSITION
+%token <token> TO
+%token <token> STRATEGY
+%token <token> RANDOM
+%token <token> AGGRESSIVE
+%token <token> SEMICOLON
+%token <token> COMMA
+%token <token> IDENTIFIER
+%token <token> STRING_LITERAL
+
 /** Non-terminals. */
 %type <constant> constant
 %type <expression> expression
 %type <factor> factor
 %type <program> program
+
+/** BoardSim non-terminals. */
+%type <program> boardsim_program
+%type <token> board_decl
+%type <token> cell_decl
+%type <token> player_decl
+%type <token> dice_decl
+%type <token> simulate_block
 
 /**
  * Precedence and associativity.
@@ -113,6 +156,44 @@ void yyerror(const YYLTYPE * location, const char * message) {}
 // IMPORTANT: To use λ in the following grammar, use the %empty symbol.
 
 program: expression											{ $$ = ExpressionProgramSemanticAction($1); }
+	| boardsim_program										{ $$ = $1; }
+	;
+
+boardsim_program: board_decl								{ $$ = BoardSimProgramSemanticAction($1); }
+	| cell_decl												{ $$ = BoardSimProgramSemanticAction($1); }
+	| player_decl											{ $$ = BoardSimProgramSemanticAction($1); }
+	| dice_decl												{ $$ = BoardSimProgramSemanticAction($1); }
+	| simulate_block										{ $$ = BoardSimProgramSemanticAction($1); }
+	| boardsim_program board_decl							{ $$ = $1; /* TODO: append declarations */ }
+	| boardsim_program cell_decl							{ $$ = $1; /* TODO: append declarations */ }
+	| boardsim_program player_decl							{ $$ = $1; /* TODO: append declarations */ }
+	| boardsim_program dice_decl							{ $$ = $1; /* TODO: append declarations */ }
+	| boardsim_program simulate_block						{ $$ = $1; /* TODO: append blocks */ }
+	;
+
+board_decl: BOARD IDENTIFIER LOOP INTEGER SEMICOLON		{ $$ = (TokenLabel)BoardDefSemanticAction($2, $3, $4); }
+	| BOARD IDENTIFIER GRAPH SEMICOLON						{ $$ = (TokenLabel)BoardDefSemanticAction($2, $3, 0); }
+	;
+
+cell_decl: CELL INTEGER STRING_LITERAL SEMICOLON			{ $$ = (TokenLabel)CellDefSemanticAction($2, NULL, 0); }
+	| CELL INTEGER STRING_LITERAL COST INTEGER SEMICOLON	{ $$ = (TokenLabel)CellDefSemanticAction($2, NULL, $5); }
+	;
+
+player_decl: PLAYER INTEGER MONEY INTEGER POSITION INTEGER SEMICOLON	{ $$ = (TokenLabel)PlayerDefSemanticAction($2, $4, $6); }
+	;
+
+dice_decl: DICE INTEGER SIDES SEMICOLON								{ $$ = (TokenLabel)DiceDefSemanticAction($2); }
+	;
+
+simulate_block: SIMULATE INTEGER TURNS OPEN_BRACE CLOSE_BRACE			{ $$ = (TokenLabel)SimulateBlockSemanticAction($2); }
+	| SIMULATE INTEGER TURNS OPEN_BRACE statements CLOSE_BRACE		{ $$ = (TokenLabel)SimulateBlockSemanticAction($2); }
+	;
+
+statements: statement										{ /* TODO: Create statement list */ }
+	| statements statement									{ /* TODO: Append to statement list */ }
+	;
+
+statement: PRINT STRING_LITERAL SEMICOLON					{ /* TODO: Print statement */ }
 	;
 
 expression: expression[left] ADD expression[right]			{ $$ = ArithmeticExpressionSemanticAction($left, $right, ADDITION); }

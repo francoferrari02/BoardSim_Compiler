@@ -140,11 +140,139 @@ ASTNode* createASTNode(void* data, int nodeType) {
 void destroyASTNode(ASTNode* node) {
 	logDebugging(_logger, "Executing destructor: %s", __FUNCTION__);
 	if (node != NULL) {
-		// Note: data should be destroyed by the specific type destructor
-		// This function only handles the ASTNode wrapper
+		// Free the data based on nodeType
+		if (node->data != NULL) {
+			switch (node->nodeType) {
+				case NODE_TYPE_BOARD_DEF:
+					destroyBoardDef((BoardDef*)node->data);
+					break;
+				case NODE_TYPE_PIECE_DEF:
+					destroyPieceDef((PieceDef*)node->data);
+					break;
+				case NODE_TYPE_SIMULATE_BLOCK:
+					destroySimulateBlock((SimulateBlock*)node->data);
+					break;
+				case NODE_TYPE_CELL_DEF:
+					destroyCellDef((CellDef*)node->data);
+					break;
+				case NODE_TYPE_PLAYER_DEF:
+					destroyPlayerDef((PlayerDef*)node->data);
+					break;
+				case NODE_TYPE_DICE_DEF:
+					destroyDiceDef((DiceDef*)node->data);
+					break;
+				case NODE_TYPE_RULE_DEF:
+					destroyRuleDef((RuleDef*)node->data);
+					break;
+				default:
+					free(node->data);
+					break;
+			}
+		}
+		
+		// Recursively destroy next node
 		if (node->next) {
 			destroyASTNode(node->next);
 		}
 		free(node);
 	}
+}
+
+// Additional BoardSim node creators/destructors
+
+CellDef* createCellDef(int index, char* name, int cost, int rent, char* event) {
+	logDebugging(_logger, "Executing constructor: %s", __FUNCTION__);
+	CellDef* cellDef = calloc(1, sizeof(CellDef));
+	cellDef->index = index;
+	cellDef->name = name ? strdup(name) : NULL;
+	cellDef->cost = cost;
+	cellDef->rent = rent;
+	cellDef->event = event ? strdup(event) : NULL;
+	return cellDef;
+}
+
+void destroyCellDef(CellDef* cellDef) {
+	logDebugging(_logger, "Executing destructor: %s", __FUNCTION__);
+	if (cellDef == NULL) {
+		return;
+	}
+	if (cellDef->name != NULL) {
+		free(cellDef->name);
+	}
+	if (cellDef->event != NULL) {
+		free(cellDef->event);
+	}
+	free(cellDef);
+}
+
+PlayerDef* createPlayerDef(int id, int money, int position) {
+	logDebugging(_logger, "Executing constructor: %s", __FUNCTION__);
+	PlayerDef* playerDef = calloc(1, sizeof(PlayerDef));
+	playerDef->id = id;
+	playerDef->money = money;
+	playerDef->position = position;
+	return playerDef;
+}
+
+void destroyPlayerDef(PlayerDef* playerDef) {
+	logDebugging(_logger, "Executing destructor: %s", __FUNCTION__);
+	if (playerDef == NULL) {
+		return;
+	}
+	free(playerDef);
+}
+
+DiceDef* createDiceDef(int sides) {
+	logDebugging(_logger, "Executing constructor: %s", __FUNCTION__);
+	DiceDef* diceDef = calloc(1, sizeof(DiceDef));
+	diceDef->sides = sides;
+	return diceDef;
+}
+
+void destroyDiceDef(DiceDef* diceDef) {
+	logDebugging(_logger, "Executing destructor: %s", __FUNCTION__);
+	if (diceDef == NULL) {
+		return;
+	}
+	free(diceDef);
+}
+
+RuleDef* createRuleDef(char* name) {
+	logDebugging(_logger, "Executing constructor: %s", __FUNCTION__);
+	RuleDef* ruleDef = calloc(1, sizeof(RuleDef));
+	ruleDef->name = name ? strdup(name) : NULL;
+	return ruleDef;
+}
+
+void destroyRuleDef(RuleDef* ruleDef) {
+	logDebugging(_logger, "Executing destructor: %s", __FUNCTION__);
+	if (ruleDef == NULL) {
+		return;
+	}
+	if (ruleDef->name != NULL) {
+		free(ruleDef->name);
+	}
+	free(ruleDef);
+}
+
+BoardSimProgram* createBoardSimProgram() {
+	logDebugging(_logger, "Executing constructor: %s", __FUNCTION__);
+	BoardSimProgram* program = calloc(1, sizeof(BoardSimProgram));
+	program->declarations = NULL;
+	program->statements = NULL;
+	return program;
+}
+
+void destroyBoardSimProgram(BoardSimProgram* program) {
+	logDebugging(_logger, "Executing destructor: %s", __FUNCTION__);
+	if (program == NULL) {
+		return;
+	}
+	if (program->declarations != NULL) {
+		destroyASTNode(program->declarations);
+	}
+	if (program->statements != NULL) {
+		destroyASTNode(program->statements);
+	}
+	free(program);
 }

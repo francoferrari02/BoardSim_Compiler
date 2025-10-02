@@ -70,45 +70,40 @@ comment_multi_end	\*\/
 
 %}
 
-"{"									{ return EnterImportExpressionLexemeAction(IMPORT_EXPRESSION); }
-<IMPORT_EXPRESSION>[^{}]+			{ return SubexpressionLexemeAction(); }
-<IMPORT_EXPRESSION>"}"				{ return LeaveImportExpressionLexemeAction(); }
-<IMPORT_EXPRESSION>.				{ return UnknownLexemeAction(); }
-
 "/*"								{ return EnterMultilineCommentLexemeAction(MULTILINE_COMMENT); }
 <MULTILINE_COMMENT>"*/"				{ return LeaveMultilineCommentLexemeAction(); }
 <MULTILINE_COMMENT>[^*]+			{ return IgnoredLexemeAction(); }
 <MULTILINE_COMMENT>.				{ return IgnoredLexemeAction(); }
 
-"board"								{ return BoardSimKeywordLexemeAction(UNKNOWN); }
-"cell"								{ return BoardSimKeywordLexemeAction(UNKNOWN); }
-"loop"								{ return BoardSimKeywordLexemeAction(UNKNOWN); }
-"graph"								{ return BoardSimKeywordLexemeAction(UNKNOWN); }
-"player"							{ return BoardSimKeywordLexemeAction(UNKNOWN); }
-"piece"								{ return BoardSimKeywordLexemeAction(UNKNOWN); }
-"event"								{ return BoardSimKeywordLexemeAction(UNKNOWN); }
-"dice"								{ return BoardSimKeywordLexemeAction(UNKNOWN); }
-"rule"								{ return BoardSimKeywordLexemeAction(UNKNOWN); }
-"simulate"							{ return BoardSimKeywordLexemeAction(UNKNOWN); }
-"move"								{ return BoardSimKeywordLexemeAction(UNKNOWN); }
-"apply"								{ return BoardSimKeywordLexemeAction(UNKNOWN); }
-"if"								{ return BoardSimKeywordLexemeAction(UNKNOWN); }
-"else"								{ return BoardSimKeywordLexemeAction(UNKNOWN); }
-"for"								{ return BoardSimKeywordLexemeAction(UNKNOWN); }
-"while"								{ return BoardSimKeywordLexemeAction(UNKNOWN); }
-"print"								{ return BoardSimKeywordLexemeAction(UNKNOWN); }
-"log"								{ return BoardSimKeywordLexemeAction(UNKNOWN); }
-"export"							{ return BoardSimKeywordLexemeAction(UNKNOWN); }
-"turns"								{ return BoardSimKeywordLexemeAction(UNKNOWN); }
-"sides"								{ return BoardSimKeywordLexemeAction(UNKNOWN); }
-"cost"								{ return BoardSimKeywordLexemeAction(UNKNOWN); }
-"rent"								{ return BoardSimKeywordLexemeAction(UNKNOWN); }
-"money"								{ return BoardSimKeywordLexemeAction(UNKNOWN); }
-"position"							{ return BoardSimKeywordLexemeAction(UNKNOWN); }
-"to"								{ return BoardSimKeywordLexemeAction(UNKNOWN); }
-"strategy"							{ return BoardSimKeywordLexemeAction(UNKNOWN); }
-"random"							{ return BoardSimKeywordLexemeAction(UNKNOWN); }
-"aggressive"						{ return BoardSimKeywordLexemeAction(UNKNOWN); }
+"board"								{ return BoardSimKeywordLexemeAction(BOARD); }
+"cell"								{ return BoardSimKeywordLexemeAction(CELL); }
+"loop"								{ return BoardSimKeywordLexemeAction(LOOP); }
+"graph"								{ return BoardSimKeywordLexemeAction(GRAPH); }
+"player"							{ return BoardSimKeywordLexemeAction(PLAYER); }
+"piece"								{ return BoardSimKeywordLexemeAction(PIECE); }
+"event"								{ return BoardSimKeywordLexemeAction(EVENT); }
+"dice"								{ return BoardSimKeywordLexemeAction(DICE); }
+"rule"								{ return BoardSimKeywordLexemeAction(RULE); }
+"simulate"							{ return BoardSimKeywordLexemeAction(SIMULATE); }
+"move"								{ return BoardSimKeywordLexemeAction(MOVE); }
+"apply"								{ return BoardSimKeywordLexemeAction(APPLY); }
+"if"								{ return BoardSimKeywordLexemeAction(IF); }
+"else"								{ return BoardSimKeywordLexemeAction(ELSE); }
+"for"								{ return BoardSimKeywordLexemeAction(FOR); }
+"while"								{ return BoardSimKeywordLexemeAction(WHILE); }
+"print"								{ return BoardSimKeywordLexemeAction(PRINT); }
+"log"								{ return BoardSimKeywordLexemeAction(LOG); }
+"export"							{ return BoardSimKeywordLexemeAction(EXPORT); }
+"turns"								{ return BoardSimKeywordLexemeAction(TURNS); }
+"sides"								{ return BoardSimKeywordLexemeAction(SIDES); }
+"cost"								{ return BoardSimKeywordLexemeAction(COST); }
+"rent"								{ return BoardSimKeywordLexemeAction(RENT); }
+"money"								{ return BoardSimKeywordLexemeAction(MONEY); }
+"position"							{ return BoardSimKeywordLexemeAction(POSITION); }
+"to"								{ return BoardSimKeywordLexemeAction(TO); }
+"strategy"							{ return BoardSimKeywordLexemeAction(STRATEGY); }
+"random"							{ return BoardSimKeywordLexemeAction(RANDOM); }
+"aggressive"						{ return BoardSimKeywordLexemeAction(AGGRESSIVE); }
 
 "-"									{ return ArithmeticOperatorLexemeAction(SUB); }
 "*"									{ return ArithmeticOperatorLexemeAction(MUL); }
@@ -119,15 +114,15 @@ comment_multi_end	\*\/
 ")"									{ return ParenthesisLexemeAction(CLOSE_PARENTHESIS); }
 "["									{ return ParenthesisLexemeAction(OPEN_BRACE); }
 "]"									{ return ParenthesisLexemeAction(CLOSE_BRACE); }
-"{"									{ return EnterImportExpressionLexemeAction(IMPORT_EXPRESSION); }
+"{"									{ return ParenthesisLexemeAction(OPEN_BRACE); }
 "}"									{ return ParenthesisLexemeAction(CLOSE_BRACE); }
-";"									{ return DelimiterLexemeAction(UNKNOWN); }
-","									{ return DelimiterLexemeAction(UNKNOWN); }
+";"									{ return DelimiterLexemeAction(SEMICOLON); }
+","									{ return DelimiterLexemeAction(COMMA); }
 
 
-[a-zA-Z_][a-zA-Z0-9_]*				{ return UnknownLexemeAction(); }
+[a-zA-Z_][a-zA-Z0-9_]*				{ return IdentifierLexemeAction(); }
 [[:digit:]]+						{ return IntegerLexemeAction(); }
-\"[^\"]*\"							{ return UnknownLexemeAction(); }
+\"[^\"]*\"							{ return StringLiteralLexemeAction(); }
 \/\/.*								{ return IgnoredLexemeAction(); }
 {whitespace}						{ return IgnoredLexemeAction(); }
 .									{ return UnknownLexemeAction(); }

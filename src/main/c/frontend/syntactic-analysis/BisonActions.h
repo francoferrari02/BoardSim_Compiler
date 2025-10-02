@@ -23,4 +23,14 @@ Factor * ConstantFactorSemanticAction(Constant * constant);
 Factor * ExpressionFactorSemanticAction(Expression * expression);
 Program * ExpressionProgramSemanticAction(Expression * expression);
 
+/**
+ * BoardSim semantic actions.
+ */
+Program * BoardSimProgramSemanticAction(TokenLabel token);
+BoardDef * BoardDefSemanticAction(TokenLabel identifier, TokenLabel boardType, int size);
+CellDef * CellDefSemanticAction(int index, char* name, int cost);
+PlayerDef * PlayerDefSemanticAction(int id, int money, int position);
+DiceDef * DiceDefSemanticAction(int sides);
+SimulateBlock * SimulateBlockSemanticAction(int turns);
+
 #endif

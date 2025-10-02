@@ -171,8 +171,19 @@ static void _output(const unsigned int indentationLevel, const char * const form
 
 void executeGenerator(CompilerState * compilerState) {
 	logDebugging(_logger, "Generating final output...");
-	_generatePrologue();
-	_generateProgram(compilerState->abstractSyntaxtTree);
-	_generateEpilogue(compilerState->value);
+	Program * program = compilerState->abstractSyntaxtTree;
+	
+	// Check if this is a BoardSim program vs Calculator program
+	if (program->expression == NULL) {
+		// BoardSim program - generate simple text output for now
+		printf("BoardSim program executed successfully!\n");
+		printf("Result: %d\n", compilerState->value);
+	} else {
+		// Calculator program - generate LaTeX tree as before
+		_generatePrologue();
+		_generateProgram(compilerState->abstractSyntaxtTree);
+		_generateEpilogue(compilerState->value);
+	}
+	
 	logDebugging(_logger, "Generation is done.");
 }

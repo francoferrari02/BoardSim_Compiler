@@ -83,3 +83,46 @@ Program * ExpressionProgramSemanticAction(Expression * expression) {
 	_compilerState->abstractSyntaxtTree = program;
 	return program;
 }
+
+/**
+ * BoardSim semantic actions.
+ */
+
+Program * BoardSimProgramSemanticAction(TokenLabel token) {
+	_logSyntacticAnalyzerAction(__FUNCTION__);
+	Program * program = calloc(1, sizeof(Program));
+	// Mark as BoardSim program by setting expression to NULL
+	program->expression = NULL;
+	_compilerState->abstractSyntaxtTree = program;
+	return program;
+}
+
+BoardDef * BoardDefSemanticAction(TokenLabel identifier, TokenLabel boardType, int size) {
+	_logSyntacticAnalyzerAction(__FUNCTION__);
+	// For now, we'll use placeholder strings. 
+	// TODO: Extract actual strings from tokens
+	char* id = strdup("BoardSim_Board");
+	char* type = (boardType == LOOP) ? strdup("loop") : strdup("graph");
+	return createBoardDef(id, type, size);
+}
+
+CellDef * CellDefSemanticAction(int index, char* name, int cost) {
+	_logSyntacticAnalyzerAction(__FUNCTION__);
+	// For now, basic cell creation
+	return createCellDef(index, name, cost, 0, NULL);
+}
+
+PlayerDef * PlayerDefSemanticAction(int id, int money, int position) {
+	_logSyntacticAnalyzerAction(__FUNCTION__);
+	return createPlayerDef(id, money, position);
+}
+
+DiceDef * DiceDefSemanticAction(int sides) {
+	_logSyntacticAnalyzerAction(__FUNCTION__);
+	return createDiceDef(sides);
+}
+
+SimulateBlock * SimulateBlockSemanticAction(int turns) {
+	_logSyntacticAnalyzerAction(__FUNCTION__);
+	return createSimulateBlock(turns, NULL);
+}
