@@ -9,4 +9,16 @@ ModuleDestructor initializeSemanticAnalyzer();
 
 CompilationStatus executeSemanticAnalysis(CompilerState * compilerState);
 
+/**
+ * BoardSim specific semantic analysis.
+ */
+CompilationStatus analyzeBoardSimProgram(CompilerState * compilerState);
+
+/**
+ * BoardSim specific validation functions.
+ */
+CompilationStatus validateBoardSimRules(CompilerState * compilerState);
+CompilationStatus validateBoardConfiguration(CompilerState * compilerState);
+CompilationStatus validatePlayerConfiguration(CompilerState * compilerState);
+
 #endif

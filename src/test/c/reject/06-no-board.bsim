@@ -1,0 +1,4 @@
+// This should fail semantic analysis - no board declared
+player 1 money 100 position 0;
+dice 6 sides;
+simulate 5 turns {}
