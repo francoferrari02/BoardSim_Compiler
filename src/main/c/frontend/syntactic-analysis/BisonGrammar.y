@@ -5,31 +5,21 @@
 #include "BisonActions.h"
 
 /**
- * BoardSim Grammar (EBNF) based on PDF sections 6-8:
+ * BoardSim Grammar (EBNF) - IMPLEMENTED FEATURES ONLY:
  * 
- * Program = {Declaration | Statement}*;
- * Declaration = BoardDecl | PieceDecl | PlayerDecl | EventDecl | DiceDecl | RuleDecl;
- * BoardDecl = 'board' ID ( 'loop' INT | 'graph' ) ';' {CellOrNodeDecl}*;
- * CellOrNodeDecl = ('cell' | 'node') INT STRING {Attribute}*;
- * Attribute = 'event' ID | 'cost' INT | 'rent' INT | 'continent' STRING | 'armies' INT | 'connected' '[' ID {',' ID}* ']';
- * Simulate = 'simulate' INT 'turns' { 'strategy' ID } '{' {Statement}* '}';
- * Statement = MoveStmt | ApplyStmt | IfStmt | ForStmt | SwitchStmt | LogStmt | PrintStmt | ExportStmt | Assignment;
- * MoveStmt = 'move' ID 'to' Expr 'if' Expr ';';
- * ApplyStmt = 'apply' ID 'if' Expr ';';
- * IfStmt = 'if' '(' Expr ')' '{' Statement* '}' ['else' '{' Statement* '}'];
- * ForStmt = 'for' '(' Assignment ';' Expr ';' Assignment ')' '{' Statement* '}';
- * SwitchStmt = 'switch' '(' Expr ')' '{' {CaseStmt}* [DefaultStmt] '}';
- * LogStmt = 'log' STRING ';' | 'log' Expr ';';
- * PrintStmt = 'print' STRING ';' | 'print' Expr ';';
- * ExportStmt = 'export' ID 'to' STRING ';';
- * Assignment = ID '=' Expr ';';
- * Expr = LogicalExpr;
- * LogicalExpr = RelationalExpr [('&&' | '||') LogicalExpr];
- * RelationalExpr = ArithmeticExpr [('==' | '!=' | '<' | '>' | '<=' | '>=') ArithmeticExpr];
- * ArithmeticExpr = Term [('+' | '-') ArithmeticExpr];
- * Term = Factor [('*' | '/' | '%') Term];
- * Factor = ID | INT | STRING | BOOL | '(' Expr ')' | FunctionCall;
- * FunctionCall = ID '(' [Expr {',' Expr}*] ')';
+ * Program = Expression | BoardSimProgram;
+ * BoardSimProgram = {Declaration}*;
+ * Declaration = BoardDecl | CellDecl | PlayerDecl | DiceDecl | SimulateBlock;
+ * BoardDecl = 'board' ID ( 'loop' INT | 'graph' ) ';';
+ * CellDecl = 'cell' INT STRING [ 'cost' INT [ 'rent' INT ] ] ';';
+ * PlayerDecl = 'player' INT 'money' INT 'position' INT [ 'strategy' STRING ] ';';
+ * DiceDecl = 'dice' INT 'sides' ';';
+ * SimulateBlock = 'simulate' INT 'turns' '{' '}';
+ * Expression = ArithmeticExpression;
+ * ArithmeticExpression = Term [('+' | '-' | '*' | '/') ArithmeticExpression];
+ * Term = Factor;
+ * Factor = '(' Expression ')' | Constant;
+ * Constant = INTEGER;
  */
 
 /**
@@ -96,23 +86,14 @@ void yyerror(const YYLTYPE * location, const char * message) {}
 /** BoardSim tokens. */
 %token <token> BOARD
 %token <token> CELL  
+
 %token <token> LOOP
 %token <token> GRAPH
 %token <token> PLAYER
-%token <token> PIECE
-%token <token> EVENT
+
 %token <token> DICE
-%token <token> RULE
 %token <token> SIMULATE
-%token <token> MOVE
-%token <token> APPLY
-%token <token> IF
-%token <token> ELSE
-%token <token> FOR
-%token <token> WHILE
-%token <token> PRINT
-%token <token> LOG
-%token <token> EXPORT
+
 %token <token> TURNS
 %token <token> SIDES
 %token <token> COST
@@ -127,6 +108,23 @@ void yyerror(const YYLTYPE * location, const char * message) {}
 %token <token> COMMA
 %token <token> IDENTIFIER
 %token <token> STRING_LITERAL
+
+/** Extended BoardSim tokens for complex features - TODO: uncomment when ready */
+/* %token <token> CONTINENT */
+/* %token <token> ARMIES */
+/* %token <token> CONNECTED */
+/* %token <token> OWNS */
+/* %token <token> TERRITORIES */
+/* %token <token> OBJECTIVE */
+/* %token <token> RATING */
+/* %token <token> PIECES */
+%token <token> OPEN_BRACKET
+%token <token> CLOSE_BRACKET
+%token <token> EQUALS
+/* %token <token> CONSERVATIVE */
+/* %token <token> BALANCED */
+/* %token <token> POSITIONAL */
+/* %token <token> TACTICAL */
 
 /** Non-terminals. */
 %type <constant> constant
@@ -175,26 +173,30 @@ board_decl: BOARD IDENTIFIER LOOP INTEGER SEMICOLON		{ $$ = (TokenLabel)BoardDef
 	| BOARD IDENTIFIER GRAPH SEMICOLON						{ $$ = (TokenLabel)BoardDefSemanticAction($2, $3, 0); }
 	;
 
-cell_decl: CELL INTEGER STRING_LITERAL SEMICOLON			{ $$ = (TokenLabel)CellDefSemanticAction($2, NULL, 0); }
-	| CELL INTEGER STRING_LITERAL COST INTEGER SEMICOLON	{ $$ = (TokenLabel)CellDefSemanticAction($2, NULL, $5); }
+cell_decl: CELL INTEGER STRING_LITERAL SEMICOLON								{ $$ = (TokenLabel)CellDefSemanticAction($2, NULL, 0); }
+	| CELL INTEGER STRING_LITERAL COST INTEGER SEMICOLON						{ $$ = (TokenLabel)CellDefSemanticAction($2, NULL, $5); }
+
+	| CELL INTEGER STRING_LITERAL COST INTEGER RENT INTEGER SEMICOLON			{ $$ = (TokenLabel)CellDefSemanticAction($2, NULL, $5); }
+
 	;
 
-player_decl: PLAYER INTEGER MONEY INTEGER POSITION INTEGER SEMICOLON	{ $$ = (TokenLabel)PlayerDefSemanticAction($2, $4, $6); }
+
+
+
+
+player_decl: PLAYER INTEGER MONEY INTEGER POSITION INTEGER SEMICOLON							{ $$ = (TokenLabel)PlayerDefSemanticAction($2, $4, $6); }
+	| PLAYER INTEGER MONEY INTEGER POSITION INTEGER STRATEGY STRING_LITERAL SEMICOLON	{ $$ = (TokenLabel)PlayerDefSemanticAction($2, $4, $6); }
 	;
+
+
 
 dice_decl: DICE INTEGER SIDES SEMICOLON								{ $$ = (TokenLabel)DiceDefSemanticAction($2); }
 	;
 
 simulate_block: SIMULATE INTEGER TURNS OPEN_BRACE CLOSE_BRACE			{ $$ = (TokenLabel)SimulateBlockSemanticAction($2); }
-	| SIMULATE INTEGER TURNS OPEN_BRACE statements CLOSE_BRACE		{ $$ = (TokenLabel)SimulateBlockSemanticAction($2); }
 	;
 
-statements: statement										{ /* TODO: Create statement list */ }
-	| statements statement									{ /* TODO: Append to statement list */ }
-	;
 
-statement: PRINT STRING_LITERAL SEMICOLON					{ /* TODO: Print statement */ }
-	;
 
 expression: expression[left] ADD expression[right]			{ $$ = ArithmeticExpressionSemanticAction($left, $right, ADDITION); }
 	| expression[left] DIV expression[right]				{ $$ = ArithmeticExpressionSemanticAction($left, $right, DIVISION); }

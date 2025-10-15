@@ -1,10 +1,6 @@
-// Division by zero error (runtime detection)
+// Missing dice sides keyword
 board TestBoard loop 4;
 cell 0 "Start";
 
 player 1 money 1000 position 0;
-
-simulate 1 turns {
-    int result = 10 / 0;  // Error: division by zero
-    log "Result: " + result;
-}
+dice 6;  // Error: missing 'sides' keyword

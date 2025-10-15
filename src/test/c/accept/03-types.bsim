@@ -1,20 +1,11 @@
-// Test type system - integers, strings, booleans
+// Test basic BoardSim types and structures
 board TestBoard loop 5;
 
-player 1 money 1000 position 0;
+cell 0 "Start" cost 0 rent 10;
+cell 1 "Shop" cost 50 rent 5;
+cell 2 "Bank" cost 0 rent 25;
+
+player 1 money 1000 position 0 strategy "aggressive";
 dice 6 sides;
 
-// Variable declarations of different types  
-int money = 500;
-string name = "TestPlayer";
-bool hasProperty = false;
-
-simulate 1 turns {
-    if (money > 0) {
-        log "Player has money: " + money;
-    }
-    if (!hasProperty) {
-        log "Player doesn't have property";
-    }
-    print name + " completed turn";
-}
+simulate 1 turns {}

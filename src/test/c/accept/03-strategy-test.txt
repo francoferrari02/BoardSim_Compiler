@@ -1,0 +1,203 @@
+=== BoardSim Game State ===
+Board: Adventure_Island (loop, 25 cells)
+Players: 3
+  Player 1: Money=100, Position=0 (Pirate_Base)
+  Player 2: Money=100, Position=0 (Pirate_Base)
+  Player 3: Money=100, Position=0 (Pirate_Base)
+Dice: 6 sides
+Max turns: 15
+Sample locations:
+  [0] Pirate_Base
+  [1] Golden_Beach
+  [2] Mysterious_Cave
+  [3] Quicksand_Trap
+  [4] Volcano_Peak
+  ... and 20 more locations
+==========================
+=== Turn 1 ===
+Player 1 rolls 5
+Player 1 moves to position 5 (Mystic_Forest)
+Player 1 found treasure at Mystic_Forest (+20 points)
+*** Player 1 WINS with 120 points! ***
+Player 2 rolls 4
+Player 2 moves to position 4 (Volcano_Peak)
+*** Player 2 WINS with 100 points! ***
+Player 3 rolls 2
+Player 3 moves to position 2 (Mysterious_Cave)
+Player 3 found treasure at Mysterious_Cave (+30 points)
+*** Player 3 WINS with 130 points! ***
+=== Turn 2 ===
+Player 1 rolls 1
+Player 1 moves to position 6 (Ancient_Ruins)
+Player 1 fell into trap at Ancient_Ruins (-5 points)
+*** Player 1 WINS with 115 points! ***
+Player 2 rolls 4
+Player 2 moves to position 8 (Dragons_Lair)
+Player 2 found treasure at Dragons_Lair (+10 points)
+*** Player 2 WINS with 110 points! ***
+Player 3 rolls 6
+Player 3 moves to position 8 (Dragons_Lair)
+Player 3 found treasure at Dragons_Lair (+10 points)
+*** Player 3 WINS with 140 points! ***
+=== Turn 3 ===
+Player 1 rolls 5
+Player 1 moves to position 11 (Spiders_Den)
+Player 1 fell into trap at Spiders_Den (-15 points)
+*** Player 1 WINS with 100 points! ***
+Player 2 rolls 2
+Player 2 moves to position 10 (Whispering_Woods)
+*** Player 2 WINS with 110 points! ***
+Player 3 rolls 3
+Player 3 moves to position 11 (Spiders_Den)
+Player 3 fell into trap at Spiders_Den (-15 points)
+*** Player 3 WINS with 125 points! ***
+=== Turn 4 ===
+Player 1 rolls 2
+Player 1 moves to position 13 (Desert_Oasis)
+*** Player 1 WINS with 100 points! ***
+Player 2 rolls 1
+Player 2 moves to position 11 (Spiders_Den)
+Player 2 fell into trap at Spiders_Den (-15 points)
+Player 3 rolls 1
+Player 3 moves to position 12 (Emerald_Isle)
+*** Player 3 WINS with 125 points! ***
+=== Turn 5 ===
+Player 1 rolls 1
+Player 1 moves to position 14 (Scorpion_Dunes)
+Player 1 found treasure at Scorpion_Dunes (+30 points)
+*** Player 1 WINS with 130 points! ***
+Player 2 rolls 3
+Player 2 moves to position 14 (Scorpion_Dunes)
+Player 2 found treasure at Scorpion_Dunes (+30 points)
+*** Player 2 WINS with 125 points! ***
+Player 3 rolls 6
+Player 3 moves to position 18 (Foggy_Swamp)
+*** Player 3 WINS with 125 points! ***
+=== Turn 6 ===
+Player 1 rolls 5
+Player 1 moves to position 19 (Treasure_Chest)
+*** Player 1 WINS with 130 points! ***
+Player 2 rolls 3
+Player 2 moves to position 17 (Giants_Causeway)
+Player 2 found treasure at Giants_Causeway (+20 points)
+*** Player 2 WINS with 145 points! ***
+Player 3 rolls 5
+Player 3 moves to position 23 (Krakens_Lair)
+Player 3 found treasure at Krakens_Lair (+40 points)
+*** Player 3 WINS with 165 points! ***
+=== Turn 7 ===
+Player 1 rolls 6
+Player 1 moves to position 0 (Pirate_Base)
+Player 1 found treasure at Pirate_Base (+5 points)
+Player 1 returned to base (+5 points)
+*** Player 1 WINS with 140 points! ***
+Player 2 rolls 4
+Player 2 moves to position 21 (Snake_Pit)
+Player 2 fell into trap at Snake_Pit (-5 points)
+*** Player 2 WINS with 140 points! ***
+Player 3 rolls 5
+Player 3 moves to position 3 (Quicksand_Trap)
+*** Player 3 WINS with 165 points! ***
+=== Turn 8 ===
+Player 1 rolls 6
+Player 1 moves to position 6 (Ancient_Ruins)
+Player 1 fell into trap at Ancient_Ruins (-5 points)
+*** Player 1 WINS with 135 points! ***
+Player 2 rolls 2
+Player 2 moves to position 23 (Krakens_Lair)
+Player 2 found treasure at Krakens_Lair (+40 points)
+*** Player 2 WINS with 180 points! ***
+Player 3 rolls 3
+Player 3 moves to position 6 (Ancient_Ruins)
+Player 3 fell into trap at Ancient_Ruins (-5 points)
+*** Player 3 WINS with 160 points! ***
+=== Turn 9 ===
+Player 1 rolls 1
+Player 1 moves to position 7 (Crystal_Lagoon)
+*** Player 1 WINS with 135 points! ***
+Player 2 rolls 5
+Player 2 moves to position 3 (Quicksand_Trap)
+*** Player 2 WINS with 180 points! ***
+Player 3 rolls 2
+Player 3 moves to position 8 (Dragons_Lair)
+Player 3 found treasure at Dragons_Lair (+10 points)
+*** Player 3 WINS with 170 points! ***
+=== Turn 10 ===
+Player 1 rolls 1
+Player 1 moves to position 8 (Dragons_Lair)
+Player 1 found treasure at Dragons_Lair (+10 points)
+*** Player 1 WINS with 145 points! ***
+Player 2 rolls 5
+Player 2 moves to position 8 (Dragons_Lair)
+Player 2 found treasure at Dragons_Lair (+10 points)
+*** Player 2 WINS with 190 points! ***
+Player 3 rolls 2
+Player 3 moves to position 10 (Whispering_Woods)
+*** Player 3 WINS with 170 points! ***
+=== Turn 11 ===
+Player 1 rolls 1
+Player 1 moves to position 9 (Sunken_Ship)
+*** Player 1 WINS with 145 points! ***
+Player 2 rolls 3
+Player 2 moves to position 11 (Spiders_Den)
+Player 2 fell into trap at Spiders_Den (-15 points)
+*** Player 2 WINS with 175 points! ***
+Player 3 rolls 5
+Player 3 moves to position 15 (Lost_Temple)
+*** Player 3 WINS with 170 points! ***
+=== Turn 12 ===
+Player 1 rolls 2
+Player 1 moves to position 11 (Spiders_Den)
+Player 1 fell into trap at Spiders_Den (-15 points)
+*** Player 1 WINS with 130 points! ***
+Player 2 rolls 1
+Player 2 moves to position 12 (Emerald_Isle)
+*** Player 2 WINS with 175 points! ***
+Player 3 rolls 1
+Player 3 moves to position 16 (Poison_Ivy)
+Player 3 fell into trap at Poison_Ivy (-10 points)
+*** Player 3 WINS with 160 points! ***
+=== Turn 13 ===
+Player 1 rolls 2
+Player 1 moves to position 13 (Desert_Oasis)
+*** Player 1 WINS with 130 points! ***
+Player 2 rolls 5
+Player 2 moves to position 17 (Giants_Causeway)
+Player 2 found treasure at Giants_Causeway (+20 points)
+*** Player 2 WINS with 195 points! ***
+Player 3 rolls 6
+Player 3 moves to position 22 (Diamond_Mine)
+*** Player 3 WINS with 160 points! ***
+=== Turn 14 ===
+Player 1 rolls 2
+Player 1 moves to position 15 (Lost_Temple)
+*** Player 1 WINS with 130 points! ***
+Player 2 rolls 6
+Player 2 moves to position 23 (Krakens_Lair)
+Player 2 found treasure at Krakens_Lair (+40 points)
+*** Player 2 WINS with 235 points! ***
+Player 3 rolls 1
+Player 3 moves to position 23 (Krakens_Lair)
+Player 3 found treasure at Krakens_Lair (+40 points)
+*** Player 3 WINS with 200 points! ***
+=== Turn 15 ===
+Player 1 rolls 2
+Player 1 moves to position 17 (Giants_Causeway)
+Player 1 found treasure at Giants_Causeway (+20 points)
+*** Player 1 WINS with 150 points! ***
+Player 2 rolls 4
+Player 2 moves to position 2 (Mysterious_Cave)
+Player 2 found treasure at Mysterious_Cave (+30 points)
+*** Player 2 WINS with 265 points! ***
+Player 3 rolls 1
+Player 3 moves to position 24 (Hidden_Harbor)
+*** Player 3 WINS with 200 points! ***
+=== Final Results ===
+Game: Adventure_Island
+Completed after 15 turns (max: 15)
+
+Final Player Status:
+  Player 1: Money=150, Properties=0, Position=17 (Giants_Causeway)
+  Player 2: Money=265, Properties=0, Position=2 (Mysterious_Cave)
+  Player 3: Money=200, Properties=0, Position=24 (Hidden_Harbor)
+===================

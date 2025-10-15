@@ -37,6 +37,7 @@ struct Cell {
 	char* name;
 	int cost;
 	int rent;
+	int owner;   // Player ID who owns this cell (0 = unowned)
 	Event* event;
 	Cell* connected;  // for graph boards
 	char* continent;
@@ -61,6 +62,7 @@ typedef struct {
 	int id;
 	int money;
 	int position;
+	int propertiesOwned;  // Count of properties owned by this player
 	Piece* pieces;
 	// Add resources map later
 } Player;
@@ -73,6 +75,31 @@ typedef struct {
 	char* name;
 	// Rule check/apply functions will be added in Paso 5
 } Rule;
+
+/**
+ * BoardSim simulation state - holds all runtime game data.
+ */
+typedef struct {
+	Board* board;
+	Player* players;
+	int playerCount;
+	Dice* dice;
+	int currentTurn;
+	int maxTurns;
+	bool gameActive;
+	FILE* outputFile;  // For logging simulation results
+} SimulationState;
+
+typedef struct {
+	char* boardName;
+	char* boardType;
+	int boardSize;
+	int playerCount;
+	int diceCount;
+	int maxTurns;
+	ASTNode* cells;    // List of cell definitions from AST
+	ASTNode* players;  // List of player definitions from AST
+} GameConfig;
 
 /**
  * The result of a computation. It's considered valid only if "succeed" is
@@ -111,5 +138,47 @@ ComputationResult computeFactor(Factor * factor);
  * Computes the program value using the current compiler state.
  */
 ComputationResult executeBoardSim(CompilerState * compilerState);
+
+/**
+ * Global counters for parsed entities (simple detection).
+ */
+extern int g_parsedPlayers;
+extern int g_parsedDice;
+extern int g_parsedBoards;
+extern int g_simulateTurns;
+
+/**
+ * BoardSim simulation functions.
+ */
+
+// Simulation state management
+SimulationState* createSimulationState();
+void destroySimulationState(SimulationState* state);
+void initializeGameFromAST(SimulationState* state, CompilerState* compilerState);
+GameConfig extractGameConfigFromAST(CompilerState* compilerState);
+char* generateIntelligentBoardName();
+char* generateIntelligentCellName(int index, const char* gameType);
+
+// Game entity creation
+Board* createRuntimeBoard(const char* id, const char* type, int size);
+Player* createRuntimePlayer(int id, int money, int position);
+Dice* createRuntimeDice(int sides);
+
+// Simulation execution
+ComputationResult runSimulation(SimulationState* state);
+void simulateTurn(SimulationState* state);
+void processCellEvent(SimulationState* state, Player* player);
+void processMonopolyEvent(SimulationState* state, Player* player, Cell* currentCell);
+void processTEGEvent(SimulationState* state, Player* player, Cell* currentCell);
+void processChessEvent(SimulationState* state, Player* player, Cell* currentCell);
+void processCustomGameEvent(SimulationState* state, Player* player, Cell* currentCell);
+int rollDice(Dice* dice);
+void movePlayer(Player* player, int steps, Board* board);
+void logSimulationEvent(SimulationState* state, const char* format, ...);
+
+// Game logic helpers
+bool isGameOver(SimulationState* state);
+void printGameState(SimulationState* state);
+void printFinalResults(SimulationState* state);
 
 #endif

@@ -1,9 +1,5 @@
-// Undefined variable error
+// Missing player money keyword
 board TestBoard loop 4;
 cell 0 "Start";
 
-player 1 money 1000 position 0;
-
-simulate 1 turns {
-    log "Undefined variable: " + undefinedVar;  // Error: undefinedVar not declared
-}
+player 1 1000 position 0;  // Error: missing 'money' keyword

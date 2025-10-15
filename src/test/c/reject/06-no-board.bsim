@@ -1,4 +1,4 @@
-// This should fail semantic analysis - no board declared
-player 1 money 100 position 0;
-dice 6 sides;
-simulate 5 turns {}
+// Missing string quotes in cell name
+board TestBoard loop 4;
+cell 0 Start;  // Error: cell name must be quoted
+player 1 money 1000 position 0;

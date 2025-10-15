@@ -172,18 +172,22 @@ static void _output(const unsigned int indentationLevel, const char * const form
 void executeGenerator(CompilerState * compilerState) {
 	logDebugging(_logger, "Generating final output...");
 	Program * program = compilerState->abstractSyntaxtTree;
-	
+
 	// Check if this is a BoardSim program vs Calculator program
 	if (program->expression == NULL) {
-		// BoardSim program - generate simple text output for now
+		// BoardSim program - generate text output with game results
 		printf("BoardSim program executed successfully!\n");
 		printf("Result: %d\n", compilerState->value);
+		printf("\n=== SIMULATION SUMMARY ===\n");
+		printf("Turns completed: %d\n", compilerState->value);
+		printf("For detailed logs, check the output file.\n");
+		printf("=========================\n");
 	} else {
 		// Calculator program - generate LaTeX tree as before
 		_generatePrologue();
 		_generateProgram(compilerState->abstractSyntaxtTree);
 		_generateEpilogue(compilerState->value);
 	}
-	
+
 	logDebugging(_logger, "Generation is done.");
 }

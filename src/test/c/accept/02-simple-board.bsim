@@ -1,5 +1,6 @@
 // Simple board with basic declarations
 board SimpleGame loop 4;
+
 cell 0 "Start";
 cell 1 "Space1" cost 10;
 cell 2 "Space2" cost 20;
@@ -8,9 +9,4 @@ cell 3 "End";
 player 1 money 100 position 0;
 dice 6 sides;
 
-simulate 3 turns {
-    pos = (pos + 1) % 4;
-    log "Player at position " + pos;
-}
-
-print "Game finished";
+simulate 3 turns {}

@@ -1,0 +1,26 @@
+=== BoardSim Game State ===
+Board: Adventure_Island (loop, 25 cells)
+Players: 1
+  Player 1: Money=100, Position=0 (Pirate_Base)
+Dice: 6 sides
+Max turns: 1
+Sample locations:
+  [0] Pirate_Base
+  [1] Golden_Beach
+  [2] Mysterious_Cave
+  [3] Quicksand_Trap
+  [4] Volcano_Peak
+  ... and 20 more locations
+==========================
+=== Turn 1 ===
+Player 1 rolls 2
+Player 1 moves to position 2 (Mysterious_Cave)
+Player 1 found treasure at Mysterious_Cave (+30 points)
+*** Player 1 WINS with 130 points! ***
+=== Final Results ===
+Game: Adventure_Island
+Completed after 1 turns (max: 1)
+
+Final Player Status:
+  Player 1: Money=130, Properties=0, Position=2 (Mysterious_Cave)
+===================

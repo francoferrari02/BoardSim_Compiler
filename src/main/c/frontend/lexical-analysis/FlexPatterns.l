@@ -77,23 +77,13 @@ comment_multi_end	\*\/
 
 "board"								{ return BoardSimKeywordLexemeAction(BOARD); }
 "cell"								{ return BoardSimKeywordLexemeAction(CELL); }
+
 "loop"								{ return BoardSimKeywordLexemeAction(LOOP); }
 "graph"								{ return BoardSimKeywordLexemeAction(GRAPH); }
 "player"							{ return BoardSimKeywordLexemeAction(PLAYER); }
-"piece"								{ return BoardSimKeywordLexemeAction(PIECE); }
-"event"								{ return BoardSimKeywordLexemeAction(EVENT); }
+
 "dice"								{ return BoardSimKeywordLexemeAction(DICE); }
-"rule"								{ return BoardSimKeywordLexemeAction(RULE); }
 "simulate"							{ return BoardSimKeywordLexemeAction(SIMULATE); }
-"move"								{ return BoardSimKeywordLexemeAction(MOVE); }
-"apply"								{ return BoardSimKeywordLexemeAction(APPLY); }
-"if"								{ return BoardSimKeywordLexemeAction(IF); }
-"else"								{ return BoardSimKeywordLexemeAction(ELSE); }
-"for"								{ return BoardSimKeywordLexemeAction(FOR); }
-"while"								{ return BoardSimKeywordLexemeAction(WHILE); }
-"print"								{ return BoardSimKeywordLexemeAction(PRINT); }
-"log"								{ return BoardSimKeywordLexemeAction(LOG); }
-"export"							{ return BoardSimKeywordLexemeAction(EXPORT); }
 "turns"								{ return BoardSimKeywordLexemeAction(TURNS); }
 "sides"								{ return BoardSimKeywordLexemeAction(SIDES); }
 "cost"								{ return BoardSimKeywordLexemeAction(COST); }
@@ -105,6 +95,7 @@ comment_multi_end	\*\/
 "random"							{ return BoardSimKeywordLexemeAction(RANDOM); }
 "aggressive"						{ return BoardSimKeywordLexemeAction(AGGRESSIVE); }
 
+
 "-"									{ return ArithmeticOperatorLexemeAction(SUB); }
 "*"									{ return ArithmeticOperatorLexemeAction(MUL); }
 "/"									{ return ArithmeticOperatorLexemeAction(DIV); }
@@ -112,12 +103,13 @@ comment_multi_end	\*\/
 
 "("									{ return ParenthesisLexemeAction(OPEN_PARENTHESIS); }
 ")"									{ return ParenthesisLexemeAction(CLOSE_PARENTHESIS); }
-"["									{ return ParenthesisLexemeAction(OPEN_BRACE); }
-"]"									{ return ParenthesisLexemeAction(CLOSE_BRACE); }
+"["									{ return DelimiterLexemeAction(OPEN_BRACKET); }
+"]"									{ return DelimiterLexemeAction(CLOSE_BRACKET); }
 "{"									{ return ParenthesisLexemeAction(OPEN_BRACE); }
 "}"									{ return ParenthesisLexemeAction(CLOSE_BRACE); }
 ";"									{ return DelimiterLexemeAction(SEMICOLON); }
 ","									{ return DelimiterLexemeAction(COMMA); }
+"="									{ return DelimiterLexemeAction(EQUALS); }
 
 
 [a-zA-Z_][a-zA-Z0-9_]*				{ return IdentifierLexemeAction(); }

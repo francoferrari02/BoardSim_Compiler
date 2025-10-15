@@ -20,7 +20,7 @@ ModuleDestructor initializeSemanticAnalyzer() {
 }
 
 CompilationStatus executeSemanticAnalysis(CompilerState * compilerState) {
-    logDebugging(_logger, "Executing semantic analysis...");
+	logDebugging(_logger, "Executing semantic analysis...");
 	
 	Program * program = compilerState->abstractSyntaxtTree;
 	if (program == NULL) {
@@ -81,7 +81,6 @@ CompilationStatus analyzeBoardSimProgram(CompilerState * compilerState) {
 	return SUCCEEDED;
 }
 
-
 CompilationStatus validateBoardSimRules(CompilerState * compilerState) {
 	logDebugging(_logger, "Validating BoardSim rules...");
 	
@@ -138,8 +137,6 @@ CompilationStatus validateBoardConfiguration(CompilerState * compilerState) {
 	logDebugging(_logger, "Board configuration validation passed");
 	return SUCCEEDED;
 }
-
-
 
 CompilationStatus validatePlayerConfiguration(CompilerState * compilerState) {
 	logDebugging(_logger, "Validating player configuration...");

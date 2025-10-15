@@ -1,4 +1,5 @@
 #include "BisonActions.h"
+#include "../../backend/domain-specific/BoardSim.h"
 
 /* MODULE INTERNAL STATE */
 
@@ -99,6 +100,10 @@ Program * BoardSimProgramSemanticAction(TokenLabel token) {
 
 BoardDef * BoardDefSemanticAction(TokenLabel identifier, TokenLabel boardType, int size) {
 	_logSyntacticAnalyzerAction(__FUNCTION__);
+	
+	// Count the board for game detection
+	g_parsedBoards++;
+	
 	// For now, we'll use placeholder strings. 
 	// TODO: Extract actual strings from tokens
 	char* id = strdup("BoardSim_Board");
@@ -114,15 +119,24 @@ CellDef * CellDefSemanticAction(int index, char* name, int cost) {
 
 PlayerDef * PlayerDefSemanticAction(int id, int money, int position) {
 	_logSyntacticAnalyzerAction(__FUNCTION__);
+	
+	// Count the player for game detection
+	g_parsedPlayers++;
+	
 	return createPlayerDef(id, money, position);
 }
 
 DiceDef * DiceDefSemanticAction(int sides) {
 	_logSyntacticAnalyzerAction(__FUNCTION__);
+	
+	// Count the dice for game detection
+	g_parsedDice++;
+	
 	return createDiceDef(sides);
 }
 
 SimulateBlock * SimulateBlockSemanticAction(int turns) {
 	_logSyntacticAnalyzerAction(__FUNCTION__);
+	g_simulateTurns = turns;  // Store the parsed simulate turns globally
 	return createSimulateBlock(turns, NULL);
 }

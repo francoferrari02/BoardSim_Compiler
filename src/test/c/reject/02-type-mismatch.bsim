@@ -1,10 +1,2 @@
-// Type mismatch error: assigning string to int
-board TestBoard loop 4;
-cell 0 "Start";
-
-player 1 money 1000 position 0;
-
-simulate 1 turns {
-    int position = "invalid";  // Error: string assigned to int
-    log "Position: " + position;
-}
+// Missing board type: loop or graph required
+board TestBoard 5;

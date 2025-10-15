@@ -1,10 +1,3 @@
-// Duplicate declaration error
+// Invalid cell syntax: missing cell index
 board TestBoard loop 4;
-cell 0 "Start";
-
-player 1 money 1000 position 0;
-player 1 money 500 position 1;  // Error: player 1 already declared
-
-simulate 1 turns {
-    log "Turn complete";
-}
+cell "Start";  // Error: missing cell index number
