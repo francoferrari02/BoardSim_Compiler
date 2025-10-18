@@ -72,7 +72,7 @@ El compilador incluye un sistema inteligente de detección que identifica autom�
 Este proyecto implementa el **frontend del compilador** (Stage II) según la especificación del curso de Teoría de Lenguajes y Autómatas (TLA):
 
 #### ✅ Implementado en Stage II:
-- **Análisis Léxico (Flex)**: Tokenización completa de la sintaxis BoardSim con 30+ tokens
+- **Análisis Léxico (Flex)**: Tokenización completa de la sintaxis BoardSim con 48+ tokens
 - **Análisis Sintáctico (Bison)**: Parser LALR(1) sin conflictos (137 estados, 54 reglas)
 - **Construcción del AST**: Árbol de sintaxis abstracta completo con nodos tipados
 - **Detección de errores sintácticos**: Sintaxis mal formada, delimitadores faltantes, tipos incompatibles en gramática
@@ -184,8 +184,8 @@ docker compose run --rm compiler
 # 3. Compilar el proyecto
 bash src/main/bash/build.sh
 
-# 4. Ejecutar una simulación
-".build/Flex-Bison-Compiler" monopoly.bsim monopoly-output.txt
+# 4. Ejecutar una simulación de ejemplo
+".build/Flex-Bison-Compiler" src/test/c/accept/01-board-cells-events.bsim /tmp/output.txt
 ```
 
 ### ⚙️ Variables de Entorno
@@ -392,7 +392,7 @@ echo $?  # 0 = aceptado, 1 = rechazado
 - ✅ **0 conflictos** shift/reduce o reduce/reduce en el parser
 - ✅ **137 estados LALR(1)** generados por Bison
 - ✅ **54 reglas de producción** en la gramática
-- ✅ **30+ tokens** reconocidos por el lexer
+- ✅ **48+ tokens** reconocidos por el lexer
 - ✅ **90% de aceptación** en tests de casos válidos
 
 ## 📊 Arquitectura del Compilador
