@@ -448,15 +448,6 @@ GameType detectGameType(GameConfig config) {
 
 ---
 
-## 🤝 Contribuir
-
-¡Las contribuciones son bienvenidas! Por favor:
-
-1. Fork el proyecto
-2. Crea una rama feature (`git checkout -b feature/AmazingFeature`)
-3. Commit tus cambios (`git commit -m 'Add some AmazingFeature'`)
-4. Push a la rama (`git push origin feature/AmazingFeature`)
-5. Abre un Pull Request
 
 ## 📄 Licencia
 
@@ -488,9 +479,6 @@ Este proyecto está bajo la Licencia MIT. Ver `LICENSE.md` para más detalles.
   - Análisis Sintáctico: `(2024-05-08, v0.1.0) Análisis Sintáctico.txt`
   - Proyecto Especial: `(2025-08-21, v3.0.8) Proyecto Especial.txt`
 
-### 📬 Contacto Académico
-
-Para consultas sobre el proyecto académico, dirigirse al **NS-QRF** (Not So-Quick Response Force) según la especificación oficial del curso.
 
 ---
 
