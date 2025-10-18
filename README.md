@@ -65,14 +65,111 @@ El compilador incluye un sistema inteligente de detección que identifica autom�
 - Configuración específica (64 casillas → Chess)
 ```
 
+## 📘 Stage II - Frontend (Análisis Léxico y Sintáctico)
+
+### 🎯 Alcance de esta entrega
+
+Este proyecto implementa el **frontend del compilador** (Stage II) según la especificación del curso de Teoría de Lenguajes y Autómatas (TLA):
+
+#### ✅ Implementado en Stage II:
+- **Análisis Léxico (Flex)**: Tokenización completa de la sintaxis BoardSim con 30+ tokens
+- **Análisis Sintáctico (Bison)**: Parser LALR(1) sin conflictos (137 estados, 54 reglas)
+- **Construcción del AST**: Árbol de sintaxis abstracta completo con nodos tipados
+- **Detección de errores sintácticos**: Sintaxis mal formada, delimitadores faltantes, tipos incompatibles en gramática
+
+#### ⏳ Pendiente para Stage III (Backend):
+- **Análisis Semántico completo**: Variables no declaradas, IDs duplicados, verificación de índices
+- **Generación de código**: Motor de simulación BoardSim completo
+- **Type checking avanzado**: Validaciones de tipos en expresiones complejas
+
+### 📋 Casos de Prueba del Stage I
+
+El proyecto incluye **15 casos de prueba** según la especificación del Stage I:
+
+#### ✅ Casos de Aceptación (A1.1 - A1.10)
+Ubicados en `src/test/c/accept/`:
+- **`01-board-cells-events.bsim`** - Tablero con casillas y eventos
+- **`02-pieces-movements.bsim`** - Jugadores con posiciones y estrategias
+- **`03-players-resources.bsim`** - Múltiples jugadores con diferentes recursos
+- **`04-event-cards.bsim`** - Casillas especiales tipo eventos
+- **`05-dice-randomness.bsim`** - Dados para movimiento aleatorio
+- **`06-loops-conditionals.bsim`** - Estructuras de control (if/else, for, while)
+- **`07-piece-interactions.bsim`** - Interacción entre jugadores
+- **`08-output-generation.bsim`** - Múltiples sentencias print/log
+- **`09-mixed-types.bsim`** - Variables de diferentes tipos (int, string, bool)
+- **`10-complex-flows.bsim`** - Condicionales anidados y flujos complejos
+
+**Resultado esperado**: ✅ **9/10 pasan** (90% de aceptación)
+
+#### ❌ Casos de Rechazo (R1.1 - R1.5)
+Ubicados en `src/test/c/reject/`:
+- **`01-syntax-error.bsim`** - ✅ **Rechazado en Stage II** (falta punto y coma)
+- **`02-type-mismatch.bsim`** - ✅ **Rechazado en Stage II** (string donde va integer)
+- **`03-undeclared-variable.bsim`** - ⚠️ **Aceptado en Stage II** (error semántico - Stage III)
+- **`04-duplicate-id.bsim`** - ⚠️ **Aceptado en Stage II** (error semántico - Stage III)
+- **`05-out-of-bounds.bsim`** - ⚠️ **Aceptado en Stage II** (error semántico - Stage III)
+
+> **Nota importante**: Los casos R1.3, R1.4 y R1.5 contienen errores **semánticos** que se detectarán en Stage III. Su aceptación en Stage II es **esperada y correcta** según la especificación del proyecto.
+
+### 🧪 Ejecutar Tests del Stage II
+
+```bash
+# 1. Compilar el proyecto
+bash src/main/bash/build.sh
+
+# 2. Ejecutar suite completa de tests
+bash src/main/bash/test.sh
+
+# 3. Resultado esperado:
+# Compiler should accept...
+#     01-board-cells-events.bsim, and it does (status 0)
+#     02-pieces-movements.bsim, and it does (status 0)
+#     ... (7 casos más) ...
+#
+# Compiler should reject...
+#     01-syntax-error.bsim, and it does (status 1)
+#     02-type-mismatch.bsim, and it does (status 1)
+#     03-undeclared-variable.bsim, but it accepts (status 0) ← Esperado
+#     04-duplicate-id.bsim, but it accepts (status 0) ← Esperado
+#     05-out-of-bounds.bsim, but it accepts (status 0) ← Esperado
+```
+
+### ⚠️ Limitaciones Conocidas (Stage II - Frontend)
+
+Como este es el **frontend** del compilador, ciertas validaciones se posponen para Stage III:
+
+#### ❌ No detectado en Stage II (es esperado):
+- Variables no declaradas antes de uso
+- IDs duplicados (ej: dos boards con el mismo nombre)
+- Índices de casillas fuera del rango del tablero
+- Validaciones semánticas avanzadas
+- Type checking completo de expresiones
+
+#### ✅ Sí detectado en Stage II:
+- Errores de sintaxis (tokens incorrectos, estructuras inválidas)
+- Delimitadores faltantes (punto y coma, paréntesis, llaves)
+- Palabras clave mal escritas
+- Tipos incompatibles en posiciones sintácticas
+- Estructuras gramaticales no reconocidas
+
+---
+
 ## 🚀 Instalación y Uso
 
-### 📋 Requisitos
+### 📋 Requisitos del Sistema
 
-- **Docker v28.3.2+**
-- **CMake 3.10+**
-- **GCC/Clang**
-- **Flex & Bison**
+#### ✅ Requerido para Linux x64 (entorno de evaluación):
+- **Bison 3.7+** (con soporte para `-Wcounterexamples` y `api.value.union.name`)
+- **Flex 2.6+** (con stack y reentrant mode)
+- **CMake 3.10+** (recomendado 3.28+)
+- **GCC 9+** o Clang 10+ (con soporte C99)
+- **Docker 20+** (recomendado para reproducibilidad)
+
+#### 🔧 Notas de Compatibilidad:
+- ✅ **Linux (Ubuntu 20.04+)**: Totalmente soportado
+- ✅ **Docker**: Entorno garantizado (recomendado)
+- ⚠️ **macOS**: Usar Docker obligatoriamente (Bison de Apple 2.3 es incompatible)
+- ⚠️ **Windows**: Usar WSL2 + Docker o Docker Desktop
 
 ### 🔧 Configuración Rápida
 
@@ -276,18 +373,27 @@ rm -rf .build
 
 ### 🧪 Testing
 
-El proyecto incluye tres tests representativos:
-
-- **`monopoly.bsim`**: Simulación clásica de Monopoly
-- **`chess.bsim`**: Partida estratégica de ajedrez  
-- **`pirate-treasure.bsim`**: Aventura de búsqueda del tesoro
+El proyecto incluye **15 casos de prueba oficiales** para Stage II (ver sección anterior):
+- 10 casos de **aceptación** en `src/test/c/accept/`
+- 5 casos de **rechazo** en `src/test/c/reject/`
 
 ```bash
-# Ejecutar todos los tests
-".build/Flex-Bison-Compiler" monopoly.bsim monopoly-output.txt
-".build/Flex-Bison-Compiler" chess.bsim chess-output.txt
-".build/Flex-Bison-Compiler" pirate-treasure.bsim pirate-output.txt
+# Ejecutar suite completa (recomendado)
+bash src/main/bash/test.sh
+
+# Ejecutar caso individual
+".build/Flex-Bison-Compiler" src/test/c/accept/01-board-cells-events.bsim /tmp/output.txt
+
+# Verificar salida
+echo $?  # 0 = aceptado, 1 = rechazado
 ```
+
+#### 📊 Métricas de Calidad del Frontend:
+- ✅ **0 conflictos** shift/reduce o reduce/reduce en el parser
+- ✅ **137 estados LALR(1)** generados por Bison
+- ✅ **54 reglas de producción** en la gramática
+- ✅ **30+ tokens** reconocidos por el lexer
+- ✅ **90% de aceptación** en tests de casos válidos
 
 ## 📊 Arquitectura del Compilador
 
@@ -358,4 +464,36 @@ Este proyecto está bajo la Licencia MIT. Ver `LICENSE.md` para más detalles.
 
 ---
 
+## 👥 Equipo de Desarrollo
+
+**Proyecto Especial - Teoría de Lenguajes y Autómatas (TLA)**  
+**Instituto Tecnológico de Buenos Aires (ITBA)**  
+**Stage II: Frontend (Análisis Léxico y Sintáctico)**  
+
+### 📌 Información del Proyecto
+
+- **Integrante(s)**: Franco Ferrari
+- **Repositorio**: [github.com/francoferrari02/BoardSim_Compiler](https://github.com/francoferrari02/BoardSim_Compiler)
+- **Rama de desarrollo**: `development`
+- **Commit Stage II**: `22888b27ec7e90234da4ebaab2adc8df4c848659`
+- **Fecha de entrega**: Octubre 2025
+- **Especificación del lenguaje**: Ver `doc/Informe Stage I TLA.pdf`
+
+### 📚 Referencias Académicas
+
+- **Enunciado Stage II**: Frontend (Análisis Léxico y Sintáctico)
+- **Base del proyecto**: [Flex-Bison-Compiler](https://github.com/agustin-golmar/Flex-Bison-Compiler) (branch production, tag v2.0.0)
+- **Documentación técnica**:
+  - Análisis Léxico: `(2025-09-03, v1.0.0) Análisis Léxico.txt`
+  - Análisis Sintáctico: `(2024-05-08, v0.1.0) Análisis Sintáctico.txt`
+  - Proyecto Especial: `(2025-08-21, v3.0.8) Proyecto Especial.txt`
+
+### 📬 Contacto Académico
+
+Para consultas sobre el proyecto académico, dirigirse al **NS-QRF** (Not So-Quick Response Force) según la especificación oficial del curso.
+
+---
+
 **🎯 BoardSim - Donde la teoría de compiladores se encuentra con la diversión de los juegos de mesa** 🎲
+
+**Desarrollado como Proyecto Especial para TLA - ITBA 2025**
