@@ -1,0 +1,24 @@
+// Test A1.4: Cells especiales (simulando eventos tipo cartas)
+// Verifica: declaración de células con cost=0 para simular eventos especiales
+// NOTA: No hay sintaxis 'event' implementada, se simula con cells especiales
+
+board EventBoard loop 36;
+
+cell 0 "Start" cost 0 rent 0;
+cell 2 "Chance Card Space" cost 0 rent 0;
+cell 4 "Community Chest Space" cost 0 rent 0;
+cell 7 "Mystery Event" cost 0 rent 0;
+cell 12 "Special Card Trigger" cost 0 rent 0;
+cell 17 "Event Draw" cost 0 rent 0;
+cell 22 "Chance Again" cost 0 rent 0;
+cell 30 "Final Event" cost 0 rent 0;
+
+player 1 money 1500 position 0 strategy "random";
+player 2 money 1500 position 0 strategy "aggressive";
+
+dice 6 sides;
+
+simulate 12 turns {
+    print "Event system simulation";
+    log "Special cells representing card events";
+}

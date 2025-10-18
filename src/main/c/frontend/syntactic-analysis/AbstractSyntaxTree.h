@@ -130,6 +130,7 @@ struct PlayerDef {
 	int id;
 	int money;
 	int position;
+	char* strategy;
 };
 
 struct DiceDef {
@@ -138,6 +139,57 @@ struct DiceDef {
 
 struct RuleDef {
 	char* name;
+};
+
+typedef enum {
+	STATEMENT_PRINT,
+	STATEMENT_LOG,
+	STATEMENT_VARIABLE_DECL,
+	STATEMENT_IF,
+	STATEMENT_IF_ELSE,
+	STATEMENT_FOR,
+	STATEMENT_WHILE
+} StatementType;
+
+typedef enum {
+	VAR_TYPE_INT,
+	VAR_TYPE_STRING,
+	VAR_TYPE_BOOL
+} VariableType;
+
+struct Variable {
+	VariableType type;
+	char* name;
+	union {
+		int intValue;
+		char* stringValue;
+		bool boolValue;
+	} value;
+};
+
+// Forward declaration
+struct Statement;
+
+struct ConditionalStatement {
+	char* condition;  // Simple string condition for now
+	struct Statement* ifBody;
+	struct Statement* elseBody;  // NULL if no else
+};
+
+struct LoopStatement {
+	char* type;  // "for" or "while"
+	char* condition;  // For while: condition string, for for: "var in range"
+	struct Statement* body;
+};
+
+struct Statement {
+	StatementType type;
+	union {
+		char* text;  // For print/log
+		struct Variable* variable;  // For variable declaration
+		struct ConditionalStatement* conditional;  // For if/else
+		struct LoopStatement* loop;  // For for/while
+	} data;
 };
 
 /**
@@ -155,6 +207,10 @@ typedef struct CellDef CellDef;
 typedef struct PlayerDef PlayerDef;
 typedef struct DiceDef DiceDef;
 typedef struct RuleDef RuleDef;
+typedef struct Statement Statement;
+typedef struct Variable Variable;
+typedef struct ConditionalStatement ConditionalStatement;
+typedef struct LoopStatement LoopStatement;
 typedef struct BoardSimProgram BoardSimProgram;
 
 /**
@@ -190,6 +246,23 @@ void destroyDiceDef(DiceDef* diceDef);
 
 RuleDef* createRuleDef(char* name);
 void destroyRuleDef(RuleDef* ruleDef);
+
+Statement* createStatement(StatementType type, char* text);
+Statement* createVariableStatement(VariableType varType, char* name, void* value);
+Statement* createIfStatement(char* condition, Statement* ifBody);
+Statement* createIfElseStatement(char* condition, Statement* ifBody, Statement* elseBody);
+Statement* createForStatement(char* condition, Statement* body);
+Statement* createWhileStatement(char* condition, Statement* body);
+void destroyStatement(Statement* statement);
+
+Variable* createVariable(VariableType type, char* name, void* value);
+void destroyVariable(Variable* variable);
+
+ConditionalStatement* createConditionalStatement(char* condition, Statement* ifBody, Statement* elseBody);
+void destroyConditionalStatement(ConditionalStatement* conditional);
+
+LoopStatement* createLoopStatement(char* type, char* condition, Statement* body);
+void destroyLoopStatement(LoopStatement* loop);
 
 BoardSimProgram* createBoardSimProgram();
 void destroyBoardSimProgram(BoardSimProgram* program);

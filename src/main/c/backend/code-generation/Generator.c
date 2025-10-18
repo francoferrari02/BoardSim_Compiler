@@ -171,23 +171,18 @@ static void _output(const unsigned int indentationLevel, const char * const form
 
 void executeGenerator(CompilerState * compilerState) {
 	logDebugging(_logger, "Generating final output...");
+	
+	// Check if the AST is a valid Program (Calculator) or BoardSim syntax
 	Program * program = compilerState->abstractSyntaxtTree;
-
-	// Check if this is a BoardSim program vs Calculator program
-	if (program->expression == NULL) {
-		// BoardSim program - generate text output with game results
-		printf("BoardSim program executed successfully!\n");
-		printf("Result: %d\n", compilerState->value);
-		printf("\n=== SIMULATION SUMMARY ===\n");
-		printf("Turns completed: %d\n", compilerState->value);
-		printf("For detailed logs, check the output file.\n");
-		printf("=========================\n");
-	} else {
-		// Calculator program - generate LaTeX tree as before
-		_generatePrologue();
-		_generateProgram(compilerState->abstractSyntaxtTree);
-		_generateEpilogue(compilerState->value);
+	if (program == NULL || program->expression == NULL) {
+		logDebugging(_logger, "AST is not a calculator program (likely BoardSim). Skipping LaTeX generation for Stage II.");
+		printf("Stage II: Syntax analysis completed successfully.\n");
+		printf("Note: Backend code generation is only available for Calculator expressions.\n");
+		return;
 	}
-
+	
+	_generatePrologue();
+	_generateProgram(compilerState->abstractSyntaxtTree);
+	_generateEpilogue(compilerState->value);
 	logDebugging(_logger, "Generation is done.");
 }

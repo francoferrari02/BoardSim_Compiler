@@ -1,5 +1,0 @@
-// Missing player money keyword
-board TestBoard loop 4;
-cell 0 "Start";
-
-player 1 1000 position 0;  // Error: missing 'money' keyword

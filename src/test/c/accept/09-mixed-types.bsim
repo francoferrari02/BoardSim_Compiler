@@ -1,0 +1,46 @@
+// Test A1.9: Mezclar tipos en expresiones y comparaciones
+// Verifica: declaración de variables de distintos tipos (int, string, bool)
+// y uso en condiciones/comparaciones
+
+board MixedTypesBoard loop 18;
+
+cell 0 "Start" cost 0 rent 0;
+cell 9 "Middle" cost 100 rent 25;
+cell 17 "End" cost 200 rent 50;
+
+player 1 money 1500 position 0 strategy "calculator";
+player 2 money 2000 position 5 strategy "mixer";
+
+dice 8 sides;
+
+simulate 10 turns {
+    print "Mixed type expressions test";
+    log "Testing type combinations";
+    
+    // Variables de diferentes tipos
+    int position_value = 10;
+    int dice_modifier = 3;
+    string game_state = "running";
+    bool is_valid = true;
+    int threshold = 50;
+    
+    // Comparaciones con integers
+    if (position_value > 5) then {
+        print "Position threshold exceeded";
+        log "High position value detected";
+    }
+    
+    if (dice_modifier < 10) then {
+        print "Modifier within range";
+        log "Safe modifier value";
+    }
+    
+    if (threshold >= 40) then {
+        print "Threshold condition met";
+        log "Threshold validation passed";
+    }
+    
+    // Uso de variables string y bool
+    string result = "success";
+    bool completed = true;
+}

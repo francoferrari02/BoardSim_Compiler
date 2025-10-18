@@ -211,6 +211,7 @@ PlayerDef* createPlayerDef(int id, int money, int position) {
 	playerDef->id = id;
 	playerDef->money = money;
 	playerDef->position = position;
+	playerDef->strategy = NULL; // Default to NULL
 	return playerDef;
 }
 
@@ -218,6 +219,9 @@ void destroyPlayerDef(PlayerDef* playerDef) {
 	logDebugging(_logger, "Executing destructor: %s", __FUNCTION__);
 	if (playerDef == NULL) {
 		return;
+	}
+	if (playerDef->strategy != NULL) {
+		free(playerDef->strategy);
 	}
 	free(playerDef);
 }
@@ -253,6 +257,159 @@ void destroyRuleDef(RuleDef* ruleDef) {
 		free(ruleDef->name);
 	}
 	free(ruleDef);
+}
+
+Statement* createStatement(StatementType type, char* text) {
+	logDebugging(_logger, "Executing constructor: %s", __FUNCTION__);
+	Statement* statement = calloc(1, sizeof(Statement));
+	statement->type = type;
+	statement->data.text = (text != NULL) ? strdup(text) : NULL;
+	return statement;
+}
+
+Statement* createVariableStatement(VariableType varType, char* name, void* value) {
+	logDebugging(_logger, "Executing constructor: %s", __FUNCTION__);
+	Statement* statement = calloc(1, sizeof(Statement));
+	statement->type = STATEMENT_VARIABLE_DECL;
+	statement->data.variable = createVariable(varType, name, value);
+	return statement;
+}
+
+void destroyStatement(Statement* statement) {
+	logDebugging(_logger, "Executing destructor: %s", __FUNCTION__);
+	if (statement == NULL) {
+		return;
+	}
+	if (statement->type == STATEMENT_VARIABLE_DECL) {
+		destroyVariable(statement->data.variable);
+	} else if (statement->type == STATEMENT_IF || statement->type == STATEMENT_IF_ELSE) {
+		destroyConditionalStatement(statement->data.conditional);
+	} else if (statement->type == STATEMENT_FOR || statement->type == STATEMENT_WHILE) {
+		destroyLoopStatement(statement->data.loop);
+	} else if (statement->data.text != NULL) {
+		free(statement->data.text);
+	}
+	free(statement);
+}
+
+Statement* createForStatement(char* condition, Statement* body) {
+	logDebugging(_logger, "Executing constructor: %s", __FUNCTION__);
+	Statement* statement = calloc(1, sizeof(Statement));
+	statement->type = STATEMENT_FOR;
+	statement->data.loop = createLoopStatement("for", condition, body);
+	return statement;
+}
+
+Statement* createWhileStatement(char* condition, Statement* body) {
+	logDebugging(_logger, "Executing constructor: %s", __FUNCTION__);
+	Statement* statement = calloc(1, sizeof(Statement));
+	statement->type = STATEMENT_WHILE;
+	statement->data.loop = createLoopStatement("while", condition, body);
+	return statement;
+}
+
+Statement* createIfStatement(char* condition, Statement* ifBody) {
+	logDebugging(_logger, "Executing constructor: %s", __FUNCTION__);
+	Statement* statement = calloc(1, sizeof(Statement));
+	statement->type = STATEMENT_IF;
+	statement->data.conditional = createConditionalStatement(condition, ifBody, NULL);
+	return statement;
+}
+
+Statement* createIfElseStatement(char* condition, Statement* ifBody, Statement* elseBody) {
+	logDebugging(_logger, "Executing constructor: %s", __FUNCTION__);
+	Statement* statement = calloc(1, sizeof(Statement));
+	statement->type = STATEMENT_IF_ELSE;
+	statement->data.conditional = createConditionalStatement(condition, ifBody, elseBody);
+	return statement;
+}
+
+Variable* createVariable(VariableType type, char* name, void* value) {
+	logDebugging(_logger, "Executing constructor: %s", __FUNCTION__);
+	Variable* variable = calloc(1, sizeof(Variable));
+	variable->type = type;
+	variable->name = (name != NULL) ? strdup(name) : NULL;
+	
+	if (value != NULL) {
+		switch (type) {
+			case VAR_TYPE_INT:
+				variable->value.intValue = *(int*)value;
+				break;
+			case VAR_TYPE_STRING:
+				variable->value.stringValue = strdup((char*)value);
+				break;
+			case VAR_TYPE_BOOL:
+				variable->value.boolValue = *(bool*)value;
+				break;
+		}
+	}
+	return variable;
+}
+
+void destroyVariable(Variable* variable) {
+	logDebugging(_logger, "Executing destructor: %s", __FUNCTION__);
+	if (variable == NULL) {
+		return;
+	}
+	if (variable->name != NULL) {
+		free(variable->name);
+	}
+	if (variable->type == VAR_TYPE_STRING && variable->value.stringValue != NULL) {
+		free(variable->value.stringValue);
+	}
+	free(variable);
+}
+
+ConditionalStatement* createConditionalStatement(char* condition, Statement* ifBody, Statement* elseBody) {
+	logDebugging(_logger, "Executing constructor: %s", __FUNCTION__);
+	ConditionalStatement* conditional = calloc(1, sizeof(ConditionalStatement));
+	conditional->condition = (condition != NULL) ? strdup(condition) : NULL;
+	conditional->ifBody = ifBody;
+	conditional->elseBody = elseBody;
+	return conditional;
+}
+
+void destroyConditionalStatement(ConditionalStatement* conditional) {
+	logDebugging(_logger, "Executing destructor: %s", __FUNCTION__);
+	if (conditional == NULL) {
+		return;
+	}
+	if (conditional->condition != NULL) {
+		free(conditional->condition);
+	}
+	if (conditional->ifBody != NULL) {
+		destroyStatement(conditional->ifBody);
+	}
+	if (conditional->elseBody != NULL) {
+		destroyStatement(conditional->elseBody);
+	}
+	free(conditional);
+}
+
+LoopStatement* createLoopStatement(char* type, char* condition, Statement* body) {
+	logDebugging(_logger, "Executing constructor: %s", __FUNCTION__);
+	LoopStatement* loop = calloc(1, sizeof(LoopStatement));
+	loop->type = (type != NULL) ? strdup(type) : NULL;
+	loop->condition = (condition != NULL) ? strdup(condition) : NULL;
+	loop->body = body;
+	return loop;
+}
+
+void destroyLoopStatement(LoopStatement* loop) {
+	logDebugging(_logger, "Executing destructor: %s", __FUNCTION__);
+	if (loop == NULL) {
+		return;
+	}
+	if (loop->type != NULL) {
+		free(loop->type);
+	}
+	if (loop->condition != NULL) {
+		free(loop->condition);
+	}
+	if (loop->body != NULL) {
+		destroyStatement(loop->body);
+	}
+	free(loop);
 }
 
 BoardSimProgram* createBoardSimProgram() {

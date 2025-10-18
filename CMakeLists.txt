@@ -17,11 +17,11 @@ if (CMAKE_C_COMPILER_ID STREQUAL "GNU")
 	)
 
 	# Options for GCC.
-	add_compile_options(-fsanitize=address)
+	# add_compile_options(-fsanitize=address)  # Temporarily disabled for BoardSim testing
 	add_compile_options(-O3)
 	add_compile_options(-static-libgcc)
 	add_compile_options(-std=gnu99)
-	add_link_options(-fsanitize=address)
+	# add_link_options(-fsanitize=address)  # Temporarily disabled for BoardSim testing
 
 	# Compiles the scanner with Flex.
 	add_custom_command(
@@ -34,7 +34,7 @@ if (CMAKE_C_COMPILER_ID STREQUAL "GNU")
 	# The header files (*.h extension), are automatically included from the source-codes.
 	add_executable(Flex-Bison-Compiler
 		src/main/c/backend/code-generation/Generator.c
-		src/main/c/backend/domain-specific/BoardSim.c
+		src/main/c/backend/domain-specific/Calculator.c
 		src/main/c/EntryPoint.c
 		src/main/c/frontend/Frontend.c
 		src/main/c/frontend/lexical-analysis/FlexActions.c

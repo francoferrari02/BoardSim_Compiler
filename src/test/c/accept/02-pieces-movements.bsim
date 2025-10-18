@@ -1,0 +1,19 @@
+// Test A1.2: Definir piezas (players) con estrategias y posiciones
+// Verifica: múltiples jugadores con diferentes atributos (money, position, strategy)
+
+board ChessBoard loop 64;
+
+// Corners del tablero de ajedrez
+cell 0 "a1" cost 0 rent 0;
+cell 7 "h1" cost 0 rent 0;
+cell 56 "a8" cost 0 rent 0;
+cell 63 "h8" cost 0 rent 0;
+
+// Múltiples jugadores (piezas) con diferentes posiciones y estrategias
+player 1 money 0 position 0 strategy "defensive";
+player 2 money 0 position 63 strategy "aggressive";
+
+simulate 5 turns {
+    print "Chess pieces movement simulation";
+    log "Testing multiple players with strategies";
+}
