@@ -1,0 +1,649 @@
+=== BoardSim Game State ===
+Board: Chess_Arena (loop, 64 cells)
+Players: 2
+  Player 1: Pieces=16, Position=0 (a1)
+  Player 2: Pieces=16, Position=56 (a8)
+Dice: 6 sides
+Max turns: 100
+Sample locations:
+  [0] a1
+  [1] b1
+  [2] c1
+  [3] d1
+  [4] e1
+  ... and 59 more locations
+==========================
+=== Turn 1 ===
+--- Executing statements for turn 1 ---
+Player 1 rolls 1
+Player 1 moves to position 1 (b1)
+Player 1 captured Player 2's piece at b1
+Player 2 rolls 4
+Player 2 moves to position 60 (e8)
+=== Turn 2 ===
+--- Executing statements for turn 2 ---
+Player 1 rolls 1
+Player 1 moves to position 2 (c1)
+Player 2 rolls 6
+Player 2 moves to position 2 (c1)
+=== Turn 3 ===
+--- Executing statements for turn 3 ---
+Player 1 rolls 1
+Player 1 moves to position 3 (d1)
+Player 2 rolls 3
+Player 2 moves to position 5 (f1)
+=== Turn 4 ===
+--- Executing statements for turn 4 ---
+Player 1 rolls 3
+Player 1 moves to position 6 (g1)
+Player 2 rolls 2
+Player 2 moves to position 7 (h1)
+=== Turn 5 ===
+--- Executing statements for turn 5 ---
+Player 1 rolls 6
+Player 1 moves to position 12 (e2)
+Player 2 rolls 4
+Player 2 moves to position 11 (d2)
+=== Turn 6 ===
+--- Executing statements for turn 6 ---
+Player 1 rolls 5
+Player 1 moves to position 17 (b3)
+Player 2 rolls 2
+Player 2 moves to position 13 (f2)
+=== Turn 7 ===
+--- Executing statements for turn 7 ---
+Player 1 rolls 4
+Player 1 moves to position 21 (f3)
+Player 2 rolls 2
+Player 2 moves to position 15 (h2)
+=== Turn 8 ===
+--- Executing statements for turn 8 ---
+Player 1 rolls 5
+Player 1 moves to position 26 (c4)
+Player 2 rolls 3
+Player 2 moves to position 18 (c3)
+=== Turn 9 ===
+--- Executing statements for turn 9 ---
+Player 1 rolls 3
+Player 1 moves to position 29 (f4)
+Player 2 rolls 5
+Player 2 moves to position 23 (h3)
+=== Turn 10 ===
+--- Executing statements for turn 10 ---
+Player 1 rolls 2
+Player 1 moves to position 31 (h4)
+Player 2 rolls 4
+Player 2 moves to position 27 (d4)
+=== Turn 11 ===
+--- Executing statements for turn 11 ---
+Player 1 rolls 1
+Player 1 moves to position 32 (a5)
+Player 2 rolls 1
+Player 2 moves to position 28 (e4)
+=== Turn 12 ===
+--- Executing statements for turn 12 ---
+Player 1 rolls 2
+Player 1 moves to position 34 (c5)
+Player 2 rolls 1
+Player 2 moves to position 29 (f4)
+Player 2 captured Player 1's piece at f4
+=== Turn 13 ===
+--- Executing statements for turn 13 ---
+Player 1 rolls 5
+Player 1 moves to position 39 (h5)
+Player 2 rolls 2
+Player 2 moves to position 31 (h4)
+=== Turn 14 ===
+--- Executing statements for turn 14 ---
+Player 1 rolls 1
+Player 1 moves to position 40 (a6)
+Player 2 rolls 5
+Player 2 moves to position 36 (e5)
+=== Turn 15 ===
+--- Executing statements for turn 15 ---
+Player 1 rolls 5
+Player 1 moves to position 45 (f6)
+Player 2 rolls 4
+Player 2 moves to position 40 (a6)
+=== Turn 16 ===
+--- Executing statements for turn 16 ---
+Player 1 rolls 3
+Player 1 moves to position 48 (a7)
+Player 2 rolls 3
+Player 2 moves to position 43 (d6)
+=== Turn 17 ===
+--- Executing statements for turn 17 ---
+Player 1 rolls 3
+Player 1 moves to position 51 (d7)
+Player 2 rolls 3
+Player 2 moves to position 46 (g6)
+=== Turn 18 ===
+--- Executing statements for turn 18 ---
+Player 1 rolls 2
+Player 1 moves to position 53 (f7)
+Player 2 rolls 2
+Player 2 moves to position 48 (a7)
+=== Turn 19 ===
+--- Executing statements for turn 19 ---
+Player 1 rolls 2
+Player 1 moves to position 55 (h7)
+Player 2 rolls 4
+Player 2 moves to position 52 (e7)
+=== Turn 20 ===
+--- Executing statements for turn 20 ---
+Player 1 rolls 2
+Player 1 moves to position 57 (b8)
+Player 2 rolls 1
+Player 2 moves to position 53 (f7)
+=== Turn 21 ===
+--- Executing statements for turn 21 ---
+Player 1 rolls 5
+Player 1 moves to position 62 (g8)
+Player 1 captured Player 2's piece at g8
+Player 2 rolls 4
+Player 2 moves to position 57 (b8)
+Player 2 captured Player 1's piece at b8
+=== Turn 22 ===
+--- Executing statements for turn 22 ---
+Player 1 rolls 3
+Player 1 moves to position 1 (b1)
+Player 2 rolls 1
+Player 2 moves to position 58 (c8)
+=== Turn 23 ===
+--- Executing statements for turn 23 ---
+Player 1 rolls 5
+Player 1 moves to position 6 (g1)
+Player 1 captured Player 2's piece at g1
+Player 2 rolls 6
+Player 2 moves to position 0 (a1)
+=== Turn 24 ===
+--- Executing statements for turn 24 ---
+Player 1 rolls 1
+Player 1 moves to position 7 (h1)
+Player 2 rolls 1
+Player 2 moves to position 1 (b1)
+=== Turn 25 ===
+--- Executing statements for turn 25 ---
+Player 1 rolls 1
+Player 1 moves to position 8 (a2)
+Player 2 rolls 1
+Player 2 moves to position 2 (c1)
+=== Turn 26 ===
+--- Executing statements for turn 26 ---
+Player 1 rolls 5
+Player 1 moves to position 13 (f2)
+Player 2 rolls 3
+Player 2 moves to position 5 (f1)
+=== Turn 27 ===
+--- Executing statements for turn 27 ---
+Player 1 rolls 6
+Player 1 moves to position 19 (d3)
+Player 1 captured Player 2's piece at d3
+Player 2 rolls 2
+Player 2 moves to position 7 (h1)
+=== Turn 28 ===
+--- Executing statements for turn 28 ---
+Player 1 rolls 1
+Player 1 moves to position 20 (e3)
+Player 2 rolls 4
+Player 2 moves to position 11 (d2)
+=== Turn 29 ===
+--- Executing statements for turn 29 ---
+Player 1 rolls 1
+Player 1 moves to position 21 (f3)
+Player 2 rolls 2
+Player 2 moves to position 13 (f2)
+=== Turn 30 ===
+--- Executing statements for turn 30 ---
+Player 1 rolls 2
+Player 1 moves to position 23 (h3)
+Player 2 rolls 3
+Player 2 moves to position 16 (a3)
+=== Turn 31 ===
+--- Executing statements for turn 31 ---
+Player 1 rolls 3
+Player 1 moves to position 26 (c4)
+Player 2 rolls 2
+Player 2 moves to position 18 (c3)
+=== Turn 32 ===
+--- Executing statements for turn 32 ---
+Player 1 rolls 2
+Player 1 moves to position 28 (e4)
+Player 2 rolls 5
+Player 2 moves to position 23 (h3)
+Player 2 captured Player 1's piece at h3
+=== Turn 33 ===
+--- Executing statements for turn 33 ---
+Player 1 rolls 1
+Player 1 moves to position 29 (f4)
+Player 1 captured Player 2's piece at f4
+Player 2 rolls 3
+Player 2 moves to position 26 (c4)
+=== Turn 34 ===
+--- Executing statements for turn 34 ---
+Player 1 rolls 4
+Player 1 moves to position 33 (b5)
+Player 2 rolls 3
+Player 2 moves to position 29 (f4)
+=== Turn 35 ===
+--- Executing statements for turn 35 ---
+Player 1 rolls 2
+Player 1 moves to position 35 (d5)
+Player 2 rolls 4
+Player 2 moves to position 33 (b5)
+Player 2 captured Player 1's piece at b5
+=== Turn 36 ===
+--- Executing statements for turn 36 ---
+Player 1 rolls 3
+Player 1 moves to position 38 (g5)
+Player 2 rolls 4
+Player 2 moves to position 37 (f5)
+=== Turn 37 ===
+--- Executing statements for turn 37 ---
+Player 1 rolls 2
+Player 1 moves to position 40 (a6)
+Player 2 rolls 5
+Player 2 moves to position 42 (c6)
+=== Turn 38 ===
+--- Executing statements for turn 38 ---
+Player 1 rolls 2
+Player 1 moves to position 42 (c6)
+Player 2 rolls 3
+Player 2 moves to position 45 (f6)
+=== Turn 39 ===
+--- Executing statements for turn 39 ---
+Player 1 rolls 4
+Player 1 moves to position 46 (g6)
+Player 2 rolls 6
+Player 2 moves to position 51 (d7)
+=== Turn 40 ===
+--- Executing statements for turn 40 ---
+Player 1 rolls 4
+Player 1 moves to position 50 (c7)
+Player 2 rolls 2
+Player 2 moves to position 53 (f7)
+=== Turn 41 ===
+--- Executing statements for turn 41 ---
+Player 1 rolls 2
+Player 1 moves to position 52 (e7)
+Player 2 rolls 4
+Player 2 moves to position 57 (b8)
+=== Turn 42 ===
+--- Executing statements for turn 42 ---
+Player 1 rolls 6
+Player 1 moves to position 58 (c8)
+Player 1 captured Player 2's piece at c8
+Player 2 rolls 1
+Player 2 moves to position 58 (c8)
+=== Turn 43 ===
+--- Executing statements for turn 43 ---
+Player 1 rolls 2
+Player 1 moves to position 60 (e8)
+Player 2 rolls 6
+Player 2 moves to position 0 (a1)
+Player 2 captured Player 1's piece at a1
+=== Turn 44 ===
+--- Executing statements for turn 44 ---
+Player 1 rolls 3
+Player 1 moves to position 63 (h8)
+Player 2 rolls 4
+Player 2 moves to position 4 (e1)
+=== Turn 45 ===
+--- Executing statements for turn 45 ---
+Player 1 rolls 4
+Player 1 moves to position 3 (d1)
+Player 1 captured Player 2's piece at d1
+Player 2 rolls 2
+Player 2 moves to position 6 (g1)
+=== Turn 46 ===
+--- Executing statements for turn 46 ---
+Player 1 rolls 2
+Player 1 moves to position 5 (f1)
+Player 2 rolls 5
+Player 2 moves to position 11 (d2)
+=== Turn 47 ===
+--- Executing statements for turn 47 ---
+Player 1 rolls 6
+Player 1 moves to position 11 (d2)
+Player 2 rolls 4
+Player 2 moves to position 15 (h2)
+=== Turn 48 ===
+--- Executing statements for turn 48 ---
+Player 1 rolls 6
+Player 1 moves to position 17 (b3)
+Player 2 rolls 2
+Player 2 moves to position 17 (b3)
+Player 2 captured Player 1's piece at b3
+=== Turn 49 ===
+--- Executing statements for turn 49 ---
+Player 1 rolls 4
+Player 1 moves to position 21 (f3)
+Player 2 rolls 3
+Player 2 moves to position 20 (e3)
+=== Turn 50 ===
+--- Executing statements for turn 50 ---
+Player 1 rolls 3
+Player 1 moves to position 24 (a4)
+Player 2 rolls 1
+Player 2 moves to position 21 (f3)
+=== Turn 51 ===
+--- Executing statements for turn 51 ---
+Player 1 rolls 3
+Player 1 moves to position 27 (d4)
+Player 2 rolls 3
+Player 2 moves to position 24 (a4)
+=== Turn 52 ===
+--- Executing statements for turn 52 ---
+Player 1 rolls 5
+Player 1 moves to position 32 (a5)
+Player 2 rolls 4
+Player 2 moves to position 28 (e4)
+=== Turn 53 ===
+--- Executing statements for turn 53 ---
+Player 1 rolls 3
+Player 1 moves to position 35 (d5)
+Player 2 rolls 2
+Player 2 moves to position 30 (g4)
+=== Turn 54 ===
+--- Executing statements for turn 54 ---
+Player 1 rolls 1
+Player 1 moves to position 36 (e5)
+Player 2 rolls 6
+Player 2 moves to position 36 (e5)
+=== Turn 55 ===
+--- Executing statements for turn 55 ---
+Player 1 rolls 6
+Player 1 moves to position 42 (c6)
+Player 2 rolls 4
+Player 2 moves to position 40 (a6)
+=== Turn 56 ===
+--- Executing statements for turn 56 ---
+Player 1 rolls 6
+Player 1 moves to position 48 (a7)
+Player 2 rolls 2
+Player 2 moves to position 42 (c6)
+=== Turn 57 ===
+--- Executing statements for turn 57 ---
+Player 1 rolls 2
+Player 1 moves to position 50 (c7)
+Player 2 rolls 4
+Player 2 moves to position 46 (g6)
+=== Turn 58 ===
+--- Executing statements for turn 58 ---
+Player 1 rolls 3
+Player 1 moves to position 53 (f7)
+Player 1 captured Player 2's piece at f7
+Player 2 rolls 4
+Player 2 moves to position 50 (c7)
+=== Turn 59 ===
+--- Executing statements for turn 59 ---
+Player 1 rolls 2
+Player 1 moves to position 55 (h7)
+Player 2 rolls 6
+Player 2 moves to position 56 (a8)
+=== Turn 60 ===
+--- Executing statements for turn 60 ---
+Player 1 rolls 1
+Player 1 moves to position 56 (a8)
+Player 2 rolls 3
+Player 2 moves to position 59 (d8)
+=== Turn 61 ===
+--- Executing statements for turn 61 ---
+Player 1 rolls 1
+Player 1 moves to position 57 (b8)
+Player 2 rolls 2
+Player 2 moves to position 61 (f8)
+Player 2 captured Player 1's piece at f8
+=== Turn 62 ===
+--- Executing statements for turn 62 ---
+Player 1 rolls 6
+Player 1 moves to position 63 (h8)
+Player 2 rolls 5
+Player 2 moves to position 2 (c1)
+=== Turn 63 ===
+--- Executing statements for turn 63 ---
+Player 1 rolls 5
+Player 1 moves to position 4 (e1)
+Player 2 rolls 2
+Player 2 moves to position 4 (e1)
+=== Turn 64 ===
+--- Executing statements for turn 64 ---
+Player 1 rolls 5
+Player 1 moves to position 9 (b2)
+Player 1 captured Player 2's piece at b2
+Player 2 rolls 3
+Player 2 moves to position 7 (h1)
+=== Turn 65 ===
+--- Executing statements for turn 65 ---
+Player 1 rolls 4
+Player 1 moves to position 13 (f2)
+Player 2 rolls 5
+Player 2 moves to position 12 (e2)
+=== Turn 66 ===
+--- Executing statements for turn 66 ---
+Player 1 rolls 5
+Player 1 moves to position 18 (c3)
+Player 2 rolls 2
+Player 2 moves to position 14 (g2)
+=== Turn 67 ===
+--- Executing statements for turn 67 ---
+Player 1 rolls 4
+Player 1 moves to position 22 (g3)
+Player 2 rolls 2
+Player 2 moves to position 16 (a3)
+=== Turn 68 ===
+--- Executing statements for turn 68 ---
+Player 1 rolls 2
+Player 1 moves to position 24 (a4)
+Player 2 rolls 5
+Player 2 moves to position 21 (f3)
+=== Turn 69 ===
+--- Executing statements for turn 69 ---
+Player 1 rolls 6
+Player 1 moves to position 30 (g4)
+Player 2 rolls 1
+Player 2 moves to position 22 (g3)
+=== Turn 70 ===
+--- Executing statements for turn 70 ---
+Player 1 rolls 6
+Player 1 moves to position 36 (e5)
+Player 2 rolls 4
+Player 2 moves to position 26 (c4)
+=== Turn 71 ===
+--- Executing statements for turn 71 ---
+Player 1 rolls 4
+Player 1 moves to position 40 (a6)
+Player 2 rolls 3
+Player 2 moves to position 29 (f4)
+=== Turn 72 ===
+--- Executing statements for turn 72 ---
+Player 1 rolls 1
+Player 1 moves to position 41 (b6)
+Player 2 rolls 5
+Player 2 moves to position 34 (c5)
+=== Turn 73 ===
+--- Executing statements for turn 73 ---
+Player 1 rolls 4
+Player 1 moves to position 45 (f6)
+Player 2 rolls 1
+Player 2 moves to position 35 (d5)
+=== Turn 74 ===
+--- Executing statements for turn 74 ---
+Player 1 rolls 4
+Player 1 moves to position 49 (b7)
+Player 2 rolls 3
+Player 2 moves to position 38 (g5)
+=== Turn 75 ===
+--- Executing statements for turn 75 ---
+Player 1 rolls 4
+Player 1 moves to position 53 (f7)
+Player 2 rolls 3
+Player 2 moves to position 41 (b6)
+=== Turn 76 ===
+--- Executing statements for turn 76 ---
+Player 1 rolls 2
+Player 1 moves to position 55 (h7)
+Player 1 captured Player 2's piece at h7
+Player 2 rolls 3
+Player 2 moves to position 44 (e6)
+=== Turn 77 ===
+--- Executing statements for turn 77 ---
+Player 1 rolls 4
+Player 1 moves to position 59 (d8)
+Player 2 rolls 4
+Player 2 moves to position 48 (a7)
+=== Turn 78 ===
+--- Executing statements for turn 78 ---
+Player 1 rolls 5
+Player 1 moves to position 0 (a1)
+Player 2 rolls 2
+Player 2 moves to position 50 (c7)
+Player 2 captured Player 1's piece at c7
+=== Turn 79 ===
+--- Executing statements for turn 79 ---
+Player 1 rolls 4
+Player 1 moves to position 4 (e1)
+Player 2 rolls 2
+Player 2 moves to position 52 (e7)
+=== Turn 80 ===
+--- Executing statements for turn 80 ---
+Player 1 rolls 5
+Player 1 moves to position 9 (b2)
+Player 2 rolls 5
+Player 2 moves to position 57 (b8)
+=== Turn 81 ===
+--- Executing statements for turn 81 ---
+Player 1 rolls 4
+Player 1 moves to position 13 (f2)
+Player 1 captured Player 2's piece at f2
+Player 2 rolls 5
+Player 2 moves to position 62 (g8)
+Player 2 captured Player 1's piece at g8
+=== Turn 82 ===
+--- Executing statements for turn 82 ---
+Player 1 rolls 2
+Player 1 moves to position 15 (h2)
+Player 2 rolls 3
+Player 2 moves to position 1 (b1)
+=== Turn 83 ===
+--- Executing statements for turn 83 ---
+Player 1 rolls 3
+Player 1 moves to position 18 (c3)
+Player 2 rolls 4
+Player 2 moves to position 5 (f1)
+=== Turn 84 ===
+--- Executing statements for turn 84 ---
+Player 1 rolls 1
+Player 1 moves to position 19 (d3)
+Player 2 rolls 1
+Player 2 moves to position 6 (g1)
+=== Turn 85 ===
+--- Executing statements for turn 85 ---
+Player 1 rolls 5
+Player 1 moves to position 24 (a4)
+Player 2 rolls 4
+Player 2 moves to position 10 (c2)
+=== Turn 86 ===
+--- Executing statements for turn 86 ---
+Player 1 rolls 3
+Player 1 moves to position 27 (d4)
+Player 2 rolls 4
+Player 2 moves to position 14 (g2)
+=== Turn 87 ===
+--- Executing statements for turn 87 ---
+Player 1 rolls 4
+Player 1 moves to position 31 (h4)
+Player 2 rolls 3
+Player 2 moves to position 17 (b3)
+=== Turn 88 ===
+--- Executing statements for turn 88 ---
+Player 1 rolls 3
+Player 1 moves to position 34 (c5)
+Player 2 rolls 6
+Player 2 moves to position 23 (h3)
+=== Turn 89 ===
+--- Executing statements for turn 89 ---
+Player 1 rolls 1
+Player 1 moves to position 35 (d5)
+Player 2 rolls 6
+Player 2 moves to position 29 (f4)
+Player 2 captured Player 1's piece at f4
+=== Turn 90 ===
+--- Executing statements for turn 90 ---
+Player 1 rolls 4
+Player 1 moves to position 39 (h5)
+Player 2 rolls 2
+Player 2 moves to position 31 (h4)
+=== Turn 91 ===
+--- Executing statements for turn 91 ---
+Player 1 rolls 4
+Player 1 moves to position 43 (d6)
+Player 2 rolls 2
+Player 2 moves to position 33 (b5)
+=== Turn 92 ===
+--- Executing statements for turn 92 ---
+Player 1 rolls 2
+Player 1 moves to position 45 (f6)
+Player 2 rolls 5
+Player 2 moves to position 38 (g5)
+=== Turn 93 ===
+--- Executing statements for turn 93 ---
+Player 1 rolls 3
+Player 1 moves to position 48 (a7)
+Player 2 rolls 1
+Player 2 moves to position 39 (h5)
+=== Turn 94 ===
+--- Executing statements for turn 94 ---
+Player 1 rolls 2
+Player 1 moves to position 50 (c7)
+Player 2 rolls 4
+Player 2 moves to position 43 (d6)
+=== Turn 95 ===
+--- Executing statements for turn 95 ---
+Player 1 rolls 5
+Player 1 moves to position 55 (h7)
+Player 2 rolls 1
+Player 2 moves to position 44 (e6)
+=== Turn 96 ===
+--- Executing statements for turn 96 ---
+Player 1 rolls 4
+Player 1 moves to position 59 (d8)
+Player 2 rolls 3
+Player 2 moves to position 47 (h6)
+=== Turn 97 ===
+--- Executing statements for turn 97 ---
+Player 1 rolls 3
+Player 1 moves to position 62 (g8)
+Player 2 rolls 3
+Player 2 moves to position 50 (c7)
+=== Turn 98 ===
+--- Executing statements for turn 98 ---
+Player 1 rolls 2
+Player 1 moves to position 0 (a1)
+Player 2 rolls 3
+Player 2 moves to position 53 (f7)
+=== Turn 99 ===
+--- Executing statements for turn 99 ---
+Player 1 rolls 5
+Player 1 moves to position 5 (f1)
+Player 2 rolls 4
+Player 2 moves to position 57 (b8)
+=== Turn 100 ===
+--- Executing statements for turn 100 ---
+Player 1 rolls 1
+Player 1 moves to position 6 (g1)
+Player 2 rolls 6
+Player 2 moves to position 63 (h8)
+=== Final Results ===
+Game: Chess_Arena
+Completed after 100 turns (max: 100)
+
+Final Player Status:
+  Player 1: Pieces=6, Properties=0, Position=6 (g1)
+  Player 2: Pieces=5, Properties=0, Position=63 (h8)
+
+Chess Summary:
+Game lasted 50 moves
+Pieces remaining on board: 11/32
+Pieces captured: 21
+===================

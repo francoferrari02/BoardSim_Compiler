@@ -1,0 +1,38 @@
+// MONOPOLY ULTIMATE - Economía compleja con propiedades y rentas
+board Monopoly loop 40;
+
+// Propiedades clásicas de Monopoly
+cell 0 "GO" cost 0 rent 200;
+cell 1 "Mediterranean Avenue" cost 60 rent 2;
+cell 2 "Community Chest" cost 0 rent 0;
+cell 3 "Baltic Avenue" cost 60 rent 4;
+cell 4 "Income Tax" cost 200 rent 0;
+cell 5 "Reading Railroad" cost 200 rent 25;
+cell 6 "Oriental Avenue" cost 100 rent 6;
+cell 7 "Chance" cost 0 rent 0;
+cell 8 "Vermont Avenue" cost 100 rent 6;
+cell 9 "Connecticut Avenue" cost 120 rent 8;
+cell 10 "Jail" cost 0 rent 0;
+cell 11 "St. Charles Place" cost 140 rent 10;
+cell 12 "Electric Company" cost 150 rent 0;
+cell 13 "States Avenue" cost 140 rent 10;
+cell 14 "Virginia Avenue" cost 160 rent 12;
+cell 15 "Pennsylvania Railroad" cost 200 rent 25;
+cell 16 "St. James Place" cost 180 rent 14;
+cell 17 "Community Chest" cost 0 rent 0;
+cell 18 "Tennessee Avenue" cost 180 rent 14;
+cell 19 "New York Avenue" cost 200 rent 16;
+cell 20 "Free Parking" cost 0 rent 0;
+
+// 4 jugadores con dinero estándar de Monopoly
+player 1 money 1500 position 0 strategy "aggressive";
+player 2 money 1500 position 0 strategy "conservative";
+player 3 money 1500 position 0 strategy "balanced";
+player 4 money 1500 position 0 strategy "tactical";
+
+// 2 dados estándar
+dice 6 sides;
+dice 6 sides;
+
+// Simulación de 20 turnos
+simulate 20 turns {}

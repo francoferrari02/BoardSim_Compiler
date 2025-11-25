@@ -14,14 +14,7 @@
  * CellDecl = 'cell' INT STRING [ 'cost' INT [ 'rent' INT ] ] ';';
  * PlayerDecl = 'player' INT 'money' INT 'position' INT [ 'strategy' STRING ] ';';
  * DiceDecl = 'dice' INT 'sides' ';';
- * SimulateBlock = 'simulate' INT 'turns' '{' {Statement}* '}';
- * Statement = PrintStmt | LogStmt | VarDecl | IfStmt | ForStmt | WhileStmt;
- * VarDecl = (INT | STRING | BOOL) ID '=' Value ';';
- * IfStmt = 'if' '(' Condition ')' 'then' '{' {Statement}* '}' [ 'else' '{' {Statement}* '}' ];
- * ForStmt = 'for' ID 'in' INT 'to' INT '{' {Statement}* '}';
- * WhileStmt = 'while' '(' Condition ')' '{' {Statement}* '}';
- * Condition = ID | INT | STRING;
- * Value = INT | STRING | BOOL;
+ * SimulateBlock = 'simulate' INT 'turns' '{' '}';
  * Expression = ArithmeticExpression;
  * ArithmeticExpression = Term [('+' | '-' | '*' | '/') ArithmeticExpression];
  * Term = Factor;
@@ -53,7 +46,6 @@ void yyerror(const YYLTYPE * location, const char * message) {}
 
 	signed int integer;
 	TokenLabel token;
-	char* string;
 
 	/** Non-terminals. */
 
@@ -87,14 +79,6 @@ void yyerror(const YYLTYPE * location, const char * message) {}
 %token <token> OPEN_COMMENT
 %token <token> OPEN_PARENTHESIS
 %token <token> SUB
-
-/* Comparison operators */
-%token <token> LESS_THAN
-%token <token> LESS_EQUAL
-%token <token> GREATER_THAN
-%token <token> GREATER_EQUAL
-%token <token> NOT_EQUAL
-%token <token> EQUALITY
 
 %token <token> IGNORED
 %token <token> UNKNOWN
@@ -134,10 +118,10 @@ void yyerror(const YYLTYPE * location, const char * message) {}
 %token <token> SEMICOLON
 %token <token> COMMA
 %token <token> EQUALS
-%token <string> IDENTIFIER
-%token <string> STRING_LITERAL
+%token <token> IDENTIFIER
+%token <token> STRING_LITERAL
 
-/** Extended BoardSim tokens for complex features - RESERVED FOR FUTURE EXPANSION */
+/** Extended BoardSim tokens for complex features - TODO: uncomment when ready */
 /* %token <token> CONTINENT */
 /* %token <token> ARMIES */
 /* %token <token> CONNECTED */
@@ -164,7 +148,6 @@ void yyerror(const YYLTYPE * location, const char * message) {}
 %type <token> board_decl
 %type <token> cell_decl
 %type <token> player_decl
-%type <token> player_strategy
 %type <token> dice_decl
 %type <token> simulate_block
 %type <token> statements
@@ -172,9 +155,7 @@ void yyerror(const YYLTYPE * location, const char * message) {}
 %type <token> variable_decl
 %type <token> if_statement
 %type <token> condition
-%type <token> comparison_expression
 %type <token> loop_statement
-%type <token> while_statement
 
 /**
  * Precedence and associativity.
@@ -185,9 +166,6 @@ void yyerror(const YYLTYPE * location, const char * message) {}
 %left ADD SUB
 %left MUL DIV
 
-/* Comparison operators - lower precedence than arithmetic */
-%nonassoc LESS_THAN LESS_EQUAL GREATER_THAN GREATER_EQUAL NOT_EQUAL EQUAL
-
 %%
 
 // IMPORTANT: To use λ in the following grammar, use the %empty symbol.
@@ -196,35 +174,38 @@ program: expression											{ $$ = ExpressionProgramSemanticAction($1); }
 	| boardsim_program										{ $$ = $1; }
 	;
 
-boardsim_program: board_decl								{ $$ = NULL; }
-	| cell_decl												{ $$ = NULL; }
-	| player_decl											{ $$ = NULL; }
-	| dice_decl												{ $$ = NULL; }
-	| simulate_block										{ $$ = NULL; }
-	| boardsim_program board_decl							{ $$ = $1; }
-	| boardsim_program cell_decl							{ $$ = $1; }
-	| boardsim_program player_decl							{ $$ = $1; }
-	| boardsim_program dice_decl							{ $$ = $1; }
-	| boardsim_program simulate_block						{ $$ = $1; }
+boardsim_program: board_decl								{ $$ = BoardSimProgramSemanticAction($1); }
+	| cell_decl												{ $$ = BoardSimProgramSemanticAction($1); }
+	| player_decl											{ $$ = BoardSimProgramSemanticAction($1); }
+	| dice_decl												{ $$ = BoardSimProgramSemanticAction($1); }
+	| simulate_block										{ $$ = BoardSimProgramSemanticAction($1); }
+	| boardsim_program board_decl							{ $$ = $1; /* TODO: append declarations */ }
+	| boardsim_program cell_decl							{ $$ = $1; /* TODO: append declarations */ }
+	| boardsim_program player_decl							{ $$ = $1; /* TODO: append declarations */ }
+	| boardsim_program dice_decl							{ $$ = $1; /* TODO: append declarations */ }
+	| boardsim_program simulate_block						{ $$ = $1; /* TODO: append blocks */ }
 	;
 
 board_decl: BOARD IDENTIFIER LOOP INTEGER SEMICOLON		{ $$ = (TokenLabel)BoardDefSemanticAction($2, $3, $4); }
 	| BOARD IDENTIFIER GRAPH SEMICOLON						{ $$ = (TokenLabel)BoardDefSemanticAction($2, $3, 0); }
 	;
 
-cell_decl: CELL INTEGER STRING_LITERAL SEMICOLON								{ $$ = (TokenLabel)CellDefSemanticAction($2, $3, 0); }
-	| CELL INTEGER STRING_LITERAL COST INTEGER SEMICOLON						{ $$ = (TokenLabel)CellDefSemanticAction($2, $3, $5); }
+cell_decl: CELL INTEGER STRING_LITERAL SEMICOLON								{ $$ = (TokenLabel)CellDefSemanticAction($2, NULL, 0); }
+	| CELL INTEGER STRING_LITERAL COST INTEGER SEMICOLON						{ $$ = (TokenLabel)CellDefSemanticAction($2, NULL, $5); }
 
-	| CELL INTEGER STRING_LITERAL COST INTEGER RENT INTEGER SEMICOLON			{ $$ = (TokenLabel)CellDefSemanticAction($2, $3, $5); }
+	| CELL INTEGER STRING_LITERAL COST INTEGER RENT INTEGER SEMICOLON			{ $$ = (TokenLabel)CellDefSemanticAction($2, NULL, $5); }
 
 	;
 
-player_decl: PLAYER INTEGER IDENTIFIER INTEGER IDENTIFIER INTEGER player_strategy SEMICOLON	{ $$ = (TokenLabel)PlayerDefSemanticAction($2, $4, $6, $7); }
+
+
+
+
+player_decl: PLAYER INTEGER MONEY INTEGER POSITION INTEGER SEMICOLON							{ $$ = (TokenLabel)PlayerDefSemanticAction($2, $4, $6); }
+	| PLAYER INTEGER MONEY INTEGER POSITION INTEGER STRATEGY STRING_LITERAL SEMICOLON	{ $$ = (TokenLabel)PlayerDefSemanticAction($2, $4, $6); }
 	;
 
-player_strategy: /* empty */									{ $$ = (TokenLabel)NULL; }
-	| STRATEGY STRING_LITERAL								{ $$ = (TokenLabel)$2; }
-	;
+
 
 dice_decl: DICE INTEGER SIDES SEMICOLON								{ $$ = (TokenLabel)DiceDefSemanticAction($2); }
 	;
@@ -233,16 +214,15 @@ simulate_block: SIMULATE INTEGER TURNS OPEN_BRACE CLOSE_BRACE			{ $$ = (TokenLab
 	| SIMULATE INTEGER TURNS OPEN_BRACE statements CLOSE_BRACE		{ $$ = (TokenLabel)SimulateBlockSemanticAction($2); }
 	;
 
-statements: statement										{ $$ = $1; }
-	| statements statement									{ $$ = $2; }
+statements: statement										{ /* TODO: Create statement list */ }
+	| statements statement									{ /* TODO: Append to statement list */ }
 	;
 
 statement: PRINT STRING_LITERAL SEMICOLON					{ $$ = (TokenLabel)PrintStatementSemanticAction($2); }
 	| LOG STRING_LITERAL SEMICOLON							{ $$ = (TokenLabel)LogStatementSemanticAction($2); }
 	| variable_decl											{ $$ = $1; }
 	| if_statement											{ $$ = $1; }
-	| loop_statement										{ $$ = $1; }
-	| while_statement										{ $$ = $1; }
+	| loop_statement											{ $$ = $1; }
 	;
 
 if_statement: IF OPEN_PARENTHESIS condition CLOSE_PARENTHESIS THEN OPEN_BRACE statements CLOSE_BRACE		{ $$ = (TokenLabel)IfStatementSemanticAction($3, $7); }
@@ -252,27 +232,18 @@ if_statement: IF OPEN_PARENTHESIS condition CLOSE_PARENTHESIS THEN OPEN_BRACE st
 condition: IDENTIFIER										{ $$ = $1; }
 	| INTEGER												{ $$ = $1; }
 	| STRING_LITERAL											{ $$ = $1; }
-	| comparison_expression									{ $$ = $1; }
-	;
-
-comparison_expression: IDENTIFIER GREATER_THAN INTEGER		{ $$ = (TokenLabel)ComparisonExpressionSemanticAction($1, $3, GREATER_THAN); }
-	| IDENTIFIER LESS_THAN INTEGER							{ $$ = (TokenLabel)ComparisonExpressionSemanticAction($1, $3, LESS_THAN); }
-	| IDENTIFIER GREATER_EQUAL INTEGER						{ $$ = (TokenLabel)ComparisonExpressionSemanticAction($1, $3, GREATER_EQUAL); }
-	| IDENTIFIER LESS_EQUAL INTEGER							{ $$ = (TokenLabel)ComparisonExpressionSemanticAction($1, $3, LESS_EQUAL); }
-	| IDENTIFIER EQUALITY INTEGER							{ $$ = (TokenLabel)ComparisonExpressionSemanticAction($1, $3, EQUALITY); }
-	| IDENTIFIER NOT_EQUAL INTEGER							{ $$ = (TokenLabel)ComparisonExpressionSemanticAction($1, $3, NOT_EQUAL); }
 	;
 
 loop_statement: FOR IDENTIFIER IN INTEGER TO INTEGER OPEN_BRACE statements CLOSE_BRACE	{ $$ = (TokenLabel)ForStatementSemanticAction($2, $4, $6, $8); }
-	;
-
-while_statement: WHILE OPEN_PARENTHESIS condition CLOSE_PARENTHESIS OPEN_BRACE statements CLOSE_BRACE	{ $$ = (TokenLabel)WhileStatementSemanticAction($3, $6); }
+	| WHILE OPEN_PARENTHESIS condition CLOSE_PARENTHESIS OPEN_BRACE statements CLOSE_BRACE	{ $$ = (TokenLabel)WhileStatementSemanticAction($3, $6); }
 	;
 
 variable_decl: INT IDENTIFIER EQUALS INTEGER SEMICOLON		{ $$ = (TokenLabel)IntVariableSemanticAction($2, $4); }
 	| STRING IDENTIFIER EQUALS STRING_LITERAL SEMICOLON	{ $$ = (TokenLabel)StringVariableSemanticAction($2, $4); }
 	| BOOL IDENTIFIER EQUALS IDENTIFIER SEMICOLON			{ $$ = (TokenLabel)BoolVariableSemanticAction($2, $4); }
 	;
+
+
 
 expression: expression[left] ADD expression[right]			{ $$ = ArithmeticExpressionSemanticAction($left, $right, ADDITION); }
 	| expression[left] DIV expression[right]				{ $$ = ArithmeticExpressionSemanticAction($left, $right, DIVISION); }

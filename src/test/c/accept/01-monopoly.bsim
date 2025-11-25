@@ -1,0 +1,15 @@
+// Example Monopoly BoardSim based on PDF specification
+board Monopoly loop 40;
+
+cell 0 "Go";
+cell 1 "Mediterranean Avenue" cost 60 rent 2;
+cell 2 "Community Chest";
+cell 3 "Baltic Avenue" cost 60 rent 4;
+cell 4 "Income Tax" cost 200;
+
+player 1 money 1500 position 0;
+player 2 money 1500 position 0;
+
+dice 6 sides;
+
+simulate 10 turns {}

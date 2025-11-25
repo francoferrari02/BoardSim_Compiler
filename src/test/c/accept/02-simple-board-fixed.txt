@@ -1,0 +1,33 @@
+=== BoardSim Game State ===
+Board: Adventure_Island (loop, 25 cells)
+Players: 1
+  Player 1: Money=100, Position=0 (Pirate_Base)
+Dice: 6 sides
+Max turns: 3
+Sample locations:
+  [0] Pirate_Base
+  [1] Golden_Beach
+  [2] Mysterious_Cave
+  [3] Quicksand_Trap
+  [4] Volcano_Peak
+  ... and 20 more locations
+==========================
+=== Turn 1 ===
+Player 1 rolls 4
+Player 1 moves to position 4 (Volcano_Peak)
+*** Player 1 WINS with 100 points! ***
+=== Turn 2 ===
+Player 1 rolls 6
+Player 1 moves to position 10 (Whispering_Woods)
+*** Player 1 WINS with 100 points! ***
+=== Turn 3 ===
+Player 1 rolls 1
+Player 1 moves to position 11 (Spiders_Den)
+Player 1 fell into trap at Spiders_Den (-15 points)
+=== Final Results ===
+Game: Adventure_Island
+Completed after 3 turns (max: 3)
+
+Final Player Status:
+  Player 1: Money=85, Properties=0, Position=11 (Spiders_Den)
+===================

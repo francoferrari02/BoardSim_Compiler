@@ -1,0 +1,285 @@
+=== BoardSim Game State ===
+Board: Monopoly_City (loop, 40 cells)
+Players: 4
+  Player 1: Money=1500, Position=0 (GO)
+  Player 2: Money=1500, Position=0 (GO)
+  Player 3: Money=1500, Position=0 (GO)
+  Player 4: Money=1500, Position=0 (GO)
+Dice: 6 sides
+Max turns: 20
+Sample locations:
+  [0] GO
+  [1] Mediterranean_Ave
+  [2] Community_Chest
+  [3] Baltic_Ave
+  [4] Income_Tax
+  ... and 35 more locations
+==========================
+=== Turn 1 ===
+--- Executing statements for turn 1 ---
+Player 1 rolls 1
+Player 1 moves to position 1 (Mediterranean_Ave)
+Player 1 bought Mediterranean_Ave for $70
+Player 2 rolls 2
+Player 2 moves to position 2 (Community_Chest)
+Player 2 bought Community_Chest for $80
+Player 3 rolls 3
+Player 3 moves to position 3 (Baltic_Ave)
+Player 3 bought Baltic_Ave for $90
+Player 4 rolls 6
+Player 4 moves to position 6 (Oriental_Ave)
+Player 4 bought Oriental_Ave for $120
+=== Turn 2 ===
+--- Executing statements for turn 2 ---
+Player 1 rolls 5
+Player 1 moves to position 6 (Oriental_Ave)
+Player 1 paid $12 rent to Player 4
+Player 2 rolls 2
+Player 2 moves to position 4 (Income_Tax)
+Player 3 rolls 4
+Player 3 moves to position 7 (Chance)
+Player 3 bought Chance for $130
+Player 3 drew card: Paid $50
+Player 4 rolls 1
+Player 4 moves to position 7 (Chance)
+Player 4 paid $13 rent to Player 3
+Player 4 drew card: Received $50
+=== Turn 3 ===
+--- Executing statements for turn 3 ---
+Player 1 rolls 1
+Player 1 moves to position 7 (Chance)
+Player 1 paid $13 rent to Player 3
+Player 1 drew card: Paid $50
+Player 2 rolls 3
+Player 2 moves to position 7 (Chance)
+Player 2 paid $13 rent to Player 3
+Player 2 drew card: Received $50
+Player 3 rolls 4
+Player 3 moves to position 11 (St_Charles_Place)
+Player 3 bought St_Charles_Place for $170
+Player 4 rolls 5
+Player 4 moves to position 12 (Electric_Company)
+=== Turn 4 ===
+--- Executing statements for turn 4 ---
+Player 1 rolls 6
+Player 1 moves to position 13 (States_Ave)
+Player 1 bought States_Ave for $190
+Player 2 rolls 2
+Player 2 moves to position 9 (Connecticut_Ave)
+Player 2 bought Connecticut_Ave for $150
+Player 3 rolls 3
+Player 3 moves to position 14 (Virginia_Ave)
+Player 3 bought Virginia_Ave for $200
+Player 4 rolls 3
+Player 4 moves to position 15 (Pennsylvania_Railroad)
+Player 4 bought Pennsylvania_Railroad for $210
+=== Turn 5 ===
+--- Executing statements for turn 5 ---
+Player 1 rolls 1
+Player 1 moves to position 14 (Virginia_Ave)
+Player 1 paid $20 rent to Player 3
+Player 2 rolls 4
+Player 2 moves to position 13 (States_Ave)
+Player 2 paid $19 rent to Player 1
+Player 3 rolls 3
+Player 3 moves to position 17 (Community_Chest)
+Player 3 bought Community_Chest for $230
+Player 4 rolls 2
+Player 4 moves to position 17 (Community_Chest)
+Player 4 paid $23 rent to Player 3
+=== Turn 6 ===
+--- Executing statements for turn 6 ---
+Player 1 rolls 1
+Player 1 moves to position 15 (Pennsylvania_Railroad)
+Player 1 paid $21 rent to Player 4
+Player 2 rolls 4
+Player 2 moves to position 17 (Community_Chest)
+Player 2 paid $23 rent to Player 3
+Player 3 rolls 3
+Player 3 moves to position 20 (Free_Parking)
+Player 4 rolls 6
+Player 4 moves to position 23 (Indiana_Ave)
+Player 4 bought Indiana_Ave for $290
+=== Turn 7 ===
+--- Executing statements for turn 7 ---
+Player 1 rolls 2
+Player 1 moves to position 17 (Community_Chest)
+Player 1 paid $23 rent to Player 3
+Player 2 rolls 3
+Player 2 moves to position 20 (Free_Parking)
+Player 3 rolls 4
+Player 3 moves to position 24 (Illinois_Ave)
+Player 4 rolls 2
+Player 4 moves to position 25 (B&O_Railroad)
+Player 4 bought B&O_Railroad for $310
+=== Turn 8 ===
+--- Executing statements for turn 8 ---
+Player 1 rolls 4
+Player 1 moves to position 21 (Kentucky_Ave)
+Player 1 bought Kentucky_Ave for $270
+Player 2 rolls 4
+Player 2 moves to position 24 (Illinois_Ave)
+Player 3 rolls 1
+Player 3 moves to position 25 (B&O_Railroad)
+Player 3 paid $31 rent to Player 4
+Player 4 rolls 2
+Player 4 moves to position 27 (Ventnor_Ave)
+Player 4 bought Ventnor_Ave for $330
+=== Turn 9 ===
+--- Executing statements for turn 9 ---
+Player 1 rolls 6
+Player 1 moves to position 27 (Ventnor_Ave)
+Player 1 paid $33 rent to Player 4
+Player 2 rolls 2
+Player 2 moves to position 26 (Atlantic_Ave)
+Player 2 bought Atlantic_Ave for $320
+Player 3 rolls 4
+Player 3 moves to position 29 (Marvin_Gardens)
+Player 3 bought Marvin_Gardens for $350
+Player 4 rolls 4
+Player 4 moves to position 31 (Pacific_Ave)
+=== Turn 10 ===
+--- Executing statements for turn 10 ---
+Player 1 rolls 1
+Player 1 moves to position 28 (Water_Works)
+Player 2 rolls 4
+Player 2 moves to position 30 (Go_To_Jail)
+Player 2 bought Go_To_Jail for $360
+Player 3 rolls 5
+Player 3 moves to position 34 (Pennsylvania_Ave)
+Player 4 rolls 2
+Player 4 moves to position 33 (Community_Chest)
+=== Turn 11 ===
+--- Executing statements for turn 11 ---
+Player 1 rolls 3
+Player 1 moves to position 31 (Pacific_Ave)
+Player 1 bought Pacific_Ave for $370
+Player 2 rolls 6
+Player 2 moves to position 36 (Chance)
+Player 2 drew card: Received $50
+Player 3 rolls 6
+Player 3 moves to position 0 (GO)
+Player 3 passed GO, collected $200
+Player 4 rolls 5
+Player 4 moves to position 38 (Luxury_Tax)
+=== Turn 12 ===
+--- Executing statements for turn 12 ---
+Player 1 rolls 1
+Player 1 moves to position 32 (North_Carolina_Ave)
+Player 2 rolls 3
+Player 2 moves to position 39 (Boardwalk)
+Player 3 rolls 4
+Player 3 moves to position 4 (Income_Tax)
+Player 4 rolls 4
+Player 4 moves to position 2 (Community_Chest)
+Player 4 paid $8 rent to Player 2
+=== Turn 13 ===
+--- Executing statements for turn 13 ---
+Player 1 rolls 3
+Player 1 moves to position 35 (Short_Line)
+Player 2 rolls 5
+Player 2 moves to position 4 (Income_Tax)
+Player 3 rolls 3
+Player 3 moves to position 7 (Chance)
+Player 4 rolls 5
+Player 4 moves to position 7 (Chance)
+Player 4 paid $13 rent to Player 3
+Player 4 drew card: Received $50
+=== Turn 14 ===
+--- Executing statements for turn 14 ---
+Player 1 rolls 6
+Player 1 moves to position 1 (Mediterranean_Ave)
+Player 2 rolls 1
+Player 2 moves to position 5 (Reading_Railroad)
+Player 2 bought Reading_Railroad for $110
+Player 3 rolls 3
+Player 3 moves to position 10 (Jail)
+Player 3 bought Jail for $160
+Player 4 rolls 5
+Player 4 moves to position 12 (Electric_Company)
+=== Turn 15 ===
+--- Executing statements for turn 15 ---
+Player 1 rolls 3
+Player 1 moves to position 4 (Income_Tax)
+Player 2 rolls 4
+Player 2 moves to position 9 (Connecticut_Ave)
+Player 3 rolls 3
+Player 3 moves to position 13 (States_Ave)
+Player 3 paid $19 rent to Player 1
+Player 4 rolls 2
+Player 4 moves to position 14 (Virginia_Ave)
+Player 4 paid $20 rent to Player 3
+=== Turn 16 ===
+--- Executing statements for turn 16 ---
+Player 1 rolls 3
+Player 1 moves to position 7 (Chance)
+Player 1 paid $13 rent to Player 3
+Player 2 rolls 5
+Player 2 moves to position 14 (Virginia_Ave)
+Player 2 paid $20 rent to Player 3
+Player 3 rolls 5
+Player 3 moves to position 18 (Tennessee_Ave)
+Player 4 rolls 6
+Player 4 moves to position 20 (Free_Parking)
+=== Turn 17 ===
+--- Executing statements for turn 17 ---
+Player 1 rolls 6
+Player 1 moves to position 13 (States_Ave)
+Player 2 rolls 1
+Player 2 moves to position 15 (Pennsylvania_Railroad)
+Player 2 paid $21 rent to Player 4
+Player 3 rolls 1
+Player 3 moves to position 19 (New_York_Ave)
+Player 4 rolls 1
+Player 4 moves to position 21 (Kentucky_Ave)
+Player 4 paid $27 rent to Player 1
+=== Turn 18 ===
+--- Executing statements for turn 18 ---
+Player 1 rolls 4
+Player 1 moves to position 17 (Community_Chest)
+Player 1 paid $23 rent to Player 3
+Player 2 rolls 5
+Player 2 moves to position 20 (Free_Parking)
+Player 3 rolls 6
+Player 3 moves to position 25 (B&O_Railroad)
+Player 3 paid $31 rent to Player 4
+Player 4 rolls 3
+Player 4 moves to position 24 (Illinois_Ave)
+=== Turn 19 ===
+--- Executing statements for turn 19 ---
+Player 1 rolls 5
+Player 1 moves to position 22 (Chance)
+Player 1 drew card: Received $50
+Player 2 rolls 4
+Player 2 moves to position 24 (Illinois_Ave)
+Player 3 rolls 2
+Player 3 moves to position 27 (Ventnor_Ave)
+Player 3 paid $33 rent to Player 4
+Player 4 rolls 3
+Player 4 moves to position 27 (Ventnor_Ave)
+=== Turn 20 ===
+--- Executing statements for turn 20 ---
+Player 1 rolls 6
+Player 1 moves to position 28 (Water_Works)
+Player 2 rolls 2
+Player 2 moves to position 26 (Atlantic_Ave)
+Player 3 rolls 1
+Player 3 moves to position 28 (Water_Works)
+Player 4 rolls 5
+Player 4 moves to position 32 (North_Carolina_Ave)
+=== Final Results ===
+Game: Monopoly_City
+Completed after 20 turns (max: 20)
+
+Final Player Status:
+  Player 1: Money=507, Properties=4, Position=28 (Water_Works)
+  Player 2: Money=492, Properties=5, Position=26 (Atlantic_Ave)
+  Player 3: Money=423, Properties=7, Position=28 (Water_Works)
+  Player 4: Money=418, Properties=5, Position=32 (North_Carolina_Ave)
+
+Economic Summary:
+Total wealth in game: $1840
+Average wealth per player: $460
+Total properties owned: 21
+Average properties per player: 5.2
+===================

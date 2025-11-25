@@ -13,9 +13,8 @@ STATUS=0
 echo "Compiler should accept..."
 echo ""
 
-# Only test .bsim files and simple expression files (no .txt files, no .md files)
-for test in $(ls src/test/c/accept/ | grep -v '\.txt$' | grep -v '\.md$' | grep -v 'output'); do
-	".build/Flex-Bison-Compiler" "src/test/c/accept/$test" "/tmp/test-output.txt" >/dev/null 2>&1
+for test in $(ls src/test/c/accept/); do
+	cat "src/test/c/accept/$test" | ".build/Flex-Bison-Compiler" >/dev/null 2>&1
 	RESULT="$?"
 	if [ "$RESULT" == "0" ]; then
 		echo -e "    $test, ${GREEN}and it does${OFF} (status $RESULT)"
@@ -30,7 +29,7 @@ echo "Compiler should reject..."
 echo ""
 
 for test in $(ls src/test/c/reject/); do
-	".build/Flex-Bison-Compiler" "src/test/c/reject/$test" "/tmp/test-output.txt" >/dev/null 2>&1
+	cat "src/test/c/reject/$test" | ".build/Flex-Bison-Compiler" >/dev/null 2>&1
 	RESULT="$?"
 	if [ "$RESULT" != "0" ]; then
 		echo -e "    $test, ${GREEN}and it does${OFF} (status $RESULT)"

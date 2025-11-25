@@ -1,0 +1,28 @@
+// TEG ULTIMATE - Estrategia militar sudamericana
+board TEG loop 20;
+
+// Territorios de Sudamérica
+cell 0 "Buenos Aires" cost 0 rent 50;
+cell 1 "Cordoba" cost 0 rent 30;
+cell 2 "Santa Fe" cost 0 rent 25;
+cell 3 "Uruguay" cost 0 rent 40;
+cell 4 "Sao Paulo" cost 0 rent 60;
+cell 5 "Rio de Janeiro" cost 0 rent 45;
+cell 6 "Lima" cost 0 rent 35;
+cell 7 "Santiago" cost 0 rent 30;
+cell 8 "Caracas" cost 0 rent 40;
+cell 9 "Bogota" cost 0 rent 35;
+
+// 4 generales
+player 1 money 1000 position 0 strategy "aggressive";
+player 2 money 1000 position 5 strategy "tactical";
+player 3 money 1000 position 10 strategy "conservative";
+player 4 money 1000 position 15 strategy "balanced";
+
+// 3 dados para batallas
+dice 6 sides;
+dice 6 sides;
+dice 6 sides;
+
+// 25 turnos de estrategia
+simulate 25 turns {}

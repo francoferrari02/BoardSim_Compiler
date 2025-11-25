@@ -1,0 +1,40 @@
+// CHESS ULTIMATE - Tablero de ajedrez completo
+board Chess loop 64;
+
+// Tablero 8x8 con nombres algebraicos
+cell 0 "a1";
+cell 1 "b1";
+cell 2 "c1";
+cell 3 "d1";
+cell 4 "e1";
+cell 5 "f1";
+cell 6 "g1";
+cell 7 "h1";
+cell 8 "a2";
+cell 9 "b2";
+cell 10 "c2";
+cell 11 "d2";
+cell 12 "e2";
+cell 13 "f2";
+cell 14 "g2";
+cell 15 "h2";
+
+// Solo algunas casillas importantes por brevedad
+cell 56 "a8";
+cell 57 "b8";
+cell 58 "c8";
+cell 59 "d8";
+cell 60 "e8";
+cell 61 "f8";
+cell 62 "g8";
+cell 63 "h8";
+
+// 2 jugadores representando piezas
+player 1 money 16 position 0 strategy "aggressive";
+player 2 money 16 position 56 strategy "tactical";
+
+// Dado único para movimientos
+dice 6 sides;
+
+// Simulación de 100 turnos (50 movimientos por jugador)
+simulate 100 turns {}

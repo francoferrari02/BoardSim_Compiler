@@ -1,0 +1,16 @@
+board TestBoard loop 4;
+cell 0 "Start";
+player 1 money 100 position 0;
+dice 6 sides;
+
+simulate 2 turns {
+    int score = 500;
+    print "Game started!";
+    log "Debug: Player has money";
+    if (score) then {
+        print "Score is positive!";
+    }
+    for turn in 1 to 2 {
+        print "For loop iteration";
+    }
+}
