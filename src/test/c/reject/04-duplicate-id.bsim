@@ -1,0 +1,17 @@
+// Test R1.4: Duplicado de ID (two boards same name)
+// NOTA: Stage II acepta esto (sintácticamente válido)
+// Stage III debe detectar el ID duplicado y rechazarlo
+
+board DuplicateBoard loop 6;
+board DuplicateBoard loop 8;
+
+cell 0 "Start" cost 0 rent 0;
+cell 1 "Middle" cost 50 rent 10;
+
+player 1 money 1000 position 0 strategy "random";
+
+dice 6 sides;
+
+simulate 2 turns {
+    print "Duplicate ID test";
+}

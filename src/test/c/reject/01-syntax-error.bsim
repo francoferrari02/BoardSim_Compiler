@@ -1,3 +1,17 @@
-// Syntax error: missing semicolon
-board TestBoard loop 4
-cell 0 "Start";
+// Test R1.1: Sintaxis mal formada (missing delimiter)
+// Falta punto y coma en declaración de cell
+
+board SyntaxBoard loop 6;
+
+cell 0 "Start" cost 0 rent 0
+cell 1 "Middle" cost 50 rent 10;
+cell 2 "End" cost 0 rent 0;
+
+player 1 money 1000 position 0 strategy "random";
+
+dice 6 sides;
+
+simulate 2 turns {
+    print "This should not compile";
+}
+

@@ -29,7 +29,8 @@ Program * ExpressionProgramSemanticAction(Expression * expression);
 Program * BoardSimProgramSemanticAction(TokenLabel token);
 BoardDef * BoardDefSemanticAction(TokenLabel identifier, TokenLabel boardType, int size);
 CellDef * CellDefSemanticAction(int index, TokenLabel nameToken, int cost);
-PlayerDef * PlayerDefSemanticAction(int id, int money, int position);
+PlayerDef * PlayerDefSemanticAction(int id, int money, int position, TokenLabel strategyToken);
+PlayerDef * PlayerDefWithStrategySemanticAction(int id, int money, int position, const char* strategy);
 DiceDef * DiceDefSemanticAction(int sides);
 SimulateBlock * SimulateBlockSemanticAction(int turns);
 Statement * PrintStatementSemanticAction(TokenLabel token);
@@ -41,5 +42,8 @@ Statement * IfStatementSemanticAction(TokenLabel condition, TokenLabel ifBody);
 Statement * IfElseStatementSemanticAction(TokenLabel condition, TokenLabel ifBody, TokenLabel elseBody);
 Statement * ForStatementSemanticAction(TokenLabel var, int start, int end, TokenLabel body);
 Statement * WhileStatementSemanticAction(TokenLabel condition, TokenLabel body);
+
+/* Comparison expression semantic action */
+TokenLabel ComparisonExpressionSemanticAction(TokenLabel left, TokenLabel right, TokenLabel operator);
 
 #endif

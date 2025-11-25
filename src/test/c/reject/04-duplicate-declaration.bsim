@@ -1,3 +1,0 @@
-// Invalid cell syntax: missing cell index
-board TestBoard loop 4;
-cell "Start";  // Error: missing cell index number

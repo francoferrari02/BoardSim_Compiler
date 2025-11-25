@@ -1,0 +1,24 @@
+// Test A1.1: Declarar tablero con cells, formas básicas
+// Verifica: declaración de board (loop), múltiples cells con atributos opcionales
+
+board MonopolyBoard loop 40;
+
+cell 0 "GO" cost 0 rent 0;
+cell 1 "Mediterranean Avenue" cost 60 rent 2;
+cell 2 "Community Chest" cost 0 rent 0;
+cell 3 "Baltic Avenue" cost 60 rent 4;
+cell 5 "Reading Railroad" cost 200 rent 25;
+cell 10 "Just Visiting" cost 0 rent 0;
+cell 20 "Free Parking" cost 0 rent 0;
+cell 30 "Go To Jail" cost 0 rent 0;
+cell 39 "Boardwalk" cost 400 rent 50;
+
+player 1 money 1500 position 0 strategy "random";
+player 2 money 1500 position 0 strategy "aggressive";
+
+dice 6 sides;
+
+simulate 10 turns {
+    print "Monopoly simulation";
+    log "Testing board structure";
+}

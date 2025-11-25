@@ -1,5 +1,4 @@
 #include "Generator.h"
-#include "../../frontend/syntactic-analysis/AbstractSyntaxTree.h"
 
 /* MODULE INTERNAL STATE */
 
@@ -173,34 +172,17 @@ static void _output(const unsigned int indentationLevel, const char * const form
 void executeGenerator(CompilerState * compilerState) {
 	logDebugging(_logger, "Generating final output...");
 	
-	// Check if this is a BoardSim program vs Calculator program
-	if (compilerState->abstractSyntaxtTree != NULL) {
-		// First, try to treat it as a BoardSim ASTNode
-		ASTNode* rootNode = (ASTNode*)compilerState->abstractSyntaxtTree;
-		
-		// Check if we have any BoardSim-specific global counters set
-		if (g_parsedBoards > 0 || g_parsedPlayers > 0 || g_parsedDice > 0) {
-			// BoardSim program - generate text output with game results
-			printf("BoardSim program executed successfully!\n");
-			printf("\n=== SIMULATION SUMMARY ===\n");
-			printf("Turns completed: %d\n", compilerState->value);
-			printf("For detailed logs, check the output file.\n");
-			printf("=========================\n");
-		} else {
-			// Calculator program - generate LaTeX tree as before
-			Program* program = (Program*)compilerState->abstractSyntaxtTree;
-			if (program != NULL && program->expression != NULL) {
-				_generatePrologue();
-				_generateProgram(program);
-				_generateEpilogue(compilerState->value);
-			} else {
-				printf("Error: Invalid program structure for calculator mode.\n");
-			}
-		}
-	} else {
-		// No AST - generate error message
-		printf("Error: No AST available for generation.\n");
+	// Check if the AST is a valid Program (Calculator) or BoardSim syntax
+	Program * program = compilerState->abstractSyntaxtTree;
+	if (program == NULL || program->expression == NULL) {
+		logDebugging(_logger, "AST is not a calculator program (likely BoardSim). Skipping LaTeX generation for Stage II.");
+		printf("Stage II: Syntax analysis completed successfully.\n");
+		printf("Note: Backend code generation is only available for Calculator expressions.\n");
+		return;
 	}
-
+	
+	_generatePrologue();
+	_generateProgram(compilerState->abstractSyntaxtTree);
+	_generateEpilogue(compilerState->value);
 	logDebugging(_logger, "Generation is done.");
 }

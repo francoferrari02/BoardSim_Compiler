@@ -1,2 +1,16 @@
-// Missing board type: loop or graph required
-board TestBoard 5;
+// Test R1.2: Tipos incompatibles (string assigned to integer position)
+// String donde se espera integer en money
+
+board TypeBoard loop 6;
+
+cell 0 "Start" cost 0 rent 0;
+cell 1 "Middle" cost 50 rent 10;
+
+player 1 money "invalid" position 0 strategy "random";
+
+dice 6 sides;
+
+simulate 2 turns {
+    print "Type mismatch error";
+}
+

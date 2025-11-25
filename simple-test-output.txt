@@ -1,3 +1,0 @@
-Compiling BoardSim file: simple-statement-test.bsim -> simple-statement-test.txt
-./src/main/bash/run.sh: line 32: 89048 Done                    cat "$INPUT"
-     89049 Segmentation fault      (core dumped) | ".build/Flex-Bison-Compiler" > "$OUTPUT"

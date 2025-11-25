@@ -1,0 +1,31 @@
+// Test A1.7: Interacciones pieza-pieza mediante posiciones
+// Verifica: múltiples jugadores que pueden coincidir en posiciones
+// El backend detecta cuando players están en misma posición (capture)
+
+board BattleBoard loop 16;
+
+cell 0 "Base Alpha" cost 0 rent 0;
+cell 4 "Battle Zone 1" cost 0 rent 0;
+cell 8 "Battle Zone 2" cost 0 rent 0;
+cell 12 "Battle Zone 3" cost 0 rent 0;
+cell 15 "Base Omega" cost 0 rent 0;
+
+// Jugadores en diferentes posiciones para interacciones
+player 1 money 500 position 0 strategy "aggressive";
+player 2 money 500 position 8 strategy "defensive";
+player 3 money 500 position 15 strategy "balanced";
+
+dice 6 sides;
+
+simulate 12 turns {
+    print "Piece interaction simulation";
+    log "Players can interact when on same cell";
+    
+    // El backend implementa lógica de captura
+    // cuando múltiples players coinciden en misma celda
+    
+    if (position > 5) then {
+        print "Interaction zone reached";
+        log "Potential piece-piece interaction";
+    }
+}

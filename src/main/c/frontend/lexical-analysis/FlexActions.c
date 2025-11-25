@@ -224,7 +224,10 @@ CompilationStatus IdentifierLexemeAction() {
 	Token * token = createToken(_lexicalAnalyzer, IDENTIFIER);
 	// Store the identifier string in semantic value
 	token->semanticValue->token = IDENTIFIER;
-	// TODO: Store the actual identifier string in semantic value
+	
+	// Store the actual identifier string from the token's lexeme
+	token->semanticValue->string = strdup(token->lexeme);
+	
 	_logTokenAction(__FUNCTION__, token);
 	CompilationStatus status = pushToken(_lexicalAnalyzer, token);
 	destroyToken(token);
@@ -233,9 +236,21 @@ CompilationStatus IdentifierLexemeAction() {
 
 CompilationStatus StringLiteralLexemeAction() {
 	Token * token = createToken(_lexicalAnalyzer, STRING_LITERAL);
-	// Store the string literal in semantic value (should remove quotes)
+	// Store the string literal in semantic value (remove quotes)
 	token->semanticValue->token = STRING_LITERAL;
-	// TODO: Store the actual string content without quotes in semantic value
+	
+	// Extract the actual string content without quotes from the token's lexeme
+	char* stringContent = strdup(token->lexeme);
+	// Remove the first and last characters (quotes)
+	int len = strlen(stringContent);
+	if (len >= 2) {
+		stringContent[len-1] = '\0';  // Remove last quote
+		memmove(stringContent, stringContent + 1, len - 1);  // Remove first quote
+	}
+	
+	// Store the actual string content
+	token->semanticValue->string = stringContent;
+	
 	_logTokenAction(__FUNCTION__, token);
 	CompilationStatus status = pushToken(_lexicalAnalyzer, token);
 	destroyToken(token);

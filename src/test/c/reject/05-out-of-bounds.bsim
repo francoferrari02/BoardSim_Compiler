@@ -1,0 +1,17 @@
+// Test R1.5: Movimiento inválido (out of bounds in declaration)
+// NOTA: Stage II acepta esto (sintácticamente válido)
+// Stage III debe validar que índice < board size
+
+board SmallBoard loop 4;
+
+cell 0 "Start" cost 0 rent 0;
+cell 1 "Middle" cost 50 rent 10;
+cell 10 "OutOfBounds" cost 100 rent 25;
+
+player 1 money 1000 position 0 strategy "random";
+
+dice 6 sides;
+
+simulate 2 turns {
+    print "Out of bounds error";
+}

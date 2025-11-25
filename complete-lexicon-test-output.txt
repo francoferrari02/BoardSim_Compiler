@@ -1,3 +1,0 @@
-Compiling BoardSim file: complete-lexicon-test.bsim -> complete-lexicon-test.txt
-[[1;31mERROR[0m][BoardSim] No board found in AST - creating default board
-Output written to complete-lexicon-test.txt

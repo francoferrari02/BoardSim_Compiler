@@ -99,8 +99,6 @@ comment_multi_end	\*\/
 "sides"								{ return BoardSimKeywordLexemeAction(SIDES); }
 "cost"								{ return BoardSimKeywordLexemeAction(COST); }
 "rent"								{ return BoardSimKeywordLexemeAction(RENT); }
-"money"								{ return BoardSimKeywordLexemeAction(MONEY); }
-"position"							{ return BoardSimKeywordLexemeAction(POSITION); }
 "to"								{ return BoardSimKeywordLexemeAction(TO); }
 "strategy"							{ return BoardSimKeywordLexemeAction(STRATEGY); }
 "random"							{ return BoardSimKeywordLexemeAction(RANDOM); }
@@ -111,6 +109,13 @@ comment_multi_end	\*\/
 "*"									{ return ArithmeticOperatorLexemeAction(MUL); }
 "/"									{ return ArithmeticOperatorLexemeAction(DIV); }
 "+"									{ return ArithmeticOperatorLexemeAction(ADD); }
+
+"<="									{ return ComparisonOperatorLexemeAction(LESS_EQUAL); }
+">="									{ return ComparisonOperatorLexemeAction(GREATER_EQUAL); }
+"!="									{ return ComparisonOperatorLexemeAction(NOT_EQUAL); }
+"=="									{ return ComparisonOperatorLexemeAction(EQUALITY); }
+"<"									{ return ComparisonOperatorLexemeAction(LESS_THAN); }
+">"									{ return ComparisonOperatorLexemeAction(GREATER_THAN); }
 
 "("									{ return ParenthesisLexemeAction(OPEN_PARENTHESIS); }
 ")"									{ return ParenthesisLexemeAction(CLOSE_PARENTHESIS); }
@@ -124,6 +129,8 @@ comment_multi_end	\*\/
 
 
 [a-zA-Z_][a-zA-Z0-9_]*				{ return IdentifierLexemeAction(); }
+"money"								{ return BoardSimKeywordLexemeAction(MONEY); }
+"position"							{ return BoardSimKeywordLexemeAction(POSITION); }
 [[:digit:]]+						{ return IntegerLexemeAction(); }
 \"[^\"]*\"							{ return StringLiteralLexemeAction(); }
 \/\/.*								{ return IgnoredLexemeAction(); }
