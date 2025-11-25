@@ -9,6 +9,11 @@
 #include <stdarg.h>
 #include <stdio.h>
 
+// Forward declaration of global counters from BoardSim
+extern int g_parsedPlayers;
+extern int g_parsedDice;
+extern int g_parsedBoards;
+
 /** Initialize module's internal state. */
 ModuleDestructor initializeGeneratorModule();
 

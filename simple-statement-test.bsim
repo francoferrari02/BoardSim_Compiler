@@ -1,0 +1,20 @@
+/*
+ * SIMPLE STATEMENT TEST
+ * 
+ * Test básico para verificar que las declaraciones se ejecutan
+ */
+
+// Tablero simple
+board SimpleTest loop 5;
+
+// Un jugador
+player 1 money 100 position 0;
+
+// Un dado
+dice 6 sides;
+
+// Simulación simple
+simulate 3 turns {
+    print "Hello World";
+    log "Test message";
+}

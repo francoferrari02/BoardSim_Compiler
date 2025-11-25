@@ -154,27 +154,12 @@ CompilationStatus executeLexicalAnalysis(LexicalAnalyzer * lexicalAnalyzer) {
 
 CompilationStatus executeSyntacticAnalysis() {
 	logDebugging(_logger, "Parsing...");
-	// Syntactic analysis started
-	fflush(stdout);
 	CompilationStatus status = IN_PROGRESS;
-	int loopCount = 0;
 	while (status == IN_PROGRESS) {
-		// Lexical analysis loop
-		fflush(stdout);
 		status = executeLexicalAnalysis(_lexicalAnalyzer);
-		// Lexical analysis status
-		fflush(stdout);
-		if (loopCount > 1000) {
-			// Breaking infinite loop
-			fflush(stdout);
-			status = FAILED;
-			break;
-		}
 	}
 	logDebugging(_logger, "Compilation status: %s.", _compilationStatusAsString(status));
 	logDebugging(_logger, "Parsing is done.");
-	// Syntactic analysis completed
-	fflush(stdout);
 	return status;
 }
 

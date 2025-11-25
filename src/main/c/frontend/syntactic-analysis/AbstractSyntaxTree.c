@@ -211,7 +211,6 @@ PlayerDef* createPlayerDef(int id, int money, int position) {
 	playerDef->id = id;
 	playerDef->money = money;
 	playerDef->position = position;
-	playerDef->strategy = NULL; // Default to NULL
 	return playerDef;
 }
 
@@ -219,9 +218,6 @@ void destroyPlayerDef(PlayerDef* playerDef) {
 	logDebugging(_logger, "Executing destructor: %s", __FUNCTION__);
 	if (playerDef == NULL) {
 		return;
-	}
-	if (playerDef->strategy != NULL) {
-		free(playerDef->strategy);
 	}
 	free(playerDef);
 }

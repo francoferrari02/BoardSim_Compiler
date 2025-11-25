@@ -1,0 +1,72 @@
+/*
+ * COMPLETE LEXICON IMPLEMENTATION TEST
+ *
+ * Este test usa TODAS las palabras clave implementadas en FlexPatterns.l:
+ * - board, cell, loop, graph, player, dice, simulate
+ * - print, log, int, string, bool, if, else, then, for, while, in, to
+ * - turns, sides, cost, rent, money, position, strategy
+ * - random, aggressive
+ * - Operadores aritméticos: +, -, *, /
+ * - Delimitadores: (, ), [, ], {, }, ;, ,, =
+ *
+ * JUEGO: "Complete Language Test" - Demostración de todas las construcciones
+ */
+
+// Tablero principal con loop
+board CompleteTest loop 10;
+
+// Celdas con diferentes propiedades
+cell 0 "Start" cost 0 rent 0;
+cell 1 "Property A" cost 100 rent 20;
+cell 2 "Property B" cost 150 rent 30;
+cell 3 "Property C" cost 200 rent 40;
+cell 4 "Property D" cost 250 rent 50;
+cell 5 "Property E" cost 300 rent 60;
+cell 6 "Property F" cost 350 rent 70;
+cell 7 "Property G" cost 400 rent 80;
+cell 8 "Property H" cost 450 rent 90;
+cell 9 "Property I" cost 500 rent 100;
+
+// Jugadores con diferentes estrategias
+player 1 money 1000 position 0 strategy "aggressive";
+player 2 money 1000 position 5 strategy "random";
+
+// Dados con diferentes lados
+dice 8 sides;
+
+// Simulación que usa todas las construcciones
+simulate 5 turns {
+    // Variables de diferentes tipos
+    int score = 100;
+    string message = "Hello World";
+    bool active = true;
+    
+    // Print y Log
+    print "Game started";
+    log "Player 1 moved";
+    
+    // Estructuras condicionales
+    if (score) then {
+        print "High score!";
+        log "Achievement unlocked";
+    }
+    
+    if (active) then {
+        print "Game is active";
+        log "Continue playing";
+    } else {
+        print "Game paused";
+        log "Player inactive";
+    }
+    
+    // Bucles
+    for i in 1 to 5 {
+        print "Turn number";
+        log "Processing turn";
+    }
+    
+    while (active) {
+        print "Still playing";
+        log "Score remaining";
+    }
+}
