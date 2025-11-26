@@ -174,11 +174,13 @@ ComputationResult executeBoardSim(CompilerState * compilerState) {
 	logDebugging(_logger, "executeBoardSim called with compilerState: %p", (void*)compilerState);
 	
 	// Check if this is a BoardSim program (ASTNode with NODE_TYPE_SIMULATE_BLOCK) vs Calculator program
-	if (compilerState->abstractSyntaxtTree != NULL) {
+	if (compilerState != NULL && compilerState->abstractSyntaxtTree != NULL) {
 		ASTNode* rootNode = (ASTNode*)compilerState->abstractSyntaxtTree;
-		logDebugging(_logger, "AST root node type: %d", rootNode->nodeType);
 		
-		if (rootNode->nodeType == NODE_TYPE_SIMULATE_BLOCK) {
+		// Add safety check for nodeType access
+		if (rootNode != NULL && rootNode->nodeType == NODE_TYPE_SIMULATE_BLOCK) {
+			logDebugging(_logger, "AST root node type: %d (SIMULATE_BLOCK)", rootNode->nodeType);
+			
 			// This is a BoardSim program - run full simulation
 			logDebugging(_logger, "Executing BoardSim simulation...");
 			logDebugging(_logger, "Detected during parsing: %d players, %d dice, %d boards", 
@@ -203,12 +205,15 @@ ComputationResult executeBoardSim(CompilerState * compilerState) {
 			destroySimulationState(simState);
 			
 			return result;
+		} else {
+			logDebugging(_logger, "Not a BoardSim program (nodeType: %d), treating as Calculator", 
+						 rootNode != NULL ? rootNode->nodeType : -1);
 		}
 	}
 	
 	// This is a Calculator program - use existing logic
 	// For now, return error since we don't have proper Program structure
-	logDebugging(_logger, "Not a BoardSim program, returning error");
+	logDebugging(_logger, "Calculator program detected, returning error (not implemented)");
 	ComputationResult result = { .succeeded = false, .value = -1 };
 	return result;
 }

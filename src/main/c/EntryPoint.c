@@ -40,6 +40,7 @@ const int main(const int length, const char ** arguments) {
 		// ----------------------------------------------------------------------------------------
 		// Beginning of the Backend... ------------------------------------------------------------
 		logDebugging(logger, "Computing expression value...");
+
 		logDebugging(logger, "Calling executeBoardSim...");
 		ComputationResult computationResult = executeBoardSim(&compilerState);
 		if (computationResult.succeeded) {
@@ -58,10 +59,12 @@ const int main(const int length, const char ** arguments) {
 		compilationStatus = FAILED;
 	}
 	logDebugging(logger, "Releasing AST resources...");
-	// Clean up AST if it exists
-	if (compilerState.abstractSyntaxtTree != NULL) {
+	// Clean up AST if it exists and compilation succeeded
+	if (compilationStatus == SUCCEEDED && compilerState.abstractSyntaxtTree != NULL) {
 		ASTNode* rootNode = (ASTNode*)compilerState.abstractSyntaxtTree;
-		destroyASTNode(rootNode);
+		if (rootNode != NULL) {
+			destroyASTNode(rootNode);
+		}
 	}
 	for (int k = (sizeof(moduleDestructors)/sizeof(ModuleDestructor)) - 1; 0 <= k; --k) {
 		moduleDestructors[k]();

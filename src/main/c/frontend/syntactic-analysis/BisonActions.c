@@ -127,6 +127,8 @@ Program * BoardSimProgramSemanticAction(TokenLabel token) {
 	Program * program = calloc(1, sizeof(Program));
 	program->expression = NULL;
 	
+	_logSyntacticAnalyzerAction(__FUNCTION__);
+	
 	return program;
 }
 

@@ -1,0 +1,6 @@
+board TestBoard loop 4;
+cell 0 "Start";
+player 1 money 100 position 0;
+dice 6 sides;
+simulate 2 turns {
+}

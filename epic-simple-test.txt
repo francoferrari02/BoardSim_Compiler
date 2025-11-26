@@ -13,17 +13,16 @@ Sample locations:
   ... and 20 more locations
 ==========================
 === Turn 1 ===
-Player 1 rolls 4
-Player 1 moves to position 4 (Volcano_Peak)
-*** Player 1 WINS with 100 points! ***
+Player 1 rolls 6
+Player 1 moves to position 6 (Ancient_Ruins)
+Player 1 fell into trap at Ancient_Ruins (-5 points)
 === Turn 2 ===
-Player 1 rolls 5
-Player 1 moves to position 9 (Sunken_Ship)
-*** Player 1 WINS with 100 points! ***
+Player 1 rolls 4
+Player 1 moves to position 10 (Whispering_Woods)
 === Final Results ===
 Game: Adventure_Island
 Completed after 2 turns (max: 2)
 
 Final Player Status:
-  Player 1: Money=100, Properties=0, Position=9 (Sunken_Ship)
+  Player 1: Money=95, Properties=0, Position=10 (Whispering_Woods)
 ===================
