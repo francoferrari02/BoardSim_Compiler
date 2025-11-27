@@ -201,19 +201,66 @@ CompilationStatus IdentifierLexemeAction() {
 	return status;
 }
 
-CompilationStatus StringLiteralLexemeAction() {
+// String buffer for accumulating string content (Flex context approach)
+static char* _stringBuffer = NULL;
+static int _stringBufferLen = 0;
+static int _stringBufferCap = 0;
+
+static void _initStringBuffer() {
+	_stringBufferCap = 256;
+	_stringBuffer = calloc(_stringBufferCap, sizeof(char));
+	_stringBufferLen = 0;
+}
+
+static void _appendToStringBuffer(const char* text, int len) {
+	if (_stringBuffer == NULL) _initStringBuffer();
+	
+	// Grow buffer if needed
+	while (_stringBufferLen + len + 1 > _stringBufferCap) {
+		_stringBufferCap *= 2;
+		_stringBuffer = realloc(_stringBuffer, _stringBufferCap);
+	}
+	
+	memcpy(_stringBuffer + _stringBufferLen, text, len);
+	_stringBufferLen += len;
+	_stringBuffer[_stringBufferLen] = '\0';
+}
+
+static char* _finalizeStringBuffer() {
+	char* result = _stringBuffer ? strdup(_stringBuffer) : strdup("");
+	if (_stringBuffer) {
+		free(_stringBuffer);
+		_stringBuffer = NULL;
+	}
+	_stringBufferLen = 0;
+	_stringBufferCap = 0;
+	return result;
+}
+
+CompilationStatus EnterStringLexemeAction(FlexContext context) {
+	// Start collecting string content (opening quote already consumed by Flex)
+	_initStringBuffer();
+	enterLexicalAnalyzerContext(_lexicalAnalyzer, context);
+	return IN_PROGRESS;
+}
+
+CompilationStatus AppendStringLexemeAction() {
+	// Append matched text to string buffer (Flex handles the content, no manual parsing!)
+	Token * token = createToken(_lexicalAnalyzer, IGNORED);
+	_appendToStringBuffer(token->lexeme, token->length);
+	destroyToken(token);
+	return IN_PROGRESS;
+}
+
+CompilationStatus LeaveStringLexemeAction() {
+	// Closing quote found - create token with accumulated content
+	leaveLexicalAnalyzerContext(_lexicalAnalyzer);
+	
 	Token * token = createToken(_lexicalAnalyzer, STRING_LITERAL);
 	token->semanticValue->token = STRING_LITERAL;
 	
-	// Extract string content without quotes (lexeme is "content")
-	int len = token->length;
-	if (len >= 2) {
-		// Allocate space for string without quotes
-		token->semanticValue->string = calloc(len - 1, sizeof(char));
-		strncpy(token->semanticValue->string, token->lexeme + 1, len - 2);
-	} else {
-		token->semanticValue->string = calloc(1, sizeof(char));
-	}
+	// String content is already clean (no quotes!) thanks to Flex context
+	token->semanticValue->string = _finalizeStringBuffer();
 	
 	_logTokenAction(__FUNCTION__, token);
 	CompilationStatus status = pushToken(_lexicalAnalyzer, token);

@@ -22,6 +22,12 @@ CompilationStatus BoardSimKeywordLexemeAction(TokenLabel label);
 CompilationStatus ComparisonOperatorLexemeAction(TokenLabel label);
 CompilationStatus DelimiterLexemeAction(TokenLabel label);
 CompilationStatus IdentifierLexemeAction();
-CompilationStatus StringLiteralLexemeAction();
+
+/**
+ * String literal handling with Flex context (proper solution - no manual quote stripping!)
+ */
+CompilationStatus EnterStringLexemeAction(FlexContext context);
+CompilationStatus AppendStringLexemeAction();
+CompilationStatus LeaveStringLexemeAction();
 
 #endif

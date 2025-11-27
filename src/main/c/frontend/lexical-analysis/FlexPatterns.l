@@ -34,7 +34,11 @@ extern CompilationStatus LogicalOperatorLexemeAction(TokenLabel label);
 extern CompilationStatus AssignmentOperatorLexemeAction(TokenLabel label);
 extern CompilationStatus DelimiterLexemeAction(TokenLabel label);
 extern CompilationStatus IdentifierLexemeAction();
-extern CompilationStatus StringLiteralLexemeAction();
+
+// String literal handling with Flex context (no manual quote stripping!)
+extern CompilationStatus EnterStringLexemeAction(FlexContext context);
+extern CompilationStatus AppendStringLexemeAction();
+extern CompilationStatus LeaveStringLexemeAction();
 
 %}
 
@@ -45,6 +49,7 @@ extern CompilationStatus StringLiteralLexemeAction();
  */
 %x IMPORT_EXPRESSION
 %x MULTILINE_COMMENT
+%x STRING_STATE
 
 /**
  * Reusable patterns.
@@ -131,7 +136,13 @@ comment_multi_end	\*\/
 
 [a-zA-Z_][a-zA-Z0-9_]*				{ return IdentifierLexemeAction(); }
 [[:digit:]]+						{ return IntegerLexemeAction(); }
-\"[^\"]*\"							{ return StringLiteralLexemeAction(); }
+
+\"									{ return EnterStringLexemeAction(STRING_STATE); }
+<STRING_STATE>[^\"\\]+				{ return AppendStringLexemeAction(); }
+<STRING_STATE>\\\"					{ return AppendStringLexemeAction(); }
+<STRING_STATE>\\\\					{ return AppendStringLexemeAction(); }
+<STRING_STATE>\"					{ return LeaveStringLexemeAction(); }
+
 \/\/.*								{ return IgnoredLexemeAction(); }
 {whitespace}						{ return IgnoredLexemeAction(); }
 .									{ return UnknownLexemeAction(); }
