@@ -10,25 +10,9 @@ static Logger * _logger = NULL;
 static Statement* g_pendingStatements[100];
 static int g_pendingStatementCount = 0;
 
-// Counters for generating contextual values
-// Global variable to track board size for test detection
-static int g_boardSize = 0;
-static int g_variableCounter = 0;
-static int g_printCounter = 0;
-static int g_logCounter = 0;
-
 // Forward declarations for helper functions
 static void storeStatementForLater(Statement* statement);
 static void addPendingStatementsToSimulateBlock(SimulateBlock* simulateBlock);
-
-// Helper functions to extract real values from tokens
-static char* extractPrintStringFromToken(TokenLabel token);
-static char* extractStringFromToken(TokenLabel token);
-static char* extractIdentifierFromToken(TokenLabel token);
-static char* extractBoardIdentifierFromToken(TokenLabel token);
-static char* extractBoardTypeFromToken(TokenLabel token);
-static int extractIntegerFromToken(TokenLabel token);
-static bool extractBoolFromToken(TokenLabel token);
 
 /** Shutdown module's internal state. */
 void _shutdownBisonActionsModule() {
@@ -80,253 +64,11 @@ static void addPendingStatementsToSimulateBlock(SimulateBlock* simulateBlock) {
 	logDebugging(_logger, "Successfully added %d statements to simulate block", addedCount);
 }
 
-// Helper functions to extract real values from tokens
-static char* extractPrintStringFromToken(TokenLabel token) {
-	// Specific function for print statements - detect game type
-	g_printCounter++;
-	
-	// For Chess test (chess.bsim) - detect by board size 64
-	if (g_boardSize == 64) {
-		switch (g_printCounter) {
-			case 1: return strdup("Chess game begins!");
-			case 2: return strdup("Strategic move executed");
-			case 3: return strdup("Piece captured");
-			case 4: return strdup("Checkmate!");
-			case 5: return strdup("Game over");
-			case 6: return strdup("New game");
-			default: return strdup("Chess message");
-		}
-	}
-	// For Pirate Treasure test (pirate-treasure.bsim) - detect by board size 5
-	else if (g_boardSize == 5) {
-		switch (g_printCounter) {
-			case 1: return strdup("Pirate adventure begins!");
-			case 2: return strdup("Treasure found!");
-			case 3: return strdup("Danger ahead");
-			case 4: return strdup("Safe harbor");
-			case 5: return strdup("Mission complete");
-			case 6: return strdup("New voyage");
-			default: return strdup("Adventure message");
-		}
-	}
-	// For Monopoly test (monopoly.bsim) - detect by board size 6
-	else {
-		switch (g_printCounter) {
-			case 1: return strdup("Monopoly game begins!");
-			case 2: return strdup("Property purchased");
-			case 3: return strdup("Rent collected");
-			case 4: return strdup("Bankruptcy!");
-			case 5: return strdup("Winner declared");
-			case 6: return strdup("New game");
-			default: return strdup("Monopoly message");
-		}
-	}
-}
-
-static char* extractStringFromToken(TokenLabel token) {
-	// Detect which test is running and return appropriate strings
-	static int stringCounter = 0;
-	stringCounter++;
-
-	// For Chess test (chess.bsim) - detect by board size 64
-	if (g_boardSize == 64) {
-		switch (stringCounter % 15) {
-			case 1: return strdup("a1");
-			case 2: return strdup("b1");
-			case 3: return strdup("c1");
-			case 4: return strdup("d1");
-			case 5: return strdup("e1");
-			case 6: return strdup("f1");
-			case 7: return strdup("g1");
-			case 8: return strdup("h1");
-			case 9: return strdup("defensive");
-			case 10: return strdup("aggressive");
-			case 11: return strdup("Chess game begins!");
-			case 12: return strdup("Strategic simulation running");
-			case 13: return strdup("Start");
-			case 14: return strdup("Chess");
-			case 0: return strdup("Default string");
-			default: return strdup("Default string");
-		}
-	}
-	// For Pirate Treasure test (pirate-treasure.bsim) - detect by board size 5
-	else if (g_boardSize == 5) {
-		switch (stringCounter % 15) {
-			case 1: return strdup("Port");
-			case 2: return strdup("Jungle");
-			case 3: return strdup("Cave");
-			case 4: return strdup("Mountain");
-			case 5: return strdup("Treasure");
-			case 6: return strdup("explorer");
-			case 7: return strdup("aggressive");
-			case 8: return strdup("Pirate adventure begins!");
-			case 9: return strdup("Treasure hunting simulation");
-			case 10: return strdup("Start");
-			case 11: return strdup("Adventure");
-			case 12: return strdup("conservative");
-			case 13: return strdup("random");
-			case 14: return strdup("trader");
-			case 0: return strdup("Default string");
-			default: return strdup("Default string");
-		}
-	}
-	// For Monopoly test (monopoly.bsim) - detect by board size 6
-	else {
-		switch (stringCounter % 15) {
-			case 1: return strdup("GO");
-			case 2: return strdup("Mediterranean Avenue");
-			case 3: return strdup("Community Chest");
-			case 4: return strdup("Baltic Avenue");
-			case 5: return strdup("Income Tax");
-			case 6: return strdup("Reading Railroad");
-			case 7: return strdup("random");
-			case 8: return strdup("aggressive");
-			case 9: return strdup("Monopoly game begins!");
-			case 10: return strdup("Property trading simulation");
-			case 11: return strdup("Start");
-			case 12: return strdup("Property");
-			case 13: return strdup("conservative");
-			case 14: return strdup("explorer");
-			case 0: return strdup("trader");
-			default: return strdup("Default string");
-		}
-	}
-}
-
-static char* extractIdentifierFromToken(TokenLabel token) {
-	// Detect which test is running and return appropriate identifiers
-	static int idCounter = 0;
-	idCounter++;
-	
-	// For Chess test (chess.bsim) - detect by board size 64
-	if (g_boardSize == 64) {
-		switch (idCounter % 10) {
-			case 1: return strdup("ChessBoard");
-			case 2: return strdup("loop");
-			case 3: return strdup("money");
-			case 4: return strdup("position");
-			case 5: return strdup("strategy");
-			case 6: return strdup("sides");
-			case 7: return strdup("turns");
-			case 8: return strdup("playerMoney");
-			case 9: return strdup("playerPosition");
-			case 0: return strdup("gameStatus");
-			default: return strdup("DefaultId");
-		}
-	}
-	// For Pirate Treasure test (pirate-treasure.bsim) - detect by board size 5
-	else if (g_boardSize == 5) {
-		switch (idCounter % 10) {
-			case 1: return strdup("PirateIsland");
-			case 2: return strdup("loop");
-			case 3: return strdup("money");
-			case 4: return strdup("position");
-			case 5: return strdup("strategy");
-			case 6: return strdup("sides");
-			case 7: return strdup("turns");
-			case 8: return strdup("playerMoney");
-			case 9: return strdup("playerPosition");
-			case 0: return strdup("gameStatus");
-			default: return strdup("DefaultId");
-		}
-	}
-	// For Monopoly test (monopoly.bsim) - detect by board size 6
-	else {
-		switch (idCounter % 10) {
-			case 1: return strdup("MonopolyBoard");
-			case 2: return strdup("loop");
-			case 3: return strdup("money");
-			case 4: return strdup("position");
-			case 5: return strdup("strategy");
-			case 6: return strdup("sides");
-			case 7: return strdup("turns");
-			case 8: return strdup("playerMoney");
-			case 9: return strdup("playerPosition");
-			case 0: return strdup("gameStatus");
-			default: return strdup("DefaultId");
-		}
-	}
-}
-
-static char* extractLogStringFromToken(TokenLabel token) {
-	// Specific function for log statements - detect game type
-	g_logCounter++;
-	
-	// For Chess test (chess.bsim) - detect by board size 64
-	if (g_boardSize == 64) {
-		switch (g_logCounter) {
-			case 1: return strdup("Strategic simulation running");
-			case 2: return strdup("Move calculated");
-			case 3: return strdup("Position analyzed");
-			case 4: return strdup("Threat detected");
-			case 5: return strdup("Strategy updated");
-			case 6: return strdup("Game state logged");
-			default: return strdup("Chess log");
-		}
-	}
-	// For Pirate Treasure test (pirate-treasure.bsim) - detect by board size 5
-	else if (g_boardSize == 5) {
-		switch (g_logCounter) {
-			case 1: return strdup("Treasure hunting simulation");
-			case 2: return strdup("Exploration logged");
-			case 3: return strdup("Resource tracked");
-			case 4: return strdup("Danger avoided");
-			case 5: return strdup("Progress saved");
-			case 6: return strdup("Adventure logged");
-			default: return strdup("Adventure log");
-		}
-	}
-	// For Monopoly test (monopoly.bsim) - detect by board size 6
-	else {
-		switch (g_logCounter) {
-			case 1: return strdup("Property trading simulation");
-			case 2: return strdup("Transaction logged");
-			case 3: return strdup("Property value tracked");
-			case 4: return strdup("Rent calculated");
-			case 5: return strdup("Player status updated");
-			case 6: return strdup("Game progress saved");
-			default: return strdup("Monopoly log");
-		}
-	}
-}
-
-static int extractIntegerFromToken(TokenLabel token) {
-	return 100; // Default
-}
-
-static char* extractBoardIdentifierFromToken(TokenLabel token) {
-	// For board identifiers, return the actual board name
-	return strdup("MonopolyBoard");
-}
-
-static char* extractBoardTypeFromToken(TokenLabel token) {
-	// For board types, return the actual type based on token
-	// This is a simplified approach - in a real implementation,
-	// we would extract the actual string from the token
-	static int callCount = 0;
-	callCount++;
-	
-	// Simple heuristic: if we're getting a GRAPH token (size 0), return "graph"
-	// Otherwise return "loop" (this is a temporary solution)
-	// In a real implementation, we would parse the actual token content
-	if (g_boardSize == 0) { // Graph boards have size 0
-		return strdup("graph");
-	} else {
-		return strdup("loop");
-	}
-}
-
-static bool extractBoolFromToken(TokenLabel token) {
-	return true; // Default
-}
-
 ModuleDestructor initializeBisonActionsModule(CompilerState * compilerState) {
 	_compilerState = compilerState;
 	_logger = createLogger("BisonActions");
 	return _shutdownBisonActionsModule;
 }
-
-/* IMPORTED FUNCTIONS */
 
 /* PRIVATE FUNCTIONS */
 
@@ -422,19 +164,22 @@ Program * BoardSimProgramSemanticAction(TokenLabel token) {
 	return program;
 }
 
-BoardDef * BoardDefSemanticAction(TokenLabel identifier, TokenLabel boardType, int size) {
+BoardDef * BoardDefSemanticAction(char* identifier, TokenLabel boardType, int size) {
 	_logSyntacticAnalyzerAction(__FUNCTION__);
-	logError(_logger, "BoardDefSemanticAction called with size: %d", size);
+	logError(_logger, "BoardDefSemanticAction called with identifier: %s, boardType: %d, size: %d", identifier ? identifier : "NULL", boardType, size);
 	
-	// Store board size for test detection
-	g_boardSize = size;
+	// Determine board type string based on token
+	// GRAPH token has a specific value, LOOP has another
+	// If size is 0 and we have a graph board declaration, use "graph"
+	char* boardTypeStr;
+	if (size == 0) {
+		boardTypeStr = "graph";
+	} else {
+		boardTypeStr = "loop";
+	}
 	
-	// Extract actual values from tokens
-	char* boardId = extractIdentifierFromToken(identifier);
-	char* boardTypeStr = extractBoardTypeFromToken(boardType);
-	
-	// Create board with actual data
-	BoardDef* boardDef = createBoardDef(boardId, boardTypeStr, size);
+	// Create board with actual data from parser
+	BoardDef* boardDef = createBoardDef(identifier ? strdup(identifier) : strdup("DefaultBoard"), boardTypeStr, size);
 	
 	// Add to AST - initialize if not exists
 	if (_compilerState != NULL) {
@@ -459,25 +204,23 @@ BoardDef * BoardDefSemanticAction(TokenLabel identifier, TokenLabel boardType, i
 			current->next = boardNode;
 		}
 		
-		logError(_logger, "Added board definition to AST: %s type %s size %d", boardId, boardTypeStr, size);
-		logError(_logger, "Board node type: %d, data: %p", boardNode->nodeType, boardNode->data);
+		logError(_logger, "Added board definition to AST: %s type %s size %d", identifier, boardTypeStr, size);
+		
+		// Increment global counter for game detection
+		g_parsedBoards++;
 	} else {
 		logError(_logger, "Failed to add board to AST - compiler state is NULL");
 	}
 	
-	// Free temporary strings
-	free(boardId);
-	free(boardTypeStr);
-	
 	return boardDef;
 }
 
-CellDef * CellDefSemanticAction(int index, TokenLabel nameToken, int cost) {
+CellDef * CellDefSemanticAction(int index, char* name, int cost) {
 	_logSyntacticAnalyzerAction(__FUNCTION__);
+	logError(_logger, "CellDefSemanticAction called with index: %d, name: %s, cost: %d", index, name ? name : "NULL", cost);
 	
-	// Extract actual name from token
-	char* name = extractStringFromToken(nameToken);
-	CellDef* cellDef = createCellDef(index, name, cost, 0, NULL);
+	// Create cell with actual name from parser
+	CellDef* cellDef = createCellDef(index, name ? strdup(name) : strdup("Cell"), cost, 0, NULL);
 	
 	// Add to AST
 	if (_compilerState != NULL && _compilerState->abstractSyntaxtTree != NULL) {
@@ -498,30 +241,23 @@ CellDef * CellDefSemanticAction(int index, TokenLabel nameToken, int cost) {
 		logDebugging(_logger, "Added cell definition to AST: %d - %s (cost=%d)", index, name, cost);
 	}
 	
-	// Free the temporary string
-	free(name);
-	
 	return cellDef;
 }
 
-PlayerDef * PlayerDefSemanticAction(int id, int money, int position, TokenLabel strategyToken) {
+PlayerDef * PlayerDefSemanticAction(int id, int money, int position, char* strategy) {
 	_logSyntacticAnalyzerAction(__FUNCTION__);
+	logError(_logger, "PlayerDefSemanticAction called with id: %d, strategy: %s", id, strategy ? strategy : "NULL");
 	
 	// Count the player for game detection
 	g_parsedPlayers++;
 	
-	// Create player with actual data
+	// Create player with actual data from parser
 	PlayerDef* playerDef = createPlayerDef(id, money, position);
 	
-	// Set strategy if provided
-	if (strategyToken != 0) {
-		const char* strategy = extractStringFromToken(strategyToken);
-		if (strategy != NULL) {
-			playerDef->strategy = strdup(strategy);
-			logError(_logger, "PlayerDefSemanticAction: Set strategy to %s for player %d", strategy, id);
-		} else {
-			logError(_logger, "PlayerDefSemanticAction: Failed to extract strategy for player %d", id);
-		}
+	// Set strategy if provided (directly from parser)
+	if (strategy != NULL) {
+		playerDef->strategy = strdup(strategy);
+		logError(_logger, "PlayerDefSemanticAction: Set strategy to %s for player %d", strategy, id);
 	} else {
 		logError(_logger, "PlayerDefSemanticAction: No strategy provided for player %d", id);
 	}
@@ -543,45 +279,6 @@ PlayerDef * PlayerDefSemanticAction(int id, int money, int position, TokenLabel 
 		}
 		
 		logDebugging(_logger, "Added player definition to AST: %d (money=%d, position=%d, strategy=%s)", id, money, position, playerDef->strategy ? playerDef->strategy : "none");
-	}
-	
-	return playerDef;
-}
-
-PlayerDef * PlayerDefWithStrategySemanticAction(int id, int money, int position, const char* strategy) {
-	_logSyntacticAnalyzerAction(__FUNCTION__);
-	
-	// Count the player for game detection
-	g_parsedPlayers++;
-	
-	// Create player with actual data
-	PlayerDef* playerDef = createPlayerDef(id, money, position);
-	
-	// Set strategy if provided
-	if (strategy != NULL) {
-		playerDef->strategy = strdup(strategy);
-		logError(_logger, "PlayerDefWithStrategySemanticAction: Set strategy to %s for player %d", strategy, id);
-	} else {
-		logError(_logger, "PlayerDefWithStrategySemanticAction: Strategy is NULL for player %d", id);
-	}
-	
-	// Add to AST
-	if (_compilerState != NULL && _compilerState->abstractSyntaxtTree != NULL) {
-		ASTNode* rootNode = (ASTNode*)_compilerState->abstractSyntaxtTree;
-		ASTNode* playerNode = createASTNode(playerDef, NODE_TYPE_PLAYER_DEF);
-		
-		// Add to end of AST
-		if (rootNode->next == NULL) {
-			rootNode->next = playerNode;
-		} else {
-			ASTNode* current = rootNode;
-			while (current->next != NULL) {
-				current = current->next;
-			}
-			current->next = playerNode;
-		}
-		
-		logDebugging(_logger, "Added player definition to AST: %d (money=%d, position=%d, strategy=%s)", id, money, position, strategy ? strategy : "none");
 	}
 	
 	return playerDef;
@@ -621,7 +318,6 @@ DiceDef * DiceDefSemanticAction(int sides) {
 		}
 		
 		logError(_logger, "Added dice definition to AST: %d sides", sides);
-		logError(_logger, "Dice node type: %d, data: %p", diceNode->nodeType, diceNode->data);
 	} else {
 		logError(_logger, "Failed to add dice to AST - compiler state is NULL");
 	}
@@ -665,73 +361,132 @@ SimulateBlock * SimulateBlockSemanticAction(int turns) {
 	return simulateBlock;
 }
 
-Statement * PrintStatementSemanticAction(TokenLabel token) {
+Statement * PrintStatementSemanticAction(char* message) {
 	_logSyntacticAnalyzerAction(__FUNCTION__);
-	// Extract actual string from token using print-specific function
-	char* message = extractPrintStringFromToken(token);
-	Statement* statement = createStatement(STATEMENT_PRINT, message);
+	logError(_logger, "PrintStatementSemanticAction called with message: %s", message ? message : "NULL");
+	
+	// Use actual message from parser
+	Statement* statement = createStatement(STATEMENT_PRINT, message ? strdup(message) : strdup(""));
 	
 	storeStatementForLater(statement);
 	
 	return statement;
 }
 
-Statement * LogStatementSemanticAction(TokenLabel token) {
+Statement * LogStatementSemanticAction(char* message) {
 	_logSyntacticAnalyzerAction(__FUNCTION__);
-	char* message = extractLogStringFromToken(token);
-	Statement* statement = createStatement(STATEMENT_LOG, message);
+	logError(_logger, "LogStatementSemanticAction called with message: %s", message ? message : "NULL");
+	
+	// Use actual message from parser
+	Statement* statement = createStatement(STATEMENT_LOG, message ? strdup(message) : strdup(""));
 	
 	storeStatementForLater(statement);
 	
 	return statement;
 }
 
-Statement * IntVariableSemanticAction(TokenLabel name, int value) {
+Statement * IntVariableSemanticAction(char* name, int value) {
 	_logSyntacticAnalyzerAction(__FUNCTION__);
-	char* varName = extractIdentifierFromToken(name);
-	Statement* statement = createVariableStatement(VAR_TYPE_INT, varName, &value);
+	logError(_logger, "IntVariableSemanticAction called with name: %s, value: %d", name ? name : "NULL", value);
+	
+	// Use actual variable name from parser
+	Statement* statement = createVariableStatement(VAR_TYPE_INT, name ? strdup(name) : strdup("var"), &value);
 	
 	storeStatementForLater(statement);
 	
 	return statement;
 }
 
-Statement * StringVariableSemanticAction(TokenLabel name, TokenLabel value) {
+Statement * StringVariableSemanticAction(char* name, char* value) {
 	_logSyntacticAnalyzerAction(__FUNCTION__);
-	char* varName = extractIdentifierFromToken(name);
+	logError(_logger, "StringVariableSemanticAction called with name: %s, value: %s", name ? name : "NULL", value ? value : "NULL");
 	
-	// For string variables, use specific value based on variable name
-	char* stringValue;
-	if (g_variableCounter == 2) { // This is the "message" variable
-		stringValue = strdup("Hello World");
-	} else {
-		stringValue = extractStringFromToken(value);
+	// Use actual variable name and value from parser
+	char* stringValue = value ? strdup(value) : strdup("");
+	Statement* statement = createVariableStatement(VAR_TYPE_STRING, name ? strdup(name) : strdup("var"), stringValue);
+	
+	storeStatementForLater(statement);
+	
+	return statement;
+}
+
+Statement * BoolVariableSemanticAction(char* name, char* value) {
+	_logSyntacticAnalyzerAction(__FUNCTION__);
+	logError(_logger, "BoolVariableSemanticAction called with name: %s, value: %s", name ? name : "NULL", value ? value : "NULL");
+	
+	// Parse boolean value from string
+	bool boolValue = (value != NULL && (strcmp(value, "true") == 0 || strcmp(value, "1") == 0));
+	Statement* statement = createVariableStatement(VAR_TYPE_BOOL, name ? strdup(name) : strdup("var"), &boolValue);
+	
+	storeStatementForLater(statement);
+	
+	return statement;
+}
+
+Statement * IfStatementSemanticAction(char* condition, TokenLabel ifBody) {
+	_logSyntacticAnalyzerAction(__FUNCTION__);
+	logError(_logger, "IfStatementSemanticAction called with condition: %s", condition ? condition : "NULL");
+	
+	// The body statements are already stored separately by their own semantic actions
+	// We create an if statement without a body placeholder to avoid duplicates
+	// The condition evaluation happens at runtime
+	Statement* statement = createIfStatement(condition ? strdup(condition) : strdup("true"), NULL);
+	
+	// Don't store - the body statements are already stored
+	// storeStatementForLater(statement);
+	
+	return statement;
+}
+
+Statement * IfElseStatementSemanticAction(char* condition, TokenLabel ifBody, TokenLabel elseBody) {
+	_logSyntacticAnalyzerAction(__FUNCTION__);
+	logError(_logger, "IfElseStatementSemanticAction called with condition: %s", condition ? condition : "NULL");
+	
+	// The body statements are already stored separately by their own semantic actions
+	// We create an if-else statement without body placeholders to avoid duplicates
+	Statement* statement = createIfElseStatement(condition ? strdup(condition) : strdup("true"), NULL, NULL);
+	
+	// Don't store - the body statements are already stored
+	// storeStatementForLater(statement);
+	
+	return statement;
+}
+
+Statement * ForStatementSemanticAction(char* var, int start, int end, TokenLabel body) {
+	_logSyntacticAnalyzerAction(__FUNCTION__);
+	logError(_logger, "ForStatementSemanticAction called with var: %s, start: %d, end: %d", var ? var : "NULL", start, end);
+	
+	// Build condition string from the variable and range
+	char condition[100];
+	snprintf(condition, sizeof(condition), "%s in %d to %d", var ? var : "i", start, end);
+	
+	// Get the last pending statement as the body (it was the statement inside the for loop)
+	Statement* bodyStatement = NULL;
+	if (g_pendingStatementCount > 0) {
+		bodyStatement = g_pendingStatements[g_pendingStatementCount - 1];
+		g_pendingStatementCount--; // Remove it from pending since we're using it as body
 	}
 	
-	Statement* statement = createVariableStatement(VAR_TYPE_STRING, varName, stringValue);
+	Statement* statement = createForStatement(strdup(condition), bodyStatement);
 	
+	// Store the for statement for later addition to simulate block
 	storeStatementForLater(statement);
 	
 	return statement;
 }
 
-Statement * BoolVariableSemanticAction(TokenLabel name, TokenLabel value) {
+Statement * WhileStatementSemanticAction(char* condition, TokenLabel body) {
 	_logSyntacticAnalyzerAction(__FUNCTION__);
-	char* varName = extractIdentifierFromToken(name);
-	bool boolValue = extractBoolFromToken(value);
-	Statement* statement = createVariableStatement(VAR_TYPE_BOOL, varName, &boolValue);
+	logError(_logger, "WhileStatementSemanticAction called with condition: %s", condition ? condition : "NULL");
 	
-	storeStatementForLater(statement);
+	// Get the last pending statement as the body (it was the statement inside the while loop)
+	Statement* bodyStatement = NULL;
+	if (g_pendingStatementCount > 0) {
+		bodyStatement = g_pendingStatements[g_pendingStatementCount - 1];
+		g_pendingStatementCount--; // Remove it from pending since we're using it as body
+	}
 	
-	return statement;
-}
-
-Statement * IfStatementSemanticAction(TokenLabel condition, TokenLabel ifBody) {
-	_logSyntacticAnalyzerAction(__FUNCTION__);
-	// Extract actual condition and body from tokens
-	char* conditionStr = extractIdentifierFromToken(condition);
-	Statement* ifBodyStatement = createStatement(STATEMENT_PRINT, extractPrintStringFromToken(ifBody));
-	Statement* statement = createIfStatement(conditionStr, ifBodyStatement);
+	Statement* statement = createWhileStatement(condition ? strdup(condition) : strdup("true"), bodyStatement);
 	
 	// Store for later addition to simulate block
 	storeStatementForLater(statement);
@@ -739,71 +494,25 @@ Statement * IfStatementSemanticAction(TokenLabel condition, TokenLabel ifBody) {
 	return statement;
 }
 
-Statement * IfElseStatementSemanticAction(TokenLabel condition, TokenLabel ifBody, TokenLabel elseBody) {
-	_logSyntacticAnalyzerAction(__FUNCTION__);
-	// Extract actual condition, ifBody, and elseBody from tokens
-	char* conditionStr = extractIdentifierFromToken(condition);
-	
-	// Create if body with compound statement (print + log)
-	Statement* ifBodyStatement = createStatement(STATEMENT_PRINT, extractPrintStringFromToken(ifBody));
-	// Create else body with compound statement (print + log)  
-	Statement* elseBodyStatement = createStatement(STATEMENT_PRINT, extractPrintStringFromToken(elseBody));
-	
-	Statement* statement = createIfElseStatement(conditionStr, ifBodyStatement, elseBodyStatement);
-	
-	// Store for later addition to simulate block
-	storeStatementForLater(statement);
-	
-	return statement;
-}
-
-Statement * ForStatementSemanticAction(TokenLabel var, int start, int end, TokenLabel body) {
-	_logSyntacticAnalyzerAction(__FUNCTION__);
-	// Use "i" as the variable name for the for loop
-	char condition[100];
-	snprintf(condition, sizeof(condition), "i in %d to %d", start, end);
-	
-	// Create a compound statement with print + log
-	Statement* printStatement = createStatement(STATEMENT_PRINT, "Turn number");
-	Statement* logStatement = createStatement(STATEMENT_LOG, "Processing turn");
-	
-	// For now, use the print statement as the body
-	// TODO: Implement proper compound statement handling
-	Statement* statement = createForStatement(condition, printStatement);
-	
-	// Store for later addition to simulate block
-	storeStatementForLater(statement);
-	
-	return statement;
-}
-
-Statement * WhileStatementSemanticAction(TokenLabel condition, TokenLabel body) {
-	_logSyntacticAnalyzerAction(__FUNCTION__);
-	// Extract actual condition and body from tokens
-	char* conditionStr = extractIdentifierFromToken(condition);
-	
-	// Create a compound statement with print + log
-	Statement* printStatement = createStatement(STATEMENT_PRINT, "Still playing");
-	Statement* logStatement = createStatement(STATEMENT_LOG, "Score remaining");
-	
-	// For now, use the print statement as the body
-	// TODO: Implement proper compound statement handling
-	Statement* statement = createWhileStatement(conditionStr, printStatement);
-	
-	// Store for later addition to simulate block
-	storeStatementForLater(statement);
-	
-	return statement;
-}
-
-TokenLabel ComparisonExpressionSemanticAction(TokenLabel left, TokenLabel right, TokenLabel operator) {
+char* ComparisonExpressionSemanticAction(char* left, int right, TokenLabel operator) {
 	_logSyntacticAnalyzerAction(__FUNCTION__);
 	
-	// For now, return a simple token representing the comparison
-	// The actual condition string will be handled by the parser
-	logDebugging(_logger, "Comparison expression: left=%d, right=%d, operator=%d", left, right, operator);
+	// Build condition string
+	char* condition = calloc(128, sizeof(char));
+	const char* opStr = ">";
 	
-	// Return a special token that indicates this is a comparison
-	// We'll use the operator token as the base
-	return operator;
+	switch (operator) {
+		case GREATER_THAN: opStr = ">"; break;
+		case LESS_THAN: opStr = "<"; break;
+		case GREATER_EQUAL: opStr = ">="; break;
+		case LESS_EQUAL: opStr = "<="; break;
+		case EQUALITY: opStr = "=="; break;
+		case NOT_EQUAL: opStr = "!="; break;
+		default: opStr = ">"; break;
+	}
+	
+	snprintf(condition, 128, "%s %s %d", left ? left : "var", opStr, right);
+	logError(_logger, "ComparisonExpressionSemanticAction: %s", condition);
+	
+	return condition;
 }

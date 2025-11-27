@@ -165,15 +165,15 @@ void yyerror(const YYLTYPE * location, const char * message) {}
 %type <token> board_decl
 %type <token> cell_decl
 %type <token> player_decl
-%type <token> player_strategy
+%type <string> player_strategy
 %type <token> dice_decl
 %type <token> simulate_block
 %type <token> statements
 %type <token> statement
 %type <token> variable_decl
 %type <token> if_statement
-%type <token> condition
-%type <token> comparison_expression
+%type <string> condition
+%type <string> comparison_expression
 %type <token> loop_statement
 %type <token> while_statement
 
@@ -222,8 +222,8 @@ cell_decl: CELL INTEGER STRING_LITERAL SEMICOLON								{ $$ = (TokenLabel)CellD
 player_decl: PLAYER INTEGER MONEY INTEGER POSITION INTEGER player_strategy SEMICOLON	{ $$ = (TokenLabel)PlayerDefSemanticAction($2, $4, $6, $7); }
 	;
 
-player_strategy: /* empty */									{ $$ = (TokenLabel)NULL; }
-	| STRATEGY STRING_LITERAL								{ $$ = (TokenLabel)$2; }
+player_strategy: /* empty */									{ $$ = NULL; }
+	| STRATEGY STRING_LITERAL								{ $$ = $2; }
 	;
 
 dice_decl: DICE INTEGER SIDES SEMICOLON								{ $$ = (TokenLabel)DiceDefSemanticAction($2); }
@@ -250,17 +250,17 @@ if_statement: IF OPEN_PARENTHESIS condition CLOSE_PARENTHESIS THEN OPEN_BRACE st
 	;
 
 condition: IDENTIFIER										{ $$ = $1; }
-	| INTEGER												{ $$ = $1; }
-	| STRING_LITERAL											{ $$ = $1; }
+	| INTEGER												{ char* buf = malloc(32); snprintf(buf, 32, "%d", $1); $$ = buf; }
+	| STRING_LITERAL										{ $$ = $1; }
 	| comparison_expression									{ $$ = $1; }
 	;
 
-comparison_expression: IDENTIFIER GREATER_THAN INTEGER		{ $$ = (TokenLabel)ComparisonExpressionSemanticAction($1, $3, GREATER_THAN); }
-	| IDENTIFIER LESS_THAN INTEGER							{ $$ = (TokenLabel)ComparisonExpressionSemanticAction($1, $3, LESS_THAN); }
-	| IDENTIFIER GREATER_EQUAL INTEGER						{ $$ = (TokenLabel)ComparisonExpressionSemanticAction($1, $3, GREATER_EQUAL); }
-	| IDENTIFIER LESS_EQUAL INTEGER							{ $$ = (TokenLabel)ComparisonExpressionSemanticAction($1, $3, LESS_EQUAL); }
-	| IDENTIFIER EQUALITY INTEGER							{ $$ = (TokenLabel)ComparisonExpressionSemanticAction($1, $3, EQUALITY); }
-	| IDENTIFIER NOT_EQUAL INTEGER							{ $$ = (TokenLabel)ComparisonExpressionSemanticAction($1, $3, NOT_EQUAL); }
+comparison_expression: IDENTIFIER GREATER_THAN INTEGER		{ $$ = ComparisonExpressionSemanticAction($1, $3, GREATER_THAN); }
+	| IDENTIFIER LESS_THAN INTEGER							{ $$ = ComparisonExpressionSemanticAction($1, $3, LESS_THAN); }
+	| IDENTIFIER GREATER_EQUAL INTEGER						{ $$ = ComparisonExpressionSemanticAction($1, $3, GREATER_EQUAL); }
+	| IDENTIFIER LESS_EQUAL INTEGER							{ $$ = ComparisonExpressionSemanticAction($1, $3, LESS_EQUAL); }
+	| IDENTIFIER EQUALITY INTEGER							{ $$ = ComparisonExpressionSemanticAction($1, $3, EQUALITY); }
+	| IDENTIFIER NOT_EQUAL INTEGER							{ $$ = ComparisonExpressionSemanticAction($1, $3, NOT_EQUAL); }
 	;
 
 loop_statement: FOR IDENTIFIER IN INTEGER TO INTEGER OPEN_BRACE statements CLOSE_BRACE	{ $$ = (TokenLabel)ForStatementSemanticAction($2, $4, $6, $8); }

@@ -269,13 +269,15 @@ SimulationState* createSimulationState() {
 		return NULL;
 	}
 	
-	// Initialize default values
-	state->playerCount = 2; // Default 2 players for demo
-	state->maxTurns = 5;    // Default max turns for demo
+	// Initialize with dynamic values from parsing (use globals set during parsing)
+	// These will be overwritten by initializeGameFromAST with actual values from AST
+	state->playerCount = g_parsedPlayers > 0 ? g_parsedPlayers : 1;
+	state->maxTurns = g_simulateTurns > 0 ? g_simulateTurns : 1;
 	state->gameActive = true;
 	
-	// Allocate players array
-	state->players = calloc(state->playerCount, sizeof(Player));
+	// Allocate players array with enough space
+	int maxPlayers = state->playerCount > 0 ? state->playerCount : 10;
+	state->players = calloc(maxPlayers, sizeof(Player));
 	if (state->players == NULL) {
 		logError(_logger, "Failed to allocate memory for players");
 		free(state);
@@ -351,8 +353,8 @@ void initializeGameFromAST(SimulationState* state, CompilerState* compilerState)
 	
 	if (state->board == NULL) {
 		logError(_logger, "No board found in AST - creating default board");
-		// Create default board for CompleteTest
-		state->board = createRuntimeBoard("CompleteTest", "loop", 10);
+		// Create default board based on parsing context (avoid hardcoded name)
+		state->board = createRuntimeBoard("DefaultBoard", "loop", 4);
 	}
 	
 	// Extract and configure cells from AST
@@ -405,7 +407,7 @@ void initializeGameFromAST(SimulationState* state, CompilerState* compilerState)
 	
 	// Extract dice from AST
 	current = (ASTNode*)compilerState->abstractSyntaxtTree;
-	int diceSides = 8; // Default dice sides
+	int diceSides = 6; // Default dice sides (standard 6-sided die)
 	logError(_logger, "Starting dice extraction from AST...");
 	while (current != NULL) {
 		if (current->nodeType == NODE_TYPE_DICE_DEF && current->data != NULL) {
@@ -1275,17 +1277,31 @@ static bool evaluateComparisonCondition(const char* condition, SimulationState* 
 	if (sscanf(condition, "%63s %7s %63s", varName, operator, value) == 3) {
 		logDebugging(_logger, "Parsed: var='%s', op='%s', val='%s'", varName, operator, value);
 		
-		// Get variable value from state
+		// Get variable value from actual simulation state (not hardcoded!)
 		int varValue = 0;
 		if (strcmp(varName, "score") == 0) {
-			varValue = 100; // Default score value
+			// Score is calculated based on total money of all players
+			for (int i = 0; i < state->playerCount; i++) {
+				varValue += state->players[i].money;
+			}
+			varValue = varValue / (state->playerCount > 0 ? state->playerCount : 1);
 		} else if (strcmp(varName, "money") == 0) {
-			varValue = 1000; // Default money value
+			// Get money from first player (or current player context)
+			if (state->playerCount > 0) {
+				varValue = state->players[0].money;
+			}
 		} else if (strcmp(varName, "active") == 0) {
-			varValue = 1; // Boolean true
+			// Check if game is still active
+			varValue = state->gameActive ? 1 : 0;
+		} else if (strcmp(varName, "turn") == 0) {
+			// Current turn number
+			varValue = state->currentTurn;
+		} else if (strcmp(varName, "players") == 0) {
+			// Number of players
+			varValue = state->playerCount;
 		} else {
-			logDebugging(_logger, "Unknown variable: %s", varName);
-			return false;
+			logDebugging(_logger, "Unknown variable: %s, defaulting to 0", varName);
+			varValue = 0;
 		}
 		
 		// Parse comparison value
@@ -1315,8 +1331,15 @@ static bool evaluateComparisonCondition(const char* condition, SimulationState* 
 	}
 	
 	// Fallback: simple variable check (for backward compatibility)
-	if (strcmp(condition, "score") == 0 || strcmp(condition, "active") == 0) {
-		return true;
+	if (strcmp(condition, "score") == 0) {
+		// Score > 0 if any player has money
+		for (int i = 0; i < state->playerCount; i++) {
+			if (state->players[i].money > 0) return true;
+		}
+		return false;
+	}
+	if (strcmp(condition, "active") == 0) {
+		return state->gameActive;
 	}
 	
 	logDebugging(_logger, "Could not parse condition: %s", condition);
