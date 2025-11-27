@@ -1,0 +1,83 @@
+// Test completo que usa TODAS las características implementadas de BoardSim
+
+// Board con loop y tamaño
+board CompleteGame loop 8;
+
+// Celdas con diferentes combinaciones: solo nombre, con cost, con cost y rent
+cell 0 "Start" cost 0;
+cell 1 "Property A" cost 100 rent 10;
+cell 2 "Property B" cost 200 rent 25;
+cell 3 "Jail" cost 0;
+cell 4 "Property C" cost 150 rent 15;
+cell 5 "Tax" cost 50;
+cell 6 "Property D" cost 300 rent 40;
+cell 7 "Go to Start";
+
+// Jugadores con money, position y strategy
+player 1 money 1500 position 0 strategy "aggressive";
+player 2 money 1500 position 0 strategy "random";
+player 3 money 1000 position 2;
+
+// Dado con sides
+dice 6 sides;
+
+// Bloque simulate con turns y múltiples statements
+simulate 5 turns {
+    // Variables de diferentes tipos
+    int turnCount = 1;
+    string gameName = "CompleteGame";
+    bool isActive = true;
+
+    // Print y Log
+    print "Game simulation started";
+    log "Initializing game state";
+
+    // If simple con identificador booleano
+    if (isActive) then {
+        print "Game is active";
+    }
+
+    // If con comparación > y else
+    if (turnCount > 0) then {
+        print "Turn count is positive";
+    } else {
+        print "No turns yet";
+    }
+
+    // For loop
+    for i in 1 to 3 {
+        print "Iteration";
+    }
+
+    // While loop (condition that will be false after variable storage)
+    while (turn > 10) {
+        print "Processing extra turn";
+    }
+
+    // Comparación >=
+    if (score >= 100) then {
+        log "High score achieved";
+    }
+
+    // Comparación <=
+    if (score <= 500) then {
+        log "Score in range";
+    }
+
+    // Comparación ==
+    if (turnCount == 1) then {
+        print "First turn";
+    }
+
+    // Comparación !=
+    if (turnCount != 0) then {
+        print "Game in progress";
+    }
+
+    // Comparación <
+    if (score < 1000) then {
+        print "Score below threshold";
+    }
+
+    print "Simulation complete";
+}

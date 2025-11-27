@@ -88,6 +88,19 @@ typedef struct {
 } Rule;
 
 /**
+ * Simple variable storage for user-declared variables.
+ */
+typedef struct {
+	char* name;
+	int intValue;
+	char* stringValue;
+	bool boolValue;
+	int type;  // 0=int, 1=string, 2=bool
+} RuntimeVariable;
+
+#define MAX_RUNTIME_VARIABLES 64
+
+/**
  * BoardSim simulation state - holds all runtime game data.
  */
 typedef struct {
@@ -99,6 +112,8 @@ typedef struct {
 	int maxTurns;
 	bool gameActive;
 	FILE* outputFile;  // For logging simulation results
+	RuntimeVariable variables[MAX_RUNTIME_VARIABLES];
+	int variableCount;
 } SimulationState;
 
 typedef struct {

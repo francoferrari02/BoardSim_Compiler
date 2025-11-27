@@ -427,13 +427,15 @@ Statement * IfStatementSemanticAction(char* condition, TokenLabel ifBody) {
 	_logSyntacticAnalyzerAction(__FUNCTION__);
 	logError(_logger, "IfStatementSemanticAction called with condition: %s", condition ? condition : "NULL");
 	
-	// The body statements are already stored separately by their own semantic actions
-	// We create an if statement without a body placeholder to avoid duplicates
-	// The condition evaluation happens at runtime
-	Statement* statement = createIfStatement(condition ? strdup(condition) : strdup("true"), NULL);
+	// Get the last pending statement as the if body
+	Statement* bodyStatement = NULL;
+	if (g_pendingStatementCount > 0) {
+		bodyStatement = g_pendingStatements[g_pendingStatementCount - 1];
+		g_pendingStatementCount--;
+	}
 	
-	// Don't store - the body statements are already stored
-	// storeStatementForLater(statement);
+	Statement* statement = createIfStatement(condition ? strdup(condition) : strdup("true"), bodyStatement);
+	storeStatementForLater(statement);
 	
 	return statement;
 }
@@ -442,12 +444,21 @@ Statement * IfElseStatementSemanticAction(char* condition, TokenLabel ifBody, To
 	_logSyntacticAnalyzerAction(__FUNCTION__);
 	logError(_logger, "IfElseStatementSemanticAction called with condition: %s", condition ? condition : "NULL");
 	
-	// The body statements are already stored separately by their own semantic actions
-	// We create an if-else statement without body placeholders to avoid duplicates
-	Statement* statement = createIfElseStatement(condition ? strdup(condition) : strdup("true"), NULL, NULL);
+	// Get the last two pending statements: first is elseBody, second is ifBody
+	Statement* elseBodyStatement = NULL;
+	Statement* ifBodyStatement = NULL;
 	
-	// Don't store - the body statements are already stored
-	// storeStatementForLater(statement);
+	if (g_pendingStatementCount > 0) {
+		elseBodyStatement = g_pendingStatements[g_pendingStatementCount - 1];
+		g_pendingStatementCount--;
+	}
+	if (g_pendingStatementCount > 0) {
+		ifBodyStatement = g_pendingStatements[g_pendingStatementCount - 1];
+		g_pendingStatementCount--;
+	}
+	
+	Statement* statement = createIfElseStatement(condition ? strdup(condition) : strdup("true"), ifBodyStatement, elseBodyStatement);
+	storeStatementForLater(statement);
 	
 	return statement;
 }

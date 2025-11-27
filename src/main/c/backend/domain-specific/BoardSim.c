@@ -1174,20 +1174,30 @@ static void executeVariableStatement(Statement* statement, SimulationState* stat
 	if (statement->data.variable != NULL) {
 		Variable* var = statement->data.variable;
 		if (var->name != NULL) {
-			switch (var->type) {
-				case VAR_TYPE_INT:
-					logSimulationEvent(state, "VARIABLE: %s = %d (int)", var->name, var->value.intValue);
-					break;
-				case VAR_TYPE_STRING:
-					if (var->value.stringValue != NULL) {
-						logSimulationEvent(state, "VARIABLE: %s = \"%s\" (string)", var->name, var->value.stringValue);
-					} else {
-						logSimulationEvent(state, "VARIABLE: %s = NULL (string)", var->name);
-					}
-					break;
-				case VAR_TYPE_BOOL:
-					logSimulationEvent(state, "VARIABLE: %s = %s (bool)", var->name, var->value.boolValue ? "true" : "false");
-					break;
+			// Store variable in runtime state
+			if (state->variableCount < MAX_RUNTIME_VARIABLES) {
+				RuntimeVariable* rv = &state->variables[state->variableCount];
+				rv->name = strdup(var->name);
+				rv->type = var->type;
+				switch (var->type) {
+					case VAR_TYPE_INT:
+						rv->intValue = var->value.intValue;
+						logSimulationEvent(state, "VARIABLE: %s = %d (int)", var->name, var->value.intValue);
+						break;
+					case VAR_TYPE_STRING:
+						rv->stringValue = var->value.stringValue ? strdup(var->value.stringValue) : NULL;
+						if (var->value.stringValue != NULL) {
+							logSimulationEvent(state, "VARIABLE: %s = \"%s\" (string)", var->name, var->value.stringValue);
+						} else {
+							logSimulationEvent(state, "VARIABLE: %s = NULL (string)", var->name);
+						}
+						break;
+					case VAR_TYPE_BOOL:
+						rv->boolValue = var->value.boolValue;
+						logSimulationEvent(state, "VARIABLE: %s = %s (bool)", var->name, var->value.boolValue ? "true" : "false");
+						break;
+				}
+				state->variableCount++;
 			}
 		} else {
 			logSimulationEvent(state, "VARIABLE: NULL name");
@@ -1300,8 +1310,23 @@ static bool evaluateComparisonCondition(const char* condition, SimulationState* 
 			// Number of players
 			varValue = state->playerCount;
 		} else {
-			logDebugging(_logger, "Unknown variable: %s, defaulting to 0", varName);
-			varValue = 0;
+			// Search in user-declared variables
+			bool found = false;
+			for (int i = 0; i < state->variableCount; i++) {
+				if (state->variables[i].name != NULL && strcmp(state->variables[i].name, varName) == 0) {
+					if (state->variables[i].type == 0) { // int
+						varValue = state->variables[i].intValue;
+					} else if (state->variables[i].type == 2) { // bool
+						varValue = state->variables[i].boolValue ? 1 : 0;
+					}
+					found = true;
+					break;
+				}
+			}
+			if (!found) {
+				logDebugging(_logger, "Unknown variable: %s, defaulting to 0", varName);
+				varValue = 0;
+			}
 		}
 		
 		// Parse comparison value
@@ -1340,6 +1365,17 @@ static bool evaluateComparisonCondition(const char* condition, SimulationState* 
 	}
 	if (strcmp(condition, "active") == 0) {
 		return state->gameActive;
+	}
+	
+	// Check user-declared boolean variables
+	for (int i = 0; i < state->variableCount; i++) {
+		if (state->variables[i].name != NULL && strcmp(state->variables[i].name, condition) == 0) {
+			if (state->variables[i].type == 2) { // bool
+				return state->variables[i].boolValue;
+			} else if (state->variables[i].type == 0) { // int - treat non-zero as true
+				return state->variables[i].intValue != 0;
+			}
+		}
 	}
 	
 	logDebugging(_logger, "Could not parse condition: %s", condition);

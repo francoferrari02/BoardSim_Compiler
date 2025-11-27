@@ -1,0 +1,83 @@
+// TEST ULTIMATE: Verifica TODAS las características con coherencia total
+
+// Board tipo GRAPH (sin tamaño explícito)
+board UltimateArena graph;
+
+// Celdas: variedad completa de configuraciones
+cell 0 "Spawn Point";
+cell 1 "Gold Mine" cost 500 rent 50;
+cell 2 "Dark Forest" cost 100;
+cell 3 "Castle" cost 1000 rent 200;
+
+// Jugadores con diferentes configuraciones
+player 1 money 2000 position 0 strategy "aggressive";
+player 2 money 1500 position 1 strategy "random";
+player 3 money 800 position 0;
+
+// Dado de 12 caras
+dice 12 sides;
+
+// Simulación de 3 turnos
+simulate 3 turns {
+    // === VARIABLES ===
+    int maxScore = 5000;
+    int minScore = 100;
+    string arenaName = "UltimateArena";
+    bool gameStarted = true;
+
+    // === PRINTS Y LOGS ===
+    print "=== Arena Battle Begins ===";
+    log "Game initialized successfully";
+
+    // === IF SIMPLE con variable booleana ===
+    if (gameStarted) then {
+        print "Battle is ON!";
+    }
+
+    // === IF-ELSE con comparación > ===
+    if (maxScore > 1000) then {
+        print "High stakes game";
+    } else {
+        print "Low stakes game";
+    }
+
+    // === IF con comparación < ===
+    if (minScore < 500) then {
+        log "Minimum score is low";
+    }
+
+    // === IF con comparación >= ===
+    if (score >= 1000) then {
+        print "Players are wealthy";
+    }
+
+    // === IF con comparación <= ===
+    if (turn <= 3) then {
+        print "Early game phase";
+    }
+
+    // === IF con comparación == ===
+    if (minScore == 100) then {
+        print "MinScore confirmed at 100";
+    }
+
+    // === IF con comparación != ===
+    if (maxScore != 0) then {
+        log "MaxScore is non-zero";
+    }
+
+    // === FOR LOOP ===
+    for round in 1 to 2 {
+        print "Round in progress";
+    }
+
+    // === WHILE con condición falsa ===
+    while (turn > 100) {
+        print "This should NOT appear";
+    }
+
+    // === MENSAJES FINALES ===
+    print "Turn complete";
+    log "Stats recorded";
+}
+
