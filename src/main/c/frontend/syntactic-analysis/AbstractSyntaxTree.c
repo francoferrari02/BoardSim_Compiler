@@ -292,23 +292,70 @@ void destroyStatement(Statement* statement) {
 	free(statement);
 }
 
-Statement* createForStatement(char* condition, Statement* body) {
+// === COMPARISON EXPRESSION AND CONDITION FUNCTIONS ===
+
+ComparisonExpression* createComparisonExpression(char* left, int right, ComparisonOperator op) {
+	logDebugging(_logger, "Executing constructor: %s", __FUNCTION__);
+	ComparisonExpression* expr = calloc(1, sizeof(ComparisonExpression));
+	expr->leftOperand = left ? strdup(left) : NULL;
+	expr->rightOperand = right;
+	expr->op = op;
+	return expr;
+}
+
+void destroyComparisonExpression(ComparisonExpression* expr) {
+	logDebugging(_logger, "Executing destructor: %s", __FUNCTION__);
+	if (expr == NULL) return;
+	if (expr->leftOperand != NULL) free(expr->leftOperand);
+	free(expr);
+}
+
+Condition* createIdentifierCondition(char* identifier) {
+	logDebugging(_logger, "Executing constructor: %s", __FUNCTION__);
+	Condition* cond = calloc(1, sizeof(Condition));
+	cond->type = CONDITION_IDENTIFIER;
+	cond->identifier = identifier ? strdup(identifier) : NULL;
+	return cond;
+}
+
+Condition* createComparisonCondition(ComparisonExpression* comparison) {
+	logDebugging(_logger, "Executing constructor: %s", __FUNCTION__);
+	Condition* cond = calloc(1, sizeof(Condition));
+	cond->type = CONDITION_COMPARISON;
+	cond->comparison = comparison;
+	return cond;
+}
+
+void destroyCondition(Condition* condition) {
+	logDebugging(_logger, "Executing destructor: %s", __FUNCTION__);
+	if (condition == NULL) return;
+	if (condition->type == CONDITION_IDENTIFIER && condition->identifier != NULL) {
+		free(condition->identifier);
+	} else if (condition->type == CONDITION_COMPARISON && condition->comparison != NULL) {
+		destroyComparisonExpression(condition->comparison);
+	}
+	free(condition);
+}
+
+// === STATEMENT CREATION FUNCTIONS ===
+
+Statement* createForStatement(char* loopVar, int start, int end, Statement* body) {
 	logDebugging(_logger, "Executing constructor: %s", __FUNCTION__);
 	Statement* statement = calloc(1, sizeof(Statement));
 	statement->type = STATEMENT_FOR;
-	statement->data.loop = createLoopStatement("for", condition, body);
+	statement->data.loop = createLoopStatement("for", NULL, loopVar, start, end, body);
 	return statement;
 }
 
-Statement* createWhileStatement(char* condition, Statement* body) {
+Statement* createWhileStatement(Condition* condition, Statement* body) {
 	logDebugging(_logger, "Executing constructor: %s", __FUNCTION__);
 	Statement* statement = calloc(1, sizeof(Statement));
 	statement->type = STATEMENT_WHILE;
-	statement->data.loop = createLoopStatement("while", condition, body);
+	statement->data.loop = createLoopStatement("while", condition, NULL, 0, 0, body);
 	return statement;
 }
 
-Statement* createIfStatement(char* condition, Statement* ifBody) {
+Statement* createIfStatement(Condition* condition, Statement* ifBody) {
 	logDebugging(_logger, "Executing constructor: %s", __FUNCTION__);
 	Statement* statement = calloc(1, sizeof(Statement));
 	statement->type = STATEMENT_IF;
@@ -316,7 +363,7 @@ Statement* createIfStatement(char* condition, Statement* ifBody) {
 	return statement;
 }
 
-Statement* createIfElseStatement(char* condition, Statement* ifBody, Statement* elseBody) {
+Statement* createIfElseStatement(Condition* condition, Statement* ifBody, Statement* elseBody) {
 	logDebugging(_logger, "Executing constructor: %s", __FUNCTION__);
 	Statement* statement = calloc(1, sizeof(Statement));
 	statement->type = STATEMENT_IF_ELSE;
@@ -360,10 +407,10 @@ void destroyVariable(Variable* variable) {
 	free(variable);
 }
 
-ConditionalStatement* createConditionalStatement(char* condition, Statement* ifBody, Statement* elseBody) {
+ConditionalStatement* createConditionalStatement(Condition* condition, Statement* ifBody, Statement* elseBody) {
 	logDebugging(_logger, "Executing constructor: %s", __FUNCTION__);
 	ConditionalStatement* conditional = calloc(1, sizeof(ConditionalStatement));
-	conditional->condition = (condition != NULL) ? strdup(condition) : NULL;
+	conditional->condition = condition;
 	conditional->ifBody = ifBody;
 	conditional->elseBody = elseBody;
 	return conditional;
@@ -371,11 +418,9 @@ ConditionalStatement* createConditionalStatement(char* condition, Statement* ifB
 
 void destroyConditionalStatement(ConditionalStatement* conditional) {
 	logDebugging(_logger, "Executing destructor: %s", __FUNCTION__);
-	if (conditional == NULL) {
-		return;
-	}
+	if (conditional == NULL) return;
 	if (conditional->condition != NULL) {
-		free(conditional->condition);
+		destroyCondition(conditional->condition);
 	}
 	if (conditional->ifBody != NULL) {
 		destroyStatement(conditional->ifBody);
@@ -386,29 +431,25 @@ void destroyConditionalStatement(ConditionalStatement* conditional) {
 	free(conditional);
 }
 
-LoopStatement* createLoopStatement(char* type, char* condition, Statement* body) {
+LoopStatement* createLoopStatement(char* type, Condition* condition, char* loopVar, int start, int end, Statement* body) {
 	logDebugging(_logger, "Executing constructor: %s", __FUNCTION__);
 	LoopStatement* loop = calloc(1, sizeof(LoopStatement));
-	loop->type = (type != NULL) ? strdup(type) : NULL;
-	loop->condition = (condition != NULL) ? strdup(condition) : NULL;
+	loop->type = type ? strdup(type) : NULL;
+	loop->condition = condition;
+	loop->loopVar = loopVar ? strdup(loopVar) : NULL;
+	loop->rangeStart = start;
+	loop->rangeEnd = end;
 	loop->body = body;
 	return loop;
 }
 
 void destroyLoopStatement(LoopStatement* loop) {
 	logDebugging(_logger, "Executing destructor: %s", __FUNCTION__);
-	if (loop == NULL) {
-		return;
-	}
-	if (loop->type != NULL) {
-		free(loop->type);
-	}
-	if (loop->condition != NULL) {
-		free(loop->condition);
-	}
-	if (loop->body != NULL) {
-		destroyStatement(loop->body);
-	}
+	if (loop == NULL) return;
+	if (loop->type != NULL) free(loop->type);
+	if (loop->condition != NULL) destroyCondition(loop->condition);
+	if (loop->loopVar != NULL) free(loop->loopVar);
+	if (loop->body != NULL) destroyStatement(loop->body);
 	free(loop);
 }
 

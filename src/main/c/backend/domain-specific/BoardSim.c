@@ -57,7 +57,8 @@ static void executeVariableStatement(Statement* statement, SimulationState* stat
 static void executeIfStatement(Statement* statement, SimulationState* state);
 static void executeWhileStatement(Statement* statement, SimulationState* state);
 static void executeForStatement(Statement* statement, SimulationState* state);
-static bool evaluateComparisonCondition(const char* condition, SimulationState* state);
+static bool evaluateCondition(Condition* condition, SimulationState* state);
+static int getVariableValue(const char* varName, SimulationState* state);
 
 /**
  * Converts and expression type to the proper binary operator. If that's not
@@ -1209,8 +1210,8 @@ static void executeIfStatement(Statement* statement, SimulationState* state) {
 	if (statement->data.conditional != NULL) {
 		ConditionalStatement* cond = statement->data.conditional;
 		
-		// Evaluate condition using comparison evaluation
-		bool conditionTrue = evaluateComparisonCondition(cond->condition, state);
+		// Evaluate semantic condition directly (no string parsing!)
+		bool conditionTrue = evaluateCondition(cond->condition, state);
 		
 		if (conditionTrue) {
 			if (cond->ifBody != NULL) {
@@ -1226,17 +1227,17 @@ static void executeWhileStatement(Statement* statement, SimulationState* state) 
 	if (statement->data.loop != NULL) {
 		LoopStatement* loop = statement->data.loop;
 		
-		int maxIterations = 1000; // Limit to prevent infinite loops
+		int maxIterations = 1000;
 		int iterationCount = 0;
-		bool conditionTrue = evaluateComparisonCondition(loop->condition, state);
+		// Evaluate semantic condition directly (no string parsing!)
+		bool conditionTrue = evaluateCondition(loop->condition, state);
 		
 		while (conditionTrue && iterationCount < maxIterations) {
 			if (loop->body != NULL) {
 				executeStatement(loop->body, state);
 			}
 			iterationCount++;
-			// Reevaluate condition for next iteration
-			conditionTrue = evaluateComparisonCondition(loop->condition, state);
+			conditionTrue = evaluateCondition(loop->condition, state);
 		}
 		
 		if (iterationCount >= maxIterations) {
@@ -1249,12 +1250,11 @@ static void executeForStatement(Statement* statement, SimulationState* state) {
 	if (statement->data.loop != NULL) {
 		LoopStatement* loop = statement->data.loop;
 		
-		// Parse the range from condition (e.g., "i in 1 to 5")
-		int start = 1, end = 5;
-		sscanf(loop->condition, "%*s in %d to %d", &start, &end);
-		
-		// Execute body (end - start + 1) times
+		// Use semantic range values directly (no string parsing!)
+		int start = loop->rangeStart;
+		int end = loop->rangeEnd;
 		int iterations = end - start + 1;
+		
 		for (int i = 0; i < iterations; i++) {
 			if (loop->body != NULL) {
 				executeStatement(loop->body, state);
@@ -1264,120 +1264,98 @@ static void executeForStatement(Statement* statement, SimulationState* state) {
 }
 
 /**
- * Evaluates comparison conditions like "score > 50", "money <= 100", etc.
- * 
- * @param condition The condition string to evaluate
- * @param state The simulation state containing variable values
- * @return true if condition is true, false otherwise
+ * Gets the value of a variable from simulation state or user-declared variables.
  */
-static bool evaluateComparisonCondition(const char* condition, SimulationState* state) {
+static int getVariableValue(const char* varName, SimulationState* state) {
+	if (varName == NULL || state == NULL) return 0;
+	
+	// Built-in simulation variables
+	if (strcmp(varName, "score") == 0) {
+		int total = 0;
+		for (int i = 0; i < state->playerCount; i++) {
+			total += state->players[i].money;
+		}
+		return total / (state->playerCount > 0 ? state->playerCount : 1);
+	}
+	if (strcmp(varName, "money") == 0) {
+		return state->playerCount > 0 ? state->players[0].money : 0;
+	}
+	if (strcmp(varName, "active") == 0) {
+		return state->gameActive ? 1 : 0;
+	}
+	if (strcmp(varName, "turn") == 0) {
+		return state->currentTurn;
+	}
+	if (strcmp(varName, "players") == 0) {
+		return state->playerCount;
+	}
+	
+	// User-declared variables
+	for (int i = 0; i < state->variableCount; i++) {
+		if (state->variables[i].name != NULL && strcmp(state->variables[i].name, varName) == 0) {
+			if (state->variables[i].type == 0) return state->variables[i].intValue;
+			if (state->variables[i].type == 2) return state->variables[i].boolValue ? 1 : 0;
+		}
+	}
+	
+	logDebugging(_logger, "Unknown variable: %s, defaulting to 0", varName);
+	return 0;
+}
+
+/**
+ * Evaluates a semantic Condition structure directly (NO STRING PARSING!).
+ * This is the correct compiler design - evaluate AST nodes, not strings.
+ */
+static bool evaluateCondition(Condition* condition, SimulationState* state) {
 	if (condition == NULL || state == NULL) {
 		return false;
 	}
 	
-	logDebugging(_logger, "Evaluating comparison condition: %s", condition);
-	
-	// Parse comparison expressions
-	// Format: "variable operator value" or "value operator variable"
-	char varName[64] = {0};
-	char operator[8] = {0};
-	char value[64] = {0};
-	
-	// Try to parse "variable operator value" format
-	if (sscanf(condition, "%63s %7s %63s", varName, operator, value) == 3) {
-		logDebugging(_logger, "Parsed: var='%s', op='%s', val='%s'", varName, operator, value);
+	if (condition->type == CONDITION_IDENTIFIER) {
+		// Simple boolean variable check
+		const char* varName = condition->identifier;
+		if (varName == NULL) return false;
 		
-		// Get variable value from actual simulation state (not hardcoded!)
-		int varValue = 0;
+		// Check built-in booleans
+		if (strcmp(varName, "active") == 0) return state->gameActive;
 		if (strcmp(varName, "score") == 0) {
-			// Score is calculated based on total money of all players
 			for (int i = 0; i < state->playerCount; i++) {
-				varValue += state->players[i].money;
+				if (state->players[i].money > 0) return true;
 			}
-			varValue = varValue / (state->playerCount > 0 ? state->playerCount : 1);
-		} else if (strcmp(varName, "money") == 0) {
-			// Get money from first player (or current player context)
-			if (state->playerCount > 0) {
-				varValue = state->players[0].money;
-			}
-		} else if (strcmp(varName, "active") == 0) {
-			// Check if game is still active
-			varValue = state->gameActive ? 1 : 0;
-		} else if (strcmp(varName, "turn") == 0) {
-			// Current turn number
-			varValue = state->currentTurn;
-		} else if (strcmp(varName, "players") == 0) {
-			// Number of players
-			varValue = state->playerCount;
-		} else {
-			// Search in user-declared variables
-			bool found = false;
-			for (int i = 0; i < state->variableCount; i++) {
-				if (state->variables[i].name != NULL && strcmp(state->variables[i].name, varName) == 0) {
-					if (state->variables[i].type == 0) { // int
-						varValue = state->variables[i].intValue;
-					} else if (state->variables[i].type == 2) { // bool
-						varValue = state->variables[i].boolValue ? 1 : 0;
-					}
-					found = true;
-					break;
-				}
-			}
-			if (!found) {
-				logDebugging(_logger, "Unknown variable: %s, defaulting to 0", varName);
-				varValue = 0;
-			}
-		}
-		
-		// Parse comparison value
-		int compareValue = atoi(value);
-		
-		// Evaluate comparison
-		bool result = false;
-		if (strcmp(operator, ">") == 0) {
-			result = (varValue > compareValue);
-		} else if (strcmp(operator, "<") == 0) {
-			result = (varValue < compareValue);
-		} else if (strcmp(operator, ">=") == 0) {
-			result = (varValue >= compareValue);
-		} else if (strcmp(operator, "<=") == 0) {
-			result = (varValue <= compareValue);
-		} else if (strcmp(operator, "==") == 0) {
-			result = (varValue == compareValue);
-		} else if (strcmp(operator, "!=") == 0) {
-			result = (varValue != compareValue);
-		} else {
-			logDebugging(_logger, "Unknown operator: %s", operator);
 			return false;
 		}
 		
-		logDebugging(_logger, "Comparison result: %d %s %d = %s", varValue, operator, compareValue, result ? "true" : "false");
-		return result;
-	}
-	
-	// Fallback: simple variable check (for backward compatibility)
-	if (strcmp(condition, "score") == 0) {
-		// Score > 0 if any player has money
-		for (int i = 0; i < state->playerCount; i++) {
-			if (state->players[i].money > 0) return true;
-		}
-		return false;
-	}
-	if (strcmp(condition, "active") == 0) {
-		return state->gameActive;
-	}
-	
-	// Check user-declared boolean variables
-	for (int i = 0; i < state->variableCount; i++) {
-		if (state->variables[i].name != NULL && strcmp(state->variables[i].name, condition) == 0) {
-			if (state->variables[i].type == 2) { // bool
-				return state->variables[i].boolValue;
-			} else if (state->variables[i].type == 0) { // int - treat non-zero as true
-				return state->variables[i].intValue != 0;
+		// Check user-declared variables
+		for (int i = 0; i < state->variableCount; i++) {
+			if (state->variables[i].name != NULL && strcmp(state->variables[i].name, varName) == 0) {
+				if (state->variables[i].type == 2) return state->variables[i].boolValue;
+				if (state->variables[i].type == 0) return state->variables[i].intValue != 0;
 			}
 		}
+		
+		logDebugging(_logger, "Unknown identifier condition: %s", varName);
+		return false;
 	}
 	
-	logDebugging(_logger, "Could not parse condition: %s", condition);
+	if (condition->type == CONDITION_COMPARISON) {
+		ComparisonExpression* expr = condition->comparison;
+		if (expr == NULL) return false;
+		
+		// Get left operand value from state (semantic lookup!)
+		int leftValue = getVariableValue(expr->leftOperand, state);
+		int rightValue = expr->rightOperand;
+		
+		// Evaluate using semantic operator (no string comparison!)
+		switch (expr->op) {
+			case CMP_GREATER_THAN:   return leftValue > rightValue;
+			case CMP_LESS_THAN:      return leftValue < rightValue;
+			case CMP_GREATER_EQUAL:  return leftValue >= rightValue;
+			case CMP_LESS_EQUAL:     return leftValue <= rightValue;
+			case CMP_EQUAL:          return leftValue == rightValue;
+			case CMP_NOT_EQUAL:      return leftValue != rightValue;
+			default:                 return false;
+		}
+	}
+	
 	return false;
 }

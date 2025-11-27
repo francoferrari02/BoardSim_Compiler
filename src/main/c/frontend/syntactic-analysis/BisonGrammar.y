@@ -23,6 +23,7 @@ void yyerror(const YYLTYPE * location, const char * message) {}
 	Expression * expression;
 	Factor * factor;
 	Program * program;
+	Condition * condition;
 }
 
 %destructor { destroyConstant($$); } <constant>
@@ -103,8 +104,8 @@ void yyerror(const YYLTYPE * location, const char * message) {}
 %type <token> statement
 %type <token> variable_decl
 %type <token> if_statement
-%type <string> condition
-%type <string> comparison_expression
+%type <condition> condition
+%type <condition> comparison_expression
 %type <token> loop_statement
 %type <token> while_statement
 
@@ -168,9 +169,9 @@ if_statement: IF OPEN_PARENTHESIS condition CLOSE_PARENTHESIS THEN OPEN_BRACE st
 	| IF OPEN_PARENTHESIS condition CLOSE_PARENTHESIS THEN OPEN_BRACE statements CLOSE_BRACE ELSE OPEN_BRACE statements CLOSE_BRACE	{ $$ = (TokenLabel)IfElseStatementSemanticAction($3, $7, $11); }
 	;
 
-condition: IDENTIFIER										{ $$ = $1; }
-	| INTEGER												{ char* buf = malloc(32); snprintf(buf, 32, "%d", $1); $$ = buf; }
-	| STRING_LITERAL										{ $$ = $1; }
+condition: IDENTIFIER										{ $$ = IdentifierConditionSemanticAction($1); }
+	| INTEGER												{ $$ = IntegerConditionSemanticAction($1); }
+	| STRING_LITERAL										{ $$ = StringConditionSemanticAction($1); }
 	| comparison_expression									{ $$ = $1; }
 	;
 

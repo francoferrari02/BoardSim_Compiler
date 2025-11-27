@@ -38,12 +38,15 @@ Statement * LogStatementSemanticAction(char* message);
 Statement * IntVariableSemanticAction(char* name, int value);
 Statement * StringVariableSemanticAction(char* name, char* value);
 Statement * BoolVariableSemanticAction(char* name, char* value);
-Statement * IfStatementSemanticAction(char* condition, TokenLabel ifBody);
-Statement * IfElseStatementSemanticAction(char* condition, TokenLabel ifBody, TokenLabel elseBody);
+Statement * IfStatementSemanticAction(Condition* condition, TokenLabel ifBody);
+Statement * IfElseStatementSemanticAction(Condition* condition, TokenLabel ifBody, TokenLabel elseBody);
 Statement * ForStatementSemanticAction(char* var, int start, int end, TokenLabel body);
-Statement * WhileStatementSemanticAction(char* condition, TokenLabel body);
+Statement * WhileStatementSemanticAction(Condition* condition, TokenLabel body);
 
-/* Comparison expression semantic action - returns the condition string */
-char* ComparisonExpressionSemanticAction(char* left, int right, TokenLabel operator);
+/* Condition semantic actions - returns semantic Condition* (no double-parsing!) */
+Condition* ComparisonExpressionSemanticAction(char* left, int right, TokenLabel operator);
+Condition* IdentifierConditionSemanticAction(char* identifier);
+Condition* IntegerConditionSemanticAction(int value);
+Condition* StringConditionSemanticAction(char* value);
 
 #endif

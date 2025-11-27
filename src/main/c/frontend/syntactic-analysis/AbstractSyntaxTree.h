@@ -157,6 +157,56 @@ typedef enum {
 	VAR_TYPE_BOOL
 } VariableType;
 
+/**
+ * Comparison operators for semantic evaluation (avoids double-parsing).
+ */
+typedef enum {
+	CMP_GREATER_THAN,
+	CMP_LESS_THAN,
+	CMP_GREATER_EQUAL,
+	CMP_LESS_EQUAL,
+	CMP_EQUAL,
+	CMP_NOT_EQUAL
+} ComparisonOperator;
+
+/**
+ * Structured comparison expression (semantic, not string-based).
+ */
+struct ComparisonExpression {
+	char* leftOperand;        // Variable name (e.g., "score")
+	int rightOperand;         // Numeric value (e.g., 50)
+	ComparisonOperator op;    // Operator (e.g., CMP_GREATER_THAN)
+};
+
+typedef struct ComparisonExpression ComparisonExpression;
+
+/**
+ * Condition type for if/while statements.
+ */
+typedef enum {
+	CONDITION_IDENTIFIER,     // Simple boolean variable (e.g., "isActive")
+	CONDITION_COMPARISON      // Comparison expression (e.g., "score > 50")
+} ConditionType;
+
+/**
+ * Unified condition structure for semantic evaluation.
+ */
+struct Condition {
+	ConditionType type;
+	union {
+		char* identifier;                    // For CONDITION_IDENTIFIER
+		ComparisonExpression* comparison;    // For CONDITION_COMPARISON
+	};
+};
+
+typedef struct Condition Condition;
+
+ComparisonExpression* createComparisonExpression(char* left, int right, ComparisonOperator op);
+void destroyComparisonExpression(ComparisonExpression* expr);
+Condition* createIdentifierCondition(char* identifier);
+Condition* createComparisonCondition(ComparisonExpression* comparison);
+void destroyCondition(Condition* condition);
+
 struct Variable {
 	VariableType type;
 	char* name;
@@ -171,14 +221,17 @@ struct Variable {
 struct Statement;
 
 struct ConditionalStatement {
-	char* condition;  // Simple string condition for now
+	Condition* condition;     // Semantic condition (not string!)
 	struct Statement* ifBody;
 	struct Statement* elseBody;  // NULL if no else
 };
 
 struct LoopStatement {
-	char* type;  // "for" or "while"
-	char* condition;  // For while: condition string, for for: "var in range"
+	char* type;               // "for" or "while"
+	Condition* condition;     // For while: semantic condition
+	char* loopVar;            // For for: loop variable name
+	int rangeStart;           // For for: start value
+	int rangeEnd;             // For for: end value
 	struct Statement* body;
 };
 
@@ -249,19 +302,19 @@ void destroyRuleDef(RuleDef* ruleDef);
 
 Statement* createStatement(StatementType type, char* text);
 Statement* createVariableStatement(VariableType varType, char* name, void* value);
-Statement* createIfStatement(char* condition, Statement* ifBody);
-Statement* createIfElseStatement(char* condition, Statement* ifBody, Statement* elseBody);
-Statement* createForStatement(char* condition, Statement* body);
-Statement* createWhileStatement(char* condition, Statement* body);
+Statement* createIfStatement(Condition* condition, Statement* ifBody);
+Statement* createIfElseStatement(Condition* condition, Statement* ifBody, Statement* elseBody);
+Statement* createForStatement(char* loopVar, int start, int end, Statement* body);
+Statement* createWhileStatement(Condition* condition, Statement* body);
 void destroyStatement(Statement* statement);
 
 Variable* createVariable(VariableType type, char* name, void* value);
 void destroyVariable(Variable* variable);
 
-ConditionalStatement* createConditionalStatement(char* condition, Statement* ifBody, Statement* elseBody);
+ConditionalStatement* createConditionalStatement(Condition* condition, Statement* ifBody, Statement* elseBody);
 void destroyConditionalStatement(ConditionalStatement* conditional);
 
-LoopStatement* createLoopStatement(char* type, char* condition, Statement* body);
+LoopStatement* createLoopStatement(char* type, Condition* condition, char* loopVar, int start, int end, Statement* body);
 void destroyLoopStatement(LoopStatement* loop);
 
 BoardSimProgram* createBoardSimProgram();

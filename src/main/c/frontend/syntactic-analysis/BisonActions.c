@@ -423,9 +423,9 @@ Statement * BoolVariableSemanticAction(char* name, char* value) {
 	return statement;
 }
 
-Statement * IfStatementSemanticAction(char* condition, TokenLabel ifBody) {
+Statement * IfStatementSemanticAction(Condition* condition, TokenLabel ifBody) {
 	_logSyntacticAnalyzerAction(__FUNCTION__);
-	logError(_logger, "IfStatementSemanticAction called with condition: %s", condition ? condition : "NULL");
+	logError(_logger, "IfStatementSemanticAction called");
 	
 	// Get the last pending statement as the if body
 	Statement* bodyStatement = NULL;
@@ -434,15 +434,16 @@ Statement * IfStatementSemanticAction(char* condition, TokenLabel ifBody) {
 		g_pendingStatementCount--;
 	}
 	
-	Statement* statement = createIfStatement(condition ? strdup(condition) : strdup("true"), bodyStatement);
+	// Use the semantic condition directly (no string conversion!)
+	Statement* statement = createIfStatement(condition, bodyStatement);
 	storeStatementForLater(statement);
 	
 	return statement;
 }
 
-Statement * IfElseStatementSemanticAction(char* condition, TokenLabel ifBody, TokenLabel elseBody) {
+Statement * IfElseStatementSemanticAction(Condition* condition, TokenLabel ifBody, TokenLabel elseBody) {
 	_logSyntacticAnalyzerAction(__FUNCTION__);
-	logError(_logger, "IfElseStatementSemanticAction called with condition: %s", condition ? condition : "NULL");
+	logError(_logger, "IfElseStatementSemanticAction called");
 	
 	// Get the last two pending statements: first is elseBody, second is ifBody
 	Statement* elseBodyStatement = NULL;
@@ -457,7 +458,8 @@ Statement * IfElseStatementSemanticAction(char* condition, TokenLabel ifBody, To
 		g_pendingStatementCount--;
 	}
 	
-	Statement* statement = createIfElseStatement(condition ? strdup(condition) : strdup("true"), ifBodyStatement, elseBodyStatement);
+	// Use the semantic condition directly (no string conversion!)
+	Statement* statement = createIfElseStatement(condition, ifBodyStatement, elseBodyStatement);
 	storeStatementForLater(statement);
 	
 	return statement;
@@ -467,63 +469,79 @@ Statement * ForStatementSemanticAction(char* var, int start, int end, TokenLabel
 	_logSyntacticAnalyzerAction(__FUNCTION__);
 	logError(_logger, "ForStatementSemanticAction called with var: %s, start: %d, end: %d", var ? var : "NULL", start, end);
 	
-	// Build condition string from the variable and range
-	char condition[100];
-	snprintf(condition, sizeof(condition), "%s in %d to %d", var ? var : "i", start, end);
-	
-	// Get the last pending statement as the body (it was the statement inside the for loop)
+	// Get the last pending statement as the body
 	Statement* bodyStatement = NULL;
 	if (g_pendingStatementCount > 0) {
 		bodyStatement = g_pendingStatements[g_pendingStatementCount - 1];
-		g_pendingStatementCount--; // Remove it from pending since we're using it as body
+		g_pendingStatementCount--;
 	}
 	
-	Statement* statement = createForStatement(strdup(condition), bodyStatement);
-	
-	// Store the for statement for later addition to simulate block
+	// Store range semantically (no string conversion!)
+	Statement* statement = createForStatement(var ? strdup(var) : strdup("i"), start, end, bodyStatement);
 	storeStatementForLater(statement);
 	
 	return statement;
 }
 
-Statement * WhileStatementSemanticAction(char* condition, TokenLabel body) {
+Statement * WhileStatementSemanticAction(Condition* condition, TokenLabel body) {
 	_logSyntacticAnalyzerAction(__FUNCTION__);
-	logError(_logger, "WhileStatementSemanticAction called with condition: %s", condition ? condition : "NULL");
+	logError(_logger, "WhileStatementSemanticAction called");
 	
-	// Get the last pending statement as the body (it was the statement inside the while loop)
+	// Get the last pending statement as the body
 	Statement* bodyStatement = NULL;
 	if (g_pendingStatementCount > 0) {
 		bodyStatement = g_pendingStatements[g_pendingStatementCount - 1];
-		g_pendingStatementCount--; // Remove it from pending since we're using it as body
+		g_pendingStatementCount--;
 	}
 	
-	Statement* statement = createWhileStatement(condition ? strdup(condition) : strdup("true"), bodyStatement);
-	
-	// Store for later addition to simulate block
+	// Use the semantic condition directly (no string conversion!)
+	Statement* statement = createWhileStatement(condition, bodyStatement);
 	storeStatementForLater(statement);
 	
 	return statement;
 }
 
-char* ComparisonExpressionSemanticAction(char* left, int right, TokenLabel operator) {
+// === CONDITION SEMANTIC ACTIONS (Semantic, no double-parsing!) ===
+
+Condition* ComparisonExpressionSemanticAction(char* left, int right, TokenLabel operator) {
 	_logSyntacticAnalyzerAction(__FUNCTION__);
 	
-	// Build condition string
-	char* condition = calloc(128, sizeof(char));
-	const char* opStr = ">";
-	
+	// Convert TokenLabel to ComparisonOperator
+	ComparisonOperator op;
 	switch (operator) {
-		case GREATER_THAN: opStr = ">"; break;
-		case LESS_THAN: opStr = "<"; break;
-		case GREATER_EQUAL: opStr = ">="; break;
-		case LESS_EQUAL: opStr = "<="; break;
-		case EQUALITY: opStr = "=="; break;
-		case NOT_EQUAL: opStr = "!="; break;
-		default: opStr = ">"; break;
+		case GREATER_THAN: op = CMP_GREATER_THAN; break;
+		case LESS_THAN: op = CMP_LESS_THAN; break;
+		case GREATER_EQUAL: op = CMP_GREATER_EQUAL; break;
+		case LESS_EQUAL: op = CMP_LESS_EQUAL; break;
+		case EQUALITY: op = CMP_EQUAL; break;
+		case NOT_EQUAL: op = CMP_NOT_EQUAL; break;
+		default: op = CMP_GREATER_THAN; break;
 	}
 	
-	snprintf(condition, 128, "%s %s %d", left ? left : "var", opStr, right);
-	logError(_logger, "ComparisonExpressionSemanticAction: %s", condition);
+	// Create semantic comparison expression (no snprintf!)
+	ComparisonExpression* expr = createComparisonExpression(left, right, op);
+	Condition* cond = createComparisonCondition(expr);
 	
-	return condition;
+	logError(_logger, "ComparisonExpressionSemanticAction: %s %d %d", left ? left : "var", op, right);
+	return cond;
+}
+
+Condition* IdentifierConditionSemanticAction(char* identifier) {
+	_logSyntacticAnalyzerAction(__FUNCTION__);
+	logError(_logger, "IdentifierConditionSemanticAction: %s", identifier ? identifier : "NULL");
+	return createIdentifierCondition(identifier);
+}
+
+Condition* IntegerConditionSemanticAction(int value) {
+	_logSyntacticAnalyzerAction(__FUNCTION__);
+	// Integer as condition: non-zero is true
+	ComparisonExpression* expr = createComparisonExpression("_literal", value, CMP_NOT_EQUAL);
+	expr->rightOperand = 0;  // Compare to 0
+	return createComparisonCondition(expr);
+}
+
+Condition* StringConditionSemanticAction(char* value) {
+	_logSyntacticAnalyzerAction(__FUNCTION__);
+	// String as condition: create identifier condition
+	return createIdentifierCondition(value);
 }
