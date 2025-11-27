@@ -1,0 +1,9 @@
+// Test minimal: Solo un tablero
+board SimpleBoard loop 4;
+cell 0 "Start";
+player 1 money 100 position 0;
+dice 6 sides;
+simulate 1 turns {
+    print "Test";
+}
+

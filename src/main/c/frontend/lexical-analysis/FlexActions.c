@@ -161,70 +161,40 @@ CompilationStatus UnknownLexemeAction() {
 }
 
 /**
- * BoardSim lexeme actions
+ * Common token lexeme action - used by all simple token actions.
+ */
+static CompilationStatus _tokenLexemeAction(TokenLabel label) {
+	Token * token = createToken(_lexicalAnalyzer, label);
+	_logTokenAction(__FUNCTION__, token);
+	CompilationStatus status = pushToken(_lexicalAnalyzer, token);
+	destroyToken(token);
+	return status;
+}
+
+/**
+ * BoardSim lexeme actions - all delegate to common implementation
  */
 
 CompilationStatus BoardSimKeywordLexemeAction(TokenLabel label) {
-	Token * token = createToken(_lexicalAnalyzer, label);
-	_logTokenAction(__FUNCTION__, token);
-	CompilationStatus status = pushToken(_lexicalAnalyzer, token);
-	destroyToken(token);
-	return status;
-}
-
-CompilationStatus BoardSimTypeLexemeAction(TokenLabel label) {
-	Token * token = createToken(_lexicalAnalyzer, label);
-	_logTokenAction(__FUNCTION__, token);
-	CompilationStatus status = pushToken(_lexicalAnalyzer, token);
-	destroyToken(token);
-	return status;
-}
-
-CompilationStatus BoardSimLiteralLexemeAction(TokenLabel label) {
-	Token * token = createToken(_lexicalAnalyzer, label);
-	_logTokenAction(__FUNCTION__, token);
-	CompilationStatus status = pushToken(_lexicalAnalyzer, token);
-	destroyToken(token);
-	return status;
+	return _tokenLexemeAction(label);
 }
 
 CompilationStatus ComparisonOperatorLexemeAction(TokenLabel label) {
-	Token * token = createToken(_lexicalAnalyzer, label);
-	_logTokenAction(__FUNCTION__, token);
-	CompilationStatus status = pushToken(_lexicalAnalyzer, token);
-	destroyToken(token);
-	return status;
-}
-
-CompilationStatus LogicalOperatorLexemeAction(TokenLabel label) {
-	Token * token = createToken(_lexicalAnalyzer, label);
-	_logTokenAction(__FUNCTION__, token);
-	CompilationStatus status = pushToken(_lexicalAnalyzer, token);
-	destroyToken(token);
-	return status;
-}
-
-CompilationStatus AssignmentOperatorLexemeAction(TokenLabel label) {
-	Token * token = createToken(_lexicalAnalyzer, label);
-	_logTokenAction(__FUNCTION__, token);
-	CompilationStatus status = pushToken(_lexicalAnalyzer, token);
-	destroyToken(token);
-	return status;
+	return _tokenLexemeAction(label);
 }
 
 CompilationStatus DelimiterLexemeAction(TokenLabel label) {
-	Token * token = createToken(_lexicalAnalyzer, label);
-	_logTokenAction(__FUNCTION__, token);
-	CompilationStatus status = pushToken(_lexicalAnalyzer, token);
-	destroyToken(token);
-	return status;
+	return _tokenLexemeAction(label);
 }
 
 CompilationStatus IdentifierLexemeAction() {
 	Token * token = createToken(_lexicalAnalyzer, IDENTIFIER);
 	// Store the identifier string in semantic value
 	token->semanticValue->token = IDENTIFIER;
-	// TODO: Store the actual identifier string in semantic value
+	
+	// Store the actual identifier string from the token's lexeme
+	token->semanticValue->string = strdup(token->lexeme);
+	
 	_logTokenAction(__FUNCTION__, token);
 	CompilationStatus status = pushToken(_lexicalAnalyzer, token);
 	destroyToken(token);
@@ -233,9 +203,18 @@ CompilationStatus IdentifierLexemeAction() {
 
 CompilationStatus StringLiteralLexemeAction() {
 	Token * token = createToken(_lexicalAnalyzer, STRING_LITERAL);
-	// Store the string literal in semantic value (should remove quotes)
 	token->semanticValue->token = STRING_LITERAL;
-	// TODO: Store the actual string content without quotes in semantic value
+	
+	// Extract string content without quotes (lexeme is "content")
+	int len = token->length;
+	if (len >= 2) {
+		// Allocate space for string without quotes
+		token->semanticValue->string = calloc(len - 1, sizeof(char));
+		strncpy(token->semanticValue->string, token->lexeme + 1, len - 2);
+	} else {
+		token->semanticValue->string = calloc(1, sizeof(char));
+	}
+	
 	_logTokenAction(__FUNCTION__, token);
 	CompilationStatus status = pushToken(_lexicalAnalyzer, token);
 	destroyToken(token);

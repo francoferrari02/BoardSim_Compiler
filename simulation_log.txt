@@ -1,0 +1,27 @@
+=== BoardSim Game State ===
+Board: MonopolyBoard (loop, 2 cells)
+Players: 1
+  Player 1: Money=100, Position=0, Strategy=none
+Dice: 6 sides
+Max turns: 1
+==========================
+=== Turn 1 ===
+PRINT: Monopoly game begins!
+PRINT: Turn number
+PRINT: Turn number
+PRINT: Turn number
+Player 1 rolls 1
+Player 1 moves from position 0 to 1
+Player 1 lands on (null) (position 1)
+Player 1: Money=100, Position=1
+=== Final Results ===
+Game: MonopolyBoard
+Completed after 1 turns (max: 1)
+Final Player Status:
+  Player 1: Money=100, Position=1, Strategy=none
+===================
+BoardSim program executed successfully!
+=== SIMULATION SUMMARY ===
+Turns completed: 1
+For detailed logs, check the output file.
+=========================

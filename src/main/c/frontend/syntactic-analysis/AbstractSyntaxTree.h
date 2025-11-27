@@ -130,6 +130,7 @@ struct PlayerDef {
 	int id;
 	int money;
 	int position;
+	char* strategy;
 };
 
 struct DiceDef {

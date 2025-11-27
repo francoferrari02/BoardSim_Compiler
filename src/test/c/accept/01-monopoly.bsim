@@ -1,15 +1,24 @@
-// Example Monopoly BoardSim based on PDF specification
-board Monopoly loop 40;
+// Monopoly Game Test
+// Classic board game with properties, money, and dice
 
-cell 0 "Go";
-cell 1 "Mediterranean Avenue" cost 60 rent 2;
-cell 2 "Community Chest";
-cell 3 "Baltic Avenue" cost 60 rent 4;
-cell 4 "Income Tax" cost 200;
+board MonopolyBoard loop 6;
 
-player 1 money 1500 position 0;
-player 2 money 1500 position 0;
+// Monopoly properties
+cell 0 "GO" cost 0 rent 0;
+cell 1 "Mediterranean Avenue" cost 60 rent 0;
+cell 2 "Community Chest" cost 0 rent 0;
+cell 3 "Baltic Avenue" cost 60 rent 0;
+cell 4 "Income Tax" cost 0 rent 0;
+cell 5 "Reading Railroad" cost 200 rent 0;
 
+// Monopoly players
+player 1 money 1500 position 0 strategy "random";
+player 2 money 1500 position 0 strategy "aggressive";
+
+// Monopoly dice
 dice 6 sides;
 
-simulate 10 turns {}
+simulate 3 turns {
+    print "Monopoly game begins!";
+    log "Property trading simulation";
+}

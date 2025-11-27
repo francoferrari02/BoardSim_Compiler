@@ -53,14 +53,9 @@ typedef struct {
 	signed int value;
 
 	/**
-	 * Symbol table for static type checking
+	 * Symbol table for static type checking (pointer for proper memory management)
 	 */
-	SymbolTable symbolTable;
-
-	// TODO: Add an stack to handle nested scopes.
-	// TODO: Add more configuration.
-	// TODO: Add whatever you need.
-	// TODO: ...
+	SymbolTable * symbolTable;
 } CompilerState;
 
 #endif

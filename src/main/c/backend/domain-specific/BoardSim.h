@@ -20,6 +20,15 @@ ModuleDestructor initializeBoardSimModule();
  * Types for BoardSim domain (Type enum defined in CompilerState.h)
  */
 
+// Game types for different board game mechanics
+typedef enum {
+    GAME_TYPE_MONOPOLY,    // Money-based, dice movement, costs/rents
+    GAME_TYPE_CHESS,       // Piece-based, strategic movement, no money/dice
+    GAME_TYPE_ADVENTURE,   // Resource-based, exploration, events
+    GAME_TYPE_GRAPH,       // Graph-based, network navigation, connections
+    GAME_TYPE_GENERIC      // Default fallback
+} GameType;
+
 /**
  * Runtime structures for BoardSim simulation
  */
@@ -63,6 +72,8 @@ typedef struct {
 	int money;
 	int position;
 	int propertiesOwned;  // Count of properties owned by this player
+	int captures;         // Count of pieces captured (for Chess)
+	char* strategy;        // Player strategy
 	Piece* pieces;
 	// Add resources map later
 } Player;
@@ -163,23 +174,30 @@ char* generateIntelligentCellName(int index, const char* gameType);
 Board* createRuntimeBoard(const char* id, const char* type, int size);
 Player* createRuntimePlayer(int id, int money, int position);
 Dice* createRuntimeDice(int sides);
+Cell* getCellAtPosition(Board* board, int position);
 
 // Simulation execution
 ComputationResult runSimulation(SimulationState* state, CompilerState* compilerState);
 void simulateTurn(SimulationState* state, CompilerState* compilerState);
 void processCellEvent(SimulationState* state, Player* player);
-void processMonopolyEvent(SimulationState* state, Player* player, Cell* currentCell);
-void processTEGEvent(SimulationState* state, Player* player, Cell* currentCell);
-void processChessEvent(SimulationState* state, Player* player, Cell* currentCell);
-void processCustomGameEvent(SimulationState* state, Player* player, Cell* currentCell);
 int rollDice(Dice* dice);
-void movePlayer(Player* player, int steps, Board* board);
 void logSimulationEvent(SimulationState* state, const char* format, ...);
 
 // Game logic helpers
 bool isGameOver(SimulationState* state);
 void printGameState(SimulationState* state);
 void printFinalResults(SimulationState* state);
+
+// Game type detection
+GameType detectGameType(GameConfig config);
+void simulateTurnByGameType(SimulationState* state, CompilerState* compilerState, GameType gameType);
+void simulateMonopolyTurn(SimulationState* state, CompilerState* compilerState);
+void simulateChessTurn(SimulationState* state, CompilerState* compilerState);
+void simulateAdventureTurn(SimulationState* state, CompilerState* compilerState);
+void simulateGraphTurn(SimulationState* state, CompilerState* compilerState);
+
+// Chess utility functions
+char* getChessCoordinate(int position);
 
 // Statement execution
 void executeStatementsFromAST(SimulationState* state, CompilerState* compilerState);

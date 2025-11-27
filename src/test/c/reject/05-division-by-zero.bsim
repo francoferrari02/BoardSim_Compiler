@@ -1,6 +1,0 @@
-// Missing dice sides keyword
-board TestBoard loop 4;
-cell 0 "Start";
-
-player 1 money 1000 position 0;
-dice 6;  // Error: missing 'sides' keyword

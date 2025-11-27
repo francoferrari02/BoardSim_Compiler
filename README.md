@@ -1,102 +1,63 @@
-[![✗](https://img.shields.io/badge/Release-v2.0.0-ffb600.svg?style=for-the-badge)](https://github.com/francoferrari02/BoardSim-Compiler/releases)
+# BoardSim - Compilador de Simulación de Juegos de Mesa
 
-[![✗](https://github.com/francoferrari02/BoardSim-Compiler/actions/workflows/pipeline.yaml/badge.svg?branch=production)](https://github.com/francoferrari02/BoardSim-Compiler/actions/workflows/pipeline.yaml)
+Compilador que implementa un DSL (Domain Specific Language) para la simulación de juegos de mesa usando Flex y Bison.
 
-# Flex-Bison-Compiler
+## Requisitos
 
-A base compiler example, developed with Flex and Bison.
+- Docker (recomendado) o sistema Linux con:
+  - GCC
+  - CMake 3.10+
+  - Flex
+  - Bison
 
-* [Requirements](#requirements)
-* [Configuration](#configuration)
-* [Commands](#commands)
-* [CI/CD](#cicd)
-* [Recommended Extensions](#recommended-extensions)
+## Instalación y Uso
 
-## Requirements
+### Con Docker (recomendado)
 
-* [Docker v28.3.2](https://www.docker.com/)
-
-## Configuration
-
-Set the following environment variables to control and configure the behaviour of the application:
-
-| Name                  | Default | Description                                                                                                                                                           |
-| :-------------------- | :-----: | :-------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `ENVIRONMENT`         | `Local` | The active environment name. The available environments are: `Local`, `Development` and `Production`.                                                                 |
-| `LOG_IGNORED_LEXEMES` | `true`  | When `true`, logs all of the ignored lexemes found with Flex at `DEBUGGING` level. To remove those logs from the console output set it to `false`.                    |
-| `LOGGING_LEVEL`       | `ALL`   | The minimum level to log in the console output. From lower to higher, the available levels are: `ALL`, `DEBUGGING`, `INFORMATION`, `WARNING`, `ERROR` and `CRITICAL`. |
-
-_Docker Compose_ can read the variables from an `.env` file too (see `compose.yaml` file).
-
-## Commands
-
-### Start
-
-Rises an ephemeral container, ready to start development:
-
-```bash
+```sh
 docker compose run --rm compiler
 ```
 
-### Build
+Dentro del contenedor:
 
-Builds or rebuilds the entire compiler:
+```sh
+# Compilar el proyecto
+./src/main/bash/build.sh
 
-```bash
-src/main/bash/build.sh
+# Ejecutar una simulación
+.build/Flex-Bison-Compiler archivo.bsim salida.txt
+
+# Ejecutar tests
+./src/main/bash/test.sh
 ```
 
-### Run
+### Sin Docker (Linux)
 
-Compiles a program:
+```sh
+# Compilar el proyecto
+./src/main/bash/build.sh
 
-```bash
-src/main/bash/run.sh <program>
+# Ejecutar una simulación
+.build/Flex-Bison-Compiler archivo.bsim salida.txt
+
+# Ejecutar tests
+./src/main/bash/test.sh
 ```
 
-where `<program>` is the path to the file that represents its entry-point.
+## Variables de Entorno
 
-### Test
+| Variable | Valor Por Defecto | Descripción |
+|----------|-------------------|-------------|
+| `LOGGING_LEVEL` | `ALL` | Nivel mínimo de logging (ALL, DEBUGGING, INFORMATION, WARNING, ERROR, CRITICAL) |
+| `LOG_IGNORED_LEXEMES` | `true` | Mostrar lexemas ignorados en debug |
 
-Executes every available unit-test under `src/test/c` folder:
+## Estructura de Archivos de Entrada
 
-```bash
-src/main/bash/test.sh
-```
+Los archivos `.bsim` deben contener definiciones de:
+- Tablero (`board`)
+- Casillas (`cell`)
+- Jugadores (`player`)
+- Dados (`dice`)
+- Bloque de simulación (`simulate`)
 
-### Stop
-
-Logout, destroy the ephemeral containers and shutdowns the cluster:
-
-```bash
-exit
-docker compose down
-```
-
-### Docker
-
-| Command                                 | Description                                             |
-| :-------------------------------------- | :------------------------------------------------------ |
-| `docker builder prune --all`            | Removes all builds and complete build cache.            |
-| `docker compose --progress=plain build` | Forces a build or rebuild of the images in the cluster. |
-| `docker image prune`                    | Removes all of the dangling images from Docker.         |
-| `docker network prune`                  | Removes unused networks from Docker.                    |
-| `docker volume prune`                   | Removes unused volumes from Docker.                     |
-
-## CI/CD
-
-To trigger an automatic integration on every push or PR (_Pull Request_), you must activate _GitHub Actions_ in the _Settings_ tab. Use the following configuration:
-
-| Key                                                        | Value                                               |
-| :--------------------------------------------------------- | :-------------------------------------------------- |
-| `Actions permissions`                                      | `Allow all actions and reusable workflows`          |
-| `Allow GitHub Actions to create and approve pull requests` | `false`                                             |
-| `Artifact and log retention`                               | `30 days`                                           |
-| `Fork pull request workflows from outside collaborators`   | `Require approval for all outside collaborators`    |
-| `Workflow permissions`                                     | `Read repository contents and packages permissions` |
-
-## Recommended Extensions
-
-* [C/C++](https://marketplace.visualstudio.com/items?itemName=ms-vscode.cpptools)
-* [CMake Tools](https://marketplace.visualstudio.com/items?itemName=ms-vscode.cmake-tools)
-* [Yash](https://marketplace.visualstudio.com/items?itemName=daohong-emilio.yash)
+Ejemplos disponibles en `src/test/c/accept/`.

@@ -1,0 +1,81 @@
+// Chess Game Test
+// Strategic board game with 8x8 board, no dice, no money
+
+board ChessBoard loop 64;
+
+// Chess pieces positions (simplified 8x8 board)
+cell 0 "a1" cost 0 rent 0;
+cell 1 "b1" cost 0 rent 0;
+cell 2 "c1" cost 0 rent 0;
+cell 3 "d1" cost 0 rent 0;
+cell 4 "e1" cost 0 rent 0;
+cell 5 "f1" cost 0 rent 0;
+cell 6 "g1" cost 0 rent 0;
+cell 7 "h1" cost 0 rent 0;
+cell 8 "a2" cost 0 rent 0;
+cell 9 "b2" cost 0 rent 0;
+cell 10 "c2" cost 0 rent 0;
+cell 11 "d2" cost 0 rent 0;
+cell 12 "e2" cost 0 rent 0;
+cell 13 "f2" cost 0 rent 0;
+cell 14 "g2" cost 0 rent 0;
+cell 15 "h2" cost 0 rent 0;
+cell 16 "a3" cost 0 rent 0;
+cell 17 "b3" cost 0 rent 0;
+cell 18 "c3" cost 0 rent 0;
+cell 19 "d3" cost 0 rent 0;
+cell 20 "e3" cost 0 rent 0;
+cell 21 "f3" cost 0 rent 0;
+cell 22 "g3" cost 0 rent 0;
+cell 23 "h3" cost 0 rent 0;
+cell 24 "a4" cost 0 rent 0;
+cell 25 "b4" cost 0 rent 0;
+cell 26 "c4" cost 0 rent 0;
+cell 27 "d4" cost 0 rent 0;
+cell 28 "e4" cost 0 rent 0;
+cell 29 "f4" cost 0 rent 0;
+cell 30 "g4" cost 0 rent 0;
+cell 31 "h4" cost 0 rent 0;
+cell 32 "a5" cost 0 rent 0;
+cell 33 "b5" cost 0 rent 0;
+cell 34 "c5" cost 0 rent 0;
+cell 35 "d5" cost 0 rent 0;
+cell 36 "e5" cost 0 rent 0;
+cell 37 "f5" cost 0 rent 0;
+cell 38 "g5" cost 0 rent 0;
+cell 39 "h5" cost 0 rent 0;
+cell 40 "a6" cost 0 rent 0;
+cell 41 "b6" cost 0 rent 0;
+cell 42 "c6" cost 0 rent 0;
+cell 43 "d6" cost 0 rent 0;
+cell 44 "e6" cost 0 rent 0;
+cell 45 "f6" cost 0 rent 0;
+cell 46 "g6" cost 0 rent 0;
+cell 47 "h6" cost 0 rent 0;
+cell 48 "a7" cost 0 rent 0;
+cell 49 "b7" cost 0 rent 0;
+cell 50 "c7" cost 0 rent 0;
+cell 51 "d7" cost 0 rent 0;
+cell 52 "e7" cost 0 rent 0;
+cell 53 "f7" cost 0 rent 0;
+cell 54 "g7" cost 0 rent 0;
+cell 55 "h7" cost 0 rent 0;
+cell 56 "a8" cost 0 rent 0;
+cell 57 "b8" cost 0 rent 0;
+cell 58 "c8" cost 0 rent 0;
+cell 59 "d8" cost 0 rent 0;
+cell 60 "e8" cost 0 rent 0;
+cell 61 "f8" cost 0 rent 0;
+cell 62 "g8" cost 0 rent 0;
+cell 63 "h8" cost 0 rent 0;
+
+// Chess players (no money, just position and strategy)
+player 1 money 0 position 4 strategy "defensive";  // e1 (posición inicial del rey blanco)
+player 2 money 0 position 60 strategy "aggressive"; // e8 (posición inicial del rey negro)
+
+// No dice in chess - strategic movement only
+
+simulate 5 turns {
+    print "Chess game begins!";
+    log "Strategic simulation running";
+}

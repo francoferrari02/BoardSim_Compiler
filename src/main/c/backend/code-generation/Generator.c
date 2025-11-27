@@ -175,20 +175,23 @@ void executeGenerator(CompilerState * compilerState) {
 	
 	// Check if this is a BoardSim program vs Calculator program
 	if (compilerState->abstractSyntaxtTree != NULL) {
+		// First, try to treat it as a BoardSim ASTNode
 		ASTNode* rootNode = (ASTNode*)compilerState->abstractSyntaxtTree;
-		if (rootNode->nodeType == NODE_TYPE_SIMULATE_BLOCK) {
-			// BoardSim program - generate text output with game results
-			printf("BoardSim program executed successfully!\n");
-			printf("Result: %d\n", compilerState->value);
-			printf("\n=== SIMULATION SUMMARY ===\n");
-			printf("Turns completed: %d\n", compilerState->value);
-			printf("For detailed logs, check the output file.\n");
-			printf("=========================\n");
+		
+		// Check if we have any BoardSim-specific global counters set
+		if (g_parsedBoards > 0 || g_parsedPlayers > 0 || g_parsedDice > 0) {
+			// BoardSim program - summary already printed by runSimulation
+			// No additional output needed
 		} else {
 			// Calculator program - generate LaTeX tree as before
-			_generatePrologue();
-			_generateProgram(compilerState->abstractSyntaxtTree);
-			_generateEpilogue(compilerState->value);
+			Program* program = (Program*)compilerState->abstractSyntaxtTree;
+			if (program != NULL && program->expression != NULL) {
+				_generatePrologue();
+				_generateProgram(program);
+				_generateEpilogue(compilerState->value);
+			} else {
+				printf("Error: Invalid program structure for calculator mode.\n");
+			}
 		}
 	} else {
 		// No AST - generate error message

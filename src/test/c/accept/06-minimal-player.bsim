@@ -1,0 +1,10 @@
+// Test minimal: Player básico
+board TestBoard loop 2;
+cell 0 "A";
+cell 1 "B";
+player 1 money 0 position 0;
+dice 4 sides;
+simulate 1 turns {
+    print "OK";
+}
+

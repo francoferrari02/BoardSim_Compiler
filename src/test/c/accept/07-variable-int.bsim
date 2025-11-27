@@ -1,0 +1,10 @@
+// Test: Variable entera
+board TestBoard loop 2;
+cell 0 "Start";
+player 1 money 100 position 0;
+dice 6 sides;
+simulate 1 turns {
+    int x = 10;
+    print "Variable test";
+}
+

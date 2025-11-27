@@ -1,0 +1,23 @@
+// Test Graph Board - Juego específico para grafos (Network Navigation)
+// Este test debe ser aceptado según el README
+
+board NetworkGraph graph;
+
+// Nodos del grafo de red
+cell 0 "Router" cost 0 rent 0;
+cell 1 "Server" cost 100 rent 50;
+cell 2 "Database" cost 200 rent 100;
+cell 3 "Firewall" cost 50 rent 25;
+cell 4 "Gateway" cost 0 rent 0;
+
+// Jugadores para el grafo de red
+player 1 money 500 position 0 strategy "hacker";
+player 2 money 500 position 0 strategy "admin";
+
+// Dados para navegación en el grafo
+dice 4 sides;
+
+simulate 4 turns {
+    print "Network navigation begins!";
+    log "Exploring network topology";
+}
