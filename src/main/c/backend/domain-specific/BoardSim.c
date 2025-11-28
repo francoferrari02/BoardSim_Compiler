@@ -1032,11 +1032,10 @@ void logSimulationEvent(SimulationState* state, const char* format, ...) {
 		return;
 	}
 	
-	// Log to console
-	// Log to console - REMOVED to separate debug and simulation output
-	// printf("%s\n", buffer);
+	// Write to stdout (which is redirected to the output file in EntryPoint.c)
+	printf("%s\n", buffer);
 	
-	// Log to file if open
+	// Also log to simulation_log.txt if open
 	if (state->outputFile != NULL) {
 		fprintf(state->outputFile, "%s\n", buffer);
 	}
