@@ -89,30 +89,32 @@ PRINT: All phases completed successfully!
 LOG: Turn processing complete - Saving game state
 PRINT: ────────────────────────────────────────────────
 Player 1 (warrior) makes a strategic move
-Positional strategy: moving 2 square(s)
-Player 1 moves from a1 to c1
-Player 1 occupies c1
-Player 1: Position=c1, Strategy=warrior
-Player 2 (mage) makes a strategic move
 Positional strategy: moving 3 square(s)
-Player 2 moves from d1 to a1
+Player 1 moves from a1 to d1
+CAPTURE! Player 1 captures Player 2's piece on d1
+Captured piece returns to starting position a1
+Player 1: Position=d1, Strategy=warrior
+Player 2 (mage) makes a strategic move
+Positional strategy: moving 2 square(s)
+Player 2 moves from a1 to a1
 Player 2 occupies a1
 Player 2: Position=a1, Strategy=mage
 Player 3 (rogue) makes a strategic move
 Positional strategy: moving 3 square(s)
 Player 3 moves from g1 to d1
-Player 3 occupies d1
+CAPTURE! Player 3 captures Player 1's piece on d1
+Captured piece returns to starting position e8
 Player 3: Position=d1, Strategy=rogue
 Player 4 (healer) makes a strategic move
-Positional strategy: moving 1 square(s)
-Player 4 moves from b2 to a2
-Player 4 occupies a2
-Player 4: Position=a2, Strategy=healer
+Positional strategy: moving 3 square(s)
+Player 4 moves from b2 to g1
+Player 4 occupies g1
+Player 4: Position=g1, Strategy=healer
 === CHESS BOARD STATE ===
-Player 1 (warrior): c1
+Player 1 (warrior): e8
 Player 2 (mage): a1
 Player 3 (rogue): d1
-Player 4 (healer): a2
+Player 4 (healer): g1
 ========================
 === Turn 2 ===
 PRINT: ╔════════════════════════════════════════════════════════════╗
@@ -195,32 +197,32 @@ PRINT: All phases completed successfully!
 LOG: Turn processing complete - Saving game state
 PRINT: ────────────────────────────────────────────────
 Player 1 (warrior) makes a strategic move
-Positional strategy: moving 3 square(s)
-Player 1 moves from c1 to f1
-Player 1 occupies f1
-Player 1: Position=f1, Strategy=warrior
+Positional strategy: moving 2 square(s)
+Player 1 moves from e8 to d2
+Player 1 occupies d2
+Player 1: Position=d2, Strategy=warrior
 Player 2 (mage) makes a strategic move
-Positional strategy: moving 3 square(s)
+Positional strategy: moving 2 square(s)
 Player 2 moves from a1 to a1
 Player 2 occupies a1
 Player 2: Position=a1, Strategy=mage
 Player 3 (rogue) makes a strategic move
-Positional strategy: moving 2 square(s)
-Player 3 moves from d1 to f1
-CAPTURE! Player 3 captures Player 1's piece on f1
-Captured piece returns to starting position a8
-Player 3: Position=f1, Strategy=rogue
-Player 4 (healer) makes a strategic move
 Positional strategy: moving 3 square(s)
-Player 4 moves from a2 to f1
-CAPTURE! Player 4 captures Player 3's piece on f1
-Captured piece returns to starting position a1
-Player 4: Position=f1, Strategy=healer
+Player 3 moves from d1 to g1
+CAPTURE! Player 3 captures Player 4's piece on g1
+Captured piece returns to starting position a8
+Player 3: Position=g1, Strategy=rogue
+Player 4 (healer) makes a strategic move
+Positional strategy: moving 2 square(s)
+Player 4 moves from a8 to d2
+CAPTURE! Player 4 captures Player 1's piece on d2
+Captured piece returns to starting position e8
+Player 4: Position=d2, Strategy=healer
 === CHESS BOARD STATE ===
-Player 1 (warrior): a8
+Player 1 (warrior): e8
 Player 2 (mage): a1
-Player 3 (rogue): a1
-Player 4 (healer): f1
+Player 3 (rogue): g1
+Player 4 (healer): d2
 ========================
 === Turn 3 ===
 PRINT: ╔════════════════════════════════════════════════════════════╗
@@ -303,30 +305,33 @@ PRINT: All phases completed successfully!
 LOG: Turn processing complete - Saving game state
 PRINT: ────────────────────────────────────────────────
 Player 1 (warrior) makes a strategic move
-Positional strategy: moving 2 square(s)
-Player 1 moves from a8 to d2
-Player 1 occupies d2
+Positional strategy: moving 3 square(s)
+Player 1 moves from e8 to d2
+CAPTURE! Player 1 captures Player 4's piece on d2
+Captured piece returns to starting position a1
 Player 1: Position=d2, Strategy=warrior
 Player 2 (mage) makes a strategic move
-Positional strategy: moving 3 square(s)
-Player 2 moves from a1 to d1
-Player 2 occupies d1
-Player 2: Position=d1, Strategy=mage
-Player 3 (rogue) makes a strategic move
-Positional strategy: moving 3 square(s)
-Player 3 moves from a1 to a1
-Player 3 occupies a1
-Player 3: Position=a1, Strategy=rogue
-Player 4 (healer) makes a strategic move
 Positional strategy: moving 2 square(s)
-Player 4 moves from f1 to h1
-Player 4 occupies h1
-Player 4: Position=h1, Strategy=healer
+Player 2 moves from a1 to a1
+CAPTURE! Player 2 captures Player 4's piece on a1
+Captured piece returns to starting position a1
+Player 2: Position=a1, Strategy=mage
+Player 3 (rogue) makes a strategic move
+Positional strategy: moving 1 square(s)
+Player 3 moves from g1 to h1
+Player 3 occupies h1
+Player 3: Position=h1, Strategy=rogue
+Player 4 (healer) makes a strategic move
+Positional strategy: moving 3 square(s)
+Player 4 moves from a1 to a1
+CAPTURE! Player 4 captures Player 2's piece on a1
+Captured piece returns to starting position a1
+Player 4: Position=a1, Strategy=healer
 === CHESS BOARD STATE ===
 Player 1 (warrior): d2
-Player 2 (mage): d1
-Player 3 (rogue): a1
-Player 4 (healer): h1
+Player 2 (mage): a1
+Player 3 (rogue): h1
+Player 4 (healer): a1
 ========================
 === Turn 4 ===
 PRINT: ╔════════════════════════════════════════════════════════════╗
@@ -405,32 +410,30 @@ PRINT: All phases completed successfully!
 LOG: Turn processing complete - Saving game state
 PRINT: ────────────────────────────────────────────────
 Player 1 (warrior) makes a strategic move
-Positional strategy: moving 1 square(s)
-Player 1 moves from d2 to c2
-Player 1 occupies c2
-Player 1: Position=c2, Strategy=warrior
+Positional strategy: moving 2 square(s)
+Player 1 moves from d2 to d2
+Player 1 occupies d2
+Player 1: Position=d2, Strategy=warrior
 Player 2 (mage) makes a strategic move
-Positional strategy: moving 3 square(s)
-Player 2 moves from d1 to a1
-CAPTURE! Player 2 captures Player 3's piece on a1
-Captured piece returns to starting position e1
-Player 2: Position=a1, Strategy=mage
+Positional strategy: moving 2 square(s)
+Player 2 moves from a1 to c1
+Player 2 occupies c1
+Player 2: Position=c1, Strategy=mage
 Player 3 (rogue) makes a strategic move
-Positional strategy: moving 3 square(s)
-Player 3 moves from e1 to h1
-CAPTURE! Player 3 captures Player 4's piece on h1
-Captured piece returns to starting position a1
-Player 3: Position=h1, Strategy=rogue
+Positional strategy: moving 2 square(s)
+Player 3 moves from h1 to b2
+Player 3 occupies b2
+Player 3: Position=b2, Strategy=rogue
 Player 4 (healer) makes a strategic move
 Positional strategy: moving 2 square(s)
-Player 4 moves from a1 to c1
-Player 4 occupies c1
-Player 4: Position=c1, Strategy=healer
+Player 4 moves from a1 to a1
+Player 4 occupies a1
+Player 4: Position=a1, Strategy=healer
 === CHESS BOARD STATE ===
-Player 1 (warrior): c2
-Player 2 (mage): a1
-Player 3 (rogue): h1
-Player 4 (healer): c1
+Player 1 (warrior): d2
+Player 2 (mage): c1
+Player 3 (rogue): b2
+Player 4 (healer): a1
 ========================
 === Turn 5 ===
 PRINT: ╔════════════════════════════════════════════════════════════╗
@@ -496,39 +499,41 @@ PRINT: All phases completed successfully!
 LOG: Turn processing complete - Saving game state
 PRINT: ────────────────────────────────────────────────
 Player 1 (warrior) makes a strategic move
-Positional strategy: moving 2 square(s)
-Player 1 moves from c2 to d2
-Player 1 occupies d2
-Player 1: Position=d2, Strategy=warrior
-Player 2 (mage) makes a strategic move
-Positional strategy: moving 1 square(s)
-Player 2 moves from a1 to b1
-Player 2 occupies b1
-Player 2: Position=b1, Strategy=mage
-Player 3 (rogue) makes a strategic move
 Positional strategy: moving 3 square(s)
-Player 3 moves from h1 to c2
-Player 3 occupies c2
-Player 3: Position=c2, Strategy=rogue
+Player 1 moves from d2 to a2
+Player 1 occupies a2
+Player 1: Position=a2, Strategy=warrior
+Player 2 (mage) makes a strategic move
+Positional strategy: moving 2 square(s)
+Player 2 moves from c1 to a1
+CAPTURE! Player 2 captures Player 4's piece on a1
+Captured piece returns to starting position e1
+Player 2: Position=a1, Strategy=mage
+Player 3 (rogue) makes a strategic move
+Positional strategy: moving 1 square(s)
+Player 3 moves from b2 to a2
+CAPTURE! Player 3 captures Player 1's piece on a2
+Captured piece returns to starting position e8
+Player 3: Position=a2, Strategy=rogue
 Player 4 (healer) makes a strategic move
 Positional strategy: moving 2 square(s)
-Player 4 moves from c1 to a1
-Player 4 occupies a1
-Player 4: Position=a1, Strategy=healer
+Player 4 moves from e1 to c1
+Player 4 occupies c1
+Player 4: Position=c1, Strategy=healer
 === CHESS BOARD STATE ===
-Player 1 (warrior): d2
-Player 2 (mage): b1
-Player 3 (rogue): c2
-Player 4 (healer): a1
+Player 1 (warrior): e8
+Player 2 (mage): a1
+Player 3 (rogue): a2
+Player 4 (healer): c1
 ========================
 === Final Results ===
 Game: KingdomOfFantasia
 Completed after 5 turns (max: 5)
 Final Player Status:
-  Player 1: Money=2500, Position=11, Strategy=warrior
-  Player 2: Money=2000, Position=1, Strategy=mage
-  Player 3: Money=1800, Position=10, Strategy=rogue
-  Player 4: Money=1500, Position=0, Strategy=healer
+  Player 1: Money=2500, Position=60, Strategy=warrior
+  Player 2: Money=2000, Position=0, Strategy=mage
+  Player 3: Money=1800, Position=8, Strategy=rogue
+  Player 4: Money=1500, Position=2, Strategy=healer
 ===================
 BoardSim program executed successfully!
 === SIMULATION SUMMARY ===
