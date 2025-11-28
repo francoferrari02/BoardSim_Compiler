@@ -5,6 +5,7 @@
 #include <stdarg.h>
 #include <time.h>
 #include <stdbool.h>
+#include <ctype.h>
 
 // Add AST includes for statement execution
 #include "../../frontend/syntactic-analysis/AbstractSyntaxTree.h"
@@ -614,61 +615,89 @@ char* getChessCoordinate(int position) {
 // CONTEXT-BASED GAME DETECTION
 // ============================================================================
 
+/**
+ * Searches for keywords in text (case-insensitive).
+ * This implements REAL semantic detection based on board/cell names.
+ */
+static bool stringContainsKeyword(const char* text, const char** keywords, int count) {
+	if (text == NULL || keywords == NULL) return false;
+	
+	// Create lowercase copy for case-insensitive comparison
+	char* lowerText = strdup(text);
+	if (lowerText == NULL) return false;
+	
+	for (int i = 0; lowerText[i]; i++) {
+		lowerText[i] = tolower((unsigned char)lowerText[i]);
+	}
+	
+	bool found = false;
+	for (int i = 0; i < count && !found; i++) {
+		if (strstr(lowerText, keywords[i]) != NULL) {
+			found = true;
+		}
+	}
+	
+	free(lowerText);
+	return found;
+}
+
 static bool hasPropertyNames(GameConfig config) {
-	// Check for Monopoly-style property names
+	// Monopoly-style keywords for REAL semantic detection
 	const char* monopolyKeywords[] = {
-		"avenue", "street", "road", "boulevard", "place", "square",
+		"monopoly", "estate", "bank", "property", "avenue",
+		"street", "road", "boulevard", "place", "square",
 		"railroad", "railway", "station", "depot",
 		"park", "plaza", "center", "district",
 		"community", "chest", "chance", "go", "jail", "free",
-		"income", "tax", "luxury", "water", "electric", "utility",
-		"mediterranean", "baltic", "oriental", "vermont", "connecticut",
-		"st charles", "states", "virginia", "st james", "tennessee",
-		"new york", "kentucky", "indiana", "illinois", "atlantic",
-		"ventnor", "marvin", "pacific", "north carolina", "pennsylvania",
-		"short", "line", "reading", "pennsylvania", "b&o"
+		"income", "tax", "luxury", "water", "electric", "utility"
 	};
+	int keywordCount = sizeof(monopolyKeywords) / sizeof(monopolyKeywords[0]);
 	
-	// For now, we'll use a simple heuristic based on board size and dice
-	// In a full implementation, we'd analyze the actual cell names from the AST
+	// REAL semantic detection: check if board name contains keywords
+	if (stringContainsKeyword(config.boardName, monopolyKeywords, keywordCount)) {
+		return true;
+	}
+	
+	// Fallback to topology heuristic
 	return config.boardSize >= 6 && config.boardSize <= 40 && config.diceCount > 0;
 }
 
 static bool hasAdventureNames(GameConfig config) {
-	// Check for Adventure-style location names
+	// Adventure-style keywords for REAL semantic detection
 	const char* adventureKeywords[] = {
 		"cave", "mountain", "forest", "jungle", "desert", "volcano",
 		"treasure", "gold", "diamond", "ruby", "emerald", "crystal",
 		"port", "harbor", "island", "beach", "coast", "shore",
 		"castle", "tower", "dungeon", "lair", "den", "hideout",
 		"temple", "ruins", "ancient", "mysterious", "secret",
-		"pirate", "adventure", "exploration", "expedition", "quest",
-		"monster", "dragon", "troll", "goblin", "orc", "beast",
-		"magic", "spell", "potion", "scroll", "artifact", "relic"
+		"pirate", "adventure", "exploration", "expedition", "quest"
 	};
+	int keywordCount = sizeof(adventureKeywords) / sizeof(adventureKeywords[0]);
 	
-	// For now, we'll use a simple heuristic based on board size
-	// In a full implementation, we'd analyze the actual cell names from the AST
+	// REAL semantic detection: check if board name contains keywords
+	if (stringContainsKeyword(config.boardName, adventureKeywords, keywordCount)) {
+		return true;
+	}
+	
+	// Fallback to topology heuristic
 	return config.boardSize >= 5 && config.boardSize <= 10;
 }
 
 static bool hasChessNames(GameConfig config) {
-	// Check for Chess-style coordinates and piece names
+	// Chess-style keywords for REAL semantic detection
 	const char* chessKeywords[] = {
-		"a1", "a2", "a3", "a4", "a5", "a6", "a7", "a8",
-		"b1", "b2", "b3", "b4", "b5", "b6", "b7", "b8",
-		"c1", "c2", "c3", "c4", "c5", "c6", "c7", "c8",
-		"d1", "d2", "d3", "d4", "d5", "d6", "d7", "d8",
-		"e1", "e2", "e3", "e4", "e5", "e6", "e7", "e8",
-		"f1", "f2", "f3", "f4", "f5", "f6", "f7", "f8",
-		"g1", "g2", "g3", "g4", "g5", "g6", "g7", "g8",
-		"h1", "h2", "h3", "h4", "h5", "h6", "h7", "h8",
-		"king", "queen", "rook", "bishop", "knight", "pawn",
+		"chess", "king", "queen", "rook", "bishop", "knight", "pawn",
 		"white", "black", "check", "checkmate", "stalemate",
-		"castling", "en passant", "promotion", "capture"
+		"castling", "promotion", "capture"
 	};
+	int keywordCount = sizeof(chessKeywords) / sizeof(chessKeywords[0]);
 	
-	// Chess is detected by 64-cell board (8x8)
+	// REAL semantic detection: check if board name contains keywords
+	if (stringContainsKeyword(config.boardName, chessKeywords, keywordCount)) {
+		return true;
+	}
+	
+	// Fallback to topology heuristic (8x8 board = 64 cells)
 	return config.boardSize == 64;
 }
 

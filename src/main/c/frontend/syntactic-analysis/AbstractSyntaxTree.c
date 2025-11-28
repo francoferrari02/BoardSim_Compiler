@@ -85,7 +85,10 @@ void destroyBoardDef(BoardDef* boardDef) {
 	if (boardDef != NULL) {
 		free(boardDef->id);
 		free(boardDef->type);
-		// TODO: Destroy cells linked list
+		// Destroy cells linked list (prevents memory leak)
+		if (boardDef->cells != NULL) {
+			destroyASTNode(boardDef->cells);
+		}
 		free(boardDef);
 	}
 }
@@ -105,7 +108,10 @@ void destroyPieceDef(PieceDef* pieceDef) {
 	if (pieceDef != NULL) {
 		free(pieceDef->id);
 		if (pieceDef->owns) free(pieceDef->owns);
-		// TODO: Destroy properties linked list
+		// Destroy properties linked list (prevents memory leak)
+		if (pieceDef->properties != NULL) {
+			destroyASTNode(pieceDef->properties);
+		}
 		free(pieceDef);
 	}
 }
@@ -123,7 +129,10 @@ void destroySimulateBlock(SimulateBlock* simulateBlock) {
 	logDebugging(_logger, "Executing destructor: %s", __FUNCTION__);
 	if (simulateBlock != NULL) {
 		if (simulateBlock->strategy) free(simulateBlock->strategy);
-		// TODO: Destroy statements linked list
+		// Destroy statements linked list (prevents memory leak)
+		if (simulateBlock->statements != NULL) {
+			destroyASTNode(simulateBlock->statements);
+		}
 		free(simulateBlock);
 	}
 }

@@ -29,6 +29,8 @@ static void storeStatementForLater(Statement* statement) {
 	if (g_pendingStatementCount < 100) {
 		g_pendingStatements[g_pendingStatementCount++] = statement;
 		logDebugging(_logger, "Stored statement %d for later addition", g_pendingStatementCount);
+	} else {
+		logError(_logger, "CRITICAL: Too many statements in simulate block (max 100). Statement ignored.");
 	}
 }
 
