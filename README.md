@@ -38,7 +38,8 @@ Dentro del contenedor:
 ./src/main/bash/build.sh
 
 # Ejecutar una simulación
-.build/Flex-Bison-Compiler archivo.bsim salida.txt
+.build/Flex-Bison-Compiler archivo.bsim debug.txt
+//ver simulation_log.txt para ver el programa
 
 # Ejecutar tests
 ./src/main/bash/test.sh

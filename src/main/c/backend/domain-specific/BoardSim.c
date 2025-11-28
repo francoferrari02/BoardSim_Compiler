@@ -1033,7 +1033,8 @@ void logSimulationEvent(SimulationState* state, const char* format, ...) {
 	}
 	
 	// Log to console
-	printf("%s\n", buffer);
+	// Log to console - REMOVED to separate debug and simulation output
+	// printf("%s\n", buffer);
 	
 	// Log to file if open
 	if (state->outputFile != NULL) {

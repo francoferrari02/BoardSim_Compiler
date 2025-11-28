@@ -1,539 +1,102 @@
 === BoardSim Game State ===
-Board: KingdomOfFantasia (loop, 12 cells)
-Players: 4
-  Player 1: Money=2500, Position=0, Strategy=warrior
-  Player 2: Money=2000, Position=3, Strategy=mage
-  Player 3: Money=1800, Position=6, Strategy=rogue
-  Player 4: Money=1500, Position=9, Strategy=healer
-Dice: 20 sides
+Board: ChessBoard (loop, 64 cells)
+Players: 2
+  Player 1: Money=0, Position=4, Strategy=defensive
+  Player 2: Money=0, Position=60, Strategy=aggressive
+Dice: 6 sides
 Max turns: 5
 ==========================
 === Turn 1 ===
-PRINT: ╔════════════════════════════════════════════════════════════╗
-PRINT: ║     EPIC ADVENTURE: THE QUEST FOR THE CROWN                ║
-PRINT: ╚════════════════════════════════════════════════════════════╝
-LOG: Game engine initialized - Kingdom of Fantasia loaded
-VARIABLE: maxGold = 10000 (int)
-VARIABLE: minGold = 100 (int)
-VARIABLE: treasureBonus = 500 (int)
-VARIABLE: dragonPenalty = 300 (int)
-VARIABLE: questReward = 750 (int)
-VARIABLE: currentPhase = 1 (int)
-VARIABLE: dangerLevel = 5 (int)
-VARIABLE: heroCount = 4 (int)
-VARIABLE: roundNumber = 1 (int)
-VARIABLE: kingdomName = "Fantasia" (string)
-VARIABLE: questName = "Crown of Ages" (string)
-VARIABLE: currentSeason = "Summer" (string)
-VARIABLE: difficultyMode = "Legendary" (string)
-VARIABLE: questActive = true (bool)
-VARIABLE: dragonAwake = true (bool)
-VARIABLE: treasureFound = false (bool)
-VARIABLE: finalBattle = false (bool)
-PRINT: ═══ PHASE 1: INITIAL STATUS CHECK ═══
-LOG: Checking game state variables...
-PRINT: Quest Status: ACTIVE - The Crown awaits!
-PRINT: Gold Economy: HIGH STAKES MODE
-LOG: Warning: Low minimum gold threshold detected
-PRINT: ═══ PHASE 2: WEALTH EVALUATION ═══
-PRINT: Kingdom Treasury: PROSPEROUS
-LOG: Economic Status: Stable economy confirmed
-PRINT: Growth Potential: Room for expansion
-PRINT: ═══ PHASE 3: THREAT ASSESSMENT ═══
-PRINT: Alert: High danger level detected!
-LOG: Danger within acceptable parameters
-PRINT: Dragon Status: AWAKENED - Prepare for battle!
-PRINT: ═══ PHASE 4: HERO ROSTER ═══
-PRINT: Full party assembled: 4 heroes ready!
-LOG: Party validation: Heroes present and accounted
-PRINT: Hero reporting for duty!
-PRINT: Hero reporting for duty!
-PRINT: Hero reporting for duty!
-PRINT: Hero reporting for duty!
-PRINT: ═══ PHASE 5: KINGDOM EXPLORATION ═══
-PRINT: Exploring location...
-PRINT: Exploring location...
-PRINT: Exploring location...
-PRINT: Exploring location...
-PRINT: Exploring location...
-PRINT: Exploring location...
-PRINT: Exploring location...
-PRINT: Exploring location...
-PRINT: Exploring location...
-PRINT: Exploring location...
-PRINT: Exploring location...
-PRINT: Exploring location...
-LOG: All 12 locations have been scouted
-PRINT: ═══ PHASE 6: REWARD CALCULATION ═══
-PRINT: Treasure bonus: MAXIMUM VALUE
-PRINT: Quest reward: LEGENDARY TIER
-LOG: Dragon penalty is manageable
-PRINT: ═══ PHASE 7: COMBAT ROUNDS ═══
-PRINT: Combat round in progress!
-PRINT: Combat round in progress!
-PRINT: Combat round in progress!
-LOG: All combat rounds completed
-PRINT: ═══ PHASE 8: SPECIAL CONDITIONS ═══
-PRINT: Current Phase: EXPLORATION
-LOG: Not yet final round
-PRINT: ═══ PHASE 9: SPECIAL EVENTS ═══
-PRINT: Event: Early game bonuses active
-LOG: Turn validation: Valid turn number
-PRINT: Processing event...
-PRINT: Processing event...
-PRINT: Processing event...
-PRINT: Processing event...
-PRINT: Processing event...
-PRINT: ═══ PHASE 10: TURN SUMMARY ═══
-PRINT: All phases completed successfully!
-LOG: Turn processing complete - Saving game state
-PRINT: ────────────────────────────────────────────────
-Player 1 (warrior) makes a strategic move
-Positional strategy: moving 3 square(s)
-Player 1 moves from a1 to d1
-CAPTURE! Player 1 captures Player 2's piece on d1
-Captured piece returns to starting position a1
-Player 1: Position=d1, Strategy=warrior
-Player 2 (mage) makes a strategic move
-Positional strategy: moving 2 square(s)
-Player 2 moves from a1 to a1
-Player 2 occupies a1
-Player 2: Position=a1, Strategy=mage
-Player 3 (rogue) makes a strategic move
-Positional strategy: moving 3 square(s)
-Player 3 moves from g1 to d1
-CAPTURE! Player 3 captures Player 1's piece on d1
-Captured piece returns to starting position e8
-Player 3: Position=d1, Strategy=rogue
-Player 4 (healer) makes a strategic move
-Positional strategy: moving 3 square(s)
-Player 4 moves from b2 to g1
-Player 4 occupies g1
-Player 4: Position=g1, Strategy=healer
+PRINT: Chess game begins!
+LOG: Strategic simulation running
+Player 1 (defensive) makes a strategic move
+Defensive strategy: moving 1 square(s)
+Player 1 moves from e1 to d1
+Player 1 occupies d1
+Player 1: Position=d1, Strategy=defensive
+Player 2 (aggressive) makes a strategic move
+Aggressive strategy: advancing 2 squares
+Player 2 moves from e8 to g8
+Player 2 occupies g8
+Player 2: Position=g8, Strategy=aggressive
 === CHESS BOARD STATE ===
-Player 1 (warrior): e8
-Player 2 (mage): a1
-Player 3 (rogue): d1
-Player 4 (healer): g1
+Player 1 (defensive): d1
+Player 2 (aggressive): g8
 ========================
 === Turn 2 ===
-PRINT: ╔════════════════════════════════════════════════════════════╗
-PRINT: ║     EPIC ADVENTURE: THE QUEST FOR THE CROWN                ║
-PRINT: ╚════════════════════════════════════════════════════════════╝
-LOG: Game engine initialized - Kingdom of Fantasia loaded
-VARIABLE: maxGold = 10000 (int)
-VARIABLE: minGold = 100 (int)
-VARIABLE: treasureBonus = 500 (int)
-VARIABLE: dragonPenalty = 300 (int)
-VARIABLE: questReward = 750 (int)
-VARIABLE: currentPhase = 1 (int)
-VARIABLE: dangerLevel = 5 (int)
-VARIABLE: heroCount = 4 (int)
-VARIABLE: roundNumber = 1 (int)
-VARIABLE: kingdomName = "Fantasia" (string)
-VARIABLE: questName = "Crown of Ages" (string)
-VARIABLE: currentSeason = "Summer" (string)
-VARIABLE: difficultyMode = "Legendary" (string)
-VARIABLE: questActive = true (bool)
-VARIABLE: dragonAwake = true (bool)
-VARIABLE: treasureFound = false (bool)
-VARIABLE: finalBattle = false (bool)
-PRINT: ═══ PHASE 1: INITIAL STATUS CHECK ═══
-LOG: Checking game state variables...
-PRINT: Quest Status: ACTIVE - The Crown awaits!
-PRINT: Gold Economy: HIGH STAKES MODE
-LOG: Warning: Low minimum gold threshold detected
-PRINT: ═══ PHASE 2: WEALTH EVALUATION ═══
-PRINT: Kingdom Treasury: PROSPEROUS
-LOG: Economic Status: Stable economy confirmed
-PRINT: Growth Potential: Room for expansion
-PRINT: ═══ PHASE 3: THREAT ASSESSMENT ═══
-PRINT: Alert: High danger level detected!
-LOG: Danger within acceptable parameters
-PRINT: Dragon Status: AWAKENED - Prepare for battle!
-PRINT: ═══ PHASE 4: HERO ROSTER ═══
-PRINT: Full party assembled: 4 heroes ready!
-LOG: Party validation: Heroes present and accounted
-PRINT: Hero reporting for duty!
-PRINT: Hero reporting for duty!
-PRINT: Hero reporting for duty!
-PRINT: Hero reporting for duty!
-PRINT: ═══ PHASE 5: KINGDOM EXPLORATION ═══
-PRINT: Exploring location...
-PRINT: Exploring location...
-PRINT: Exploring location...
-PRINT: Exploring location...
-PRINT: Exploring location...
-PRINT: Exploring location...
-PRINT: Exploring location...
-PRINT: Exploring location...
-PRINT: Exploring location...
-PRINT: Exploring location...
-PRINT: Exploring location...
-PRINT: Exploring location...
-LOG: All 12 locations have been scouted
-PRINT: ═══ PHASE 6: REWARD CALCULATION ═══
-PRINT: Treasure bonus: MAXIMUM VALUE
-PRINT: Quest reward: LEGENDARY TIER
-LOG: Dragon penalty is manageable
-PRINT: ═══ PHASE 7: COMBAT ROUNDS ═══
-PRINT: Combat round in progress!
-PRINT: Combat round in progress!
-PRINT: Combat round in progress!
-LOG: All combat rounds completed
-PRINT: ═══ PHASE 8: SPECIAL CONDITIONS ═══
-PRINT: Current Phase: EXPLORATION
-LOG: Not yet final round
-PRINT: ═══ PHASE 9: SPECIAL EVENTS ═══
-PRINT: Event: Early game bonuses active
-LOG: Turn validation: Valid turn number
-PRINT: Processing event...
-PRINT: Processing event...
-PRINT: Processing event...
-PRINT: Processing event...
-PRINT: Processing event...
-PRINT: ═══ PHASE 10: TURN SUMMARY ═══
-PRINT: All phases completed successfully!
-LOG: Turn processing complete - Saving game state
-PRINT: ────────────────────────────────────────────────
-Player 1 (warrior) makes a strategic move
-Positional strategy: moving 2 square(s)
-Player 1 moves from e8 to d2
-Player 1 occupies d2
-Player 1: Position=d2, Strategy=warrior
-Player 2 (mage) makes a strategic move
-Positional strategy: moving 2 square(s)
-Player 2 moves from a1 to a1
-Player 2 occupies a1
-Player 2: Position=a1, Strategy=mage
-Player 3 (rogue) makes a strategic move
-Positional strategy: moving 3 square(s)
-Player 3 moves from d1 to g1
-CAPTURE! Player 3 captures Player 4's piece on g1
-Captured piece returns to starting position a8
-Player 3: Position=g1, Strategy=rogue
-Player 4 (healer) makes a strategic move
-Positional strategy: moving 2 square(s)
-Player 4 moves from a8 to d2
-CAPTURE! Player 4 captures Player 1's piece on d2
-Captured piece returns to starting position e8
-Player 4: Position=d2, Strategy=healer
+PRINT: Chess game begins!
+LOG: Strategic simulation running
+Player 1 (defensive) makes a strategic move
+Defensive strategy: moving 1 square(s)
+Player 1 moves from d1 to c1
+Player 1 occupies c1
+Player 1: Position=c1, Strategy=defensive
+Player 2 (aggressive) makes a strategic move
+Aggressive strategy: advancing 2 squares
+Player 2 moves from g8 to e8
+Player 2 occupies e8
+Player 2: Position=e8, Strategy=aggressive
 === CHESS BOARD STATE ===
-Player 1 (warrior): e8
-Player 2 (mage): a1
-Player 3 (rogue): g1
-Player 4 (healer): d2
+Player 1 (defensive): c1
+Player 2 (aggressive): e8
 ========================
 === Turn 3 ===
-PRINT: ╔════════════════════════════════════════════════════════════╗
-PRINT: ║     EPIC ADVENTURE: THE QUEST FOR THE CROWN                ║
-PRINT: ╚════════════════════════════════════════════════════════════╝
-LOG: Game engine initialized - Kingdom of Fantasia loaded
-VARIABLE: maxGold = 10000 (int)
-VARIABLE: minGold = 100 (int)
-VARIABLE: treasureBonus = 500 (int)
-VARIABLE: dragonPenalty = 300 (int)
-VARIABLE: questReward = 750 (int)
-VARIABLE: currentPhase = 1 (int)
-VARIABLE: dangerLevel = 5 (int)
-VARIABLE: heroCount = 4 (int)
-VARIABLE: roundNumber = 1 (int)
-VARIABLE: kingdomName = "Fantasia" (string)
-VARIABLE: questName = "Crown of Ages" (string)
-VARIABLE: currentSeason = "Summer" (string)
-VARIABLE: difficultyMode = "Legendary" (string)
-VARIABLE: questActive = true (bool)
-VARIABLE: dragonAwake = true (bool)
-VARIABLE: treasureFound = false (bool)
-VARIABLE: finalBattle = false (bool)
-PRINT: ═══ PHASE 1: INITIAL STATUS CHECK ═══
-LOG: Checking game state variables...
-PRINT: Quest Status: ACTIVE - The Crown awaits!
-PRINT: Gold Economy: HIGH STAKES MODE
-LOG: Warning: Low minimum gold threshold detected
-PRINT: ═══ PHASE 2: WEALTH EVALUATION ═══
-PRINT: Kingdom Treasury: PROSPEROUS
-LOG: Economic Status: Stable economy confirmed
-PRINT: Growth Potential: Room for expansion
-PRINT: ═══ PHASE 3: THREAT ASSESSMENT ═══
-PRINT: Alert: High danger level detected!
-LOG: Danger within acceptable parameters
-PRINT: Dragon Status: AWAKENED - Prepare for battle!
-PRINT: ═══ PHASE 4: HERO ROSTER ═══
-PRINT: Full party assembled: 4 heroes ready!
-LOG: Party validation: Heroes present and accounted
-PRINT: Hero reporting for duty!
-PRINT: Hero reporting for duty!
-PRINT: Hero reporting for duty!
-PRINT: Hero reporting for duty!
-PRINT: ═══ PHASE 5: KINGDOM EXPLORATION ═══
-PRINT: Exploring location...
-PRINT: Exploring location...
-PRINT: Exploring location...
-PRINT: Exploring location...
-PRINT: Exploring location...
-PRINT: Exploring location...
-PRINT: Exploring location...
-PRINT: Exploring location...
-PRINT: Exploring location...
-PRINT: Exploring location...
-PRINT: Exploring location...
-PRINT: Exploring location...
-LOG: All 12 locations have been scouted
-PRINT: ═══ PHASE 6: REWARD CALCULATION ═══
-PRINT: Treasure bonus: MAXIMUM VALUE
-PRINT: Quest reward: LEGENDARY TIER
-LOG: Dragon penalty is manageable
-PRINT: ═══ PHASE 7: COMBAT ROUNDS ═══
-PRINT: Combat round in progress!
-PRINT: Combat round in progress!
-PRINT: Combat round in progress!
-LOG: All combat rounds completed
-PRINT: ═══ PHASE 8: SPECIAL CONDITIONS ═══
-PRINT: Current Phase: EXPLORATION
-LOG: Not yet final round
-PRINT: ═══ PHASE 9: SPECIAL EVENTS ═══
-PRINT: Event: Early game bonuses active
-LOG: Turn validation: Valid turn number
-PRINT: Processing event...
-PRINT: Processing event...
-PRINT: Processing event...
-PRINT: Processing event...
-PRINT: Processing event...
-PRINT: ═══ PHASE 10: TURN SUMMARY ═══
-PRINT: All phases completed successfully!
-LOG: Turn processing complete - Saving game state
-PRINT: ────────────────────────────────────────────────
-Player 1 (warrior) makes a strategic move
-Positional strategy: moving 3 square(s)
-Player 1 moves from e8 to d2
-CAPTURE! Player 1 captures Player 4's piece on d2
-Captured piece returns to starting position a1
-Player 1: Position=d2, Strategy=warrior
-Player 2 (mage) makes a strategic move
-Positional strategy: moving 2 square(s)
-Player 2 moves from a1 to a1
-CAPTURE! Player 2 captures Player 4's piece on a1
-Captured piece returns to starting position a1
-Player 2: Position=a1, Strategy=mage
-Player 3 (rogue) makes a strategic move
-Positional strategy: moving 1 square(s)
-Player 3 moves from g1 to h1
-Player 3 occupies h1
-Player 3: Position=h1, Strategy=rogue
-Player 4 (healer) makes a strategic move
-Positional strategy: moving 3 square(s)
-Player 4 moves from a1 to a1
-CAPTURE! Player 4 captures Player 2's piece on a1
-Captured piece returns to starting position a1
-Player 4: Position=a1, Strategy=healer
+PRINT: Chess game begins!
+LOG: Strategic simulation running
+Player 1 (defensive) makes a strategic move
+Defensive strategy: moving 1 square(s)
+Player 1 moves from c1 to d1
+Player 1 occupies d1
+Player 1: Position=d1, Strategy=defensive
+Player 2 (aggressive) makes a strategic move
+Aggressive strategy: advancing 2 squares
+Player 2 moves from e8 to c8
+Player 2 occupies c8
+Player 2: Position=c8, Strategy=aggressive
 === CHESS BOARD STATE ===
-Player 1 (warrior): d2
-Player 2 (mage): a1
-Player 3 (rogue): h1
-Player 4 (healer): a1
+Player 1 (defensive): d1
+Player 2 (aggressive): c8
 ========================
 === Turn 4 ===
-PRINT: ╔════════════════════════════════════════════════════════════╗
-PRINT: ║     EPIC ADVENTURE: THE QUEST FOR THE CROWN                ║
-PRINT: ╚════════════════════════════════════════════════════════════╝
-LOG: Game engine initialized - Kingdom of Fantasia loaded
-VARIABLE: maxGold = 10000 (int)
-VARIABLE: minGold = 100 (int)
-VARIABLE: treasureBonus = 500 (int)
-VARIABLE: dragonPenalty = 300 (int)
-VARIABLE: questReward = 750 (int)
-VARIABLE: currentPhase = 1 (int)
-VARIABLE: dangerLevel = 5 (int)
-VARIABLE: heroCount = 4 (int)
-VARIABLE: roundNumber = 1 (int)
-VARIABLE: kingdomName = "Fantasia" (string)
-VARIABLE: questName = "Crown of Ages" (string)
-VARIABLE: currentSeason = "Summer" (string)
-VARIABLE: difficultyMode = "Legendary" (string)
-PRINT: ═══ PHASE 1: INITIAL STATUS CHECK ═══
-LOG: Checking game state variables...
-PRINT: Quest Status: ACTIVE - The Crown awaits!
-PRINT: Gold Economy: HIGH STAKES MODE
-LOG: Warning: Low minimum gold threshold detected
-PRINT: ═══ PHASE 2: WEALTH EVALUATION ═══
-PRINT: Kingdom Treasury: PROSPEROUS
-LOG: Economic Status: Stable economy confirmed
-PRINT: Growth Potential: Room for expansion
-PRINT: ═══ PHASE 3: THREAT ASSESSMENT ═══
-PRINT: Alert: High danger level detected!
-LOG: Danger within acceptable parameters
-PRINT: Dragon Status: AWAKENED - Prepare for battle!
-PRINT: ═══ PHASE 4: HERO ROSTER ═══
-PRINT: Full party assembled: 4 heroes ready!
-LOG: Party validation: Heroes present and accounted
-PRINT: Hero reporting for duty!
-PRINT: Hero reporting for duty!
-PRINT: Hero reporting for duty!
-PRINT: Hero reporting for duty!
-PRINT: ═══ PHASE 5: KINGDOM EXPLORATION ═══
-PRINT: Exploring location...
-PRINT: Exploring location...
-PRINT: Exploring location...
-PRINT: Exploring location...
-PRINT: Exploring location...
-PRINT: Exploring location...
-PRINT: Exploring location...
-PRINT: Exploring location...
-PRINT: Exploring location...
-PRINT: Exploring location...
-PRINT: Exploring location...
-PRINT: Exploring location...
-LOG: All 12 locations have been scouted
-PRINT: ═══ PHASE 6: REWARD CALCULATION ═══
-PRINT: Treasure bonus: MAXIMUM VALUE
-PRINT: Quest reward: LEGENDARY TIER
-LOG: Dragon penalty is manageable
-PRINT: ═══ PHASE 7: COMBAT ROUNDS ═══
-PRINT: Combat round in progress!
-PRINT: Combat round in progress!
-PRINT: Combat round in progress!
-LOG: All combat rounds completed
-PRINT: ═══ PHASE 8: SPECIAL CONDITIONS ═══
-PRINT: Current Phase: EXPLORATION
-LOG: Not yet final round
-PRINT: ═══ PHASE 9: SPECIAL EVENTS ═══
-PRINT: Event: Early game bonuses active
-LOG: Turn validation: Valid turn number
-PRINT: Processing event...
-PRINT: Processing event...
-PRINT: Processing event...
-PRINT: Processing event...
-PRINT: Processing event...
-PRINT: ═══ PHASE 10: TURN SUMMARY ═══
-PRINT: All phases completed successfully!
-LOG: Turn processing complete - Saving game state
-PRINT: ────────────────────────────────────────────────
-Player 1 (warrior) makes a strategic move
-Positional strategy: moving 2 square(s)
-Player 1 moves from d2 to d2
-Player 1 occupies d2
-Player 1: Position=d2, Strategy=warrior
-Player 2 (mage) makes a strategic move
-Positional strategy: moving 2 square(s)
-Player 2 moves from a1 to c1
-Player 2 occupies c1
-Player 2: Position=c1, Strategy=mage
-Player 3 (rogue) makes a strategic move
-Positional strategy: moving 2 square(s)
-Player 3 moves from h1 to b2
-Player 3 occupies b2
-Player 3: Position=b2, Strategy=rogue
-Player 4 (healer) makes a strategic move
-Positional strategy: moving 2 square(s)
-Player 4 moves from a1 to a1
-Player 4 occupies a1
-Player 4: Position=a1, Strategy=healer
+PRINT: Chess game begins!
+LOG: Strategic simulation running
+Player 1 (defensive) makes a strategic move
+Defensive strategy: moving 1 square(s)
+Player 1 moves from d1 to e1
+Player 1 occupies e1
+Player 1: Position=e1, Strategy=defensive
+Player 2 (aggressive) makes a strategic move
+Aggressive strategy: advancing 4 squares
+Player 2 moves from c8 to g7
+Player 2 occupies g7
+Player 2: Position=g7, Strategy=aggressive
 === CHESS BOARD STATE ===
-Player 1 (warrior): d2
-Player 2 (mage): c1
-Player 3 (rogue): b2
-Player 4 (healer): a1
+Player 1 (defensive): e1
+Player 2 (aggressive): g7
 ========================
 === Turn 5 ===
-PRINT: ╔════════════════════════════════════════════════════════════╗
-PRINT: ║     EPIC ADVENTURE: THE QUEST FOR THE CROWN                ║
-PRINT: ╚════════════════════════════════════════════════════════════╝
-LOG: Game engine initialized - Kingdom of Fantasia loaded
-PRINT: ═══ PHASE 1: INITIAL STATUS CHECK ═══
-LOG: Checking game state variables...
-PRINT: Quest Status: ACTIVE - The Crown awaits!
-PRINT: Gold Economy: HIGH STAKES MODE
-LOG: Warning: Low minimum gold threshold detected
-PRINT: ═══ PHASE 2: WEALTH EVALUATION ═══
-PRINT: Kingdom Treasury: PROSPEROUS
-LOG: Economic Status: Stable economy confirmed
-PRINT: Growth Potential: Room for expansion
-PRINT: ═══ PHASE 3: THREAT ASSESSMENT ═══
-PRINT: Alert: High danger level detected!
-LOG: Danger within acceptable parameters
-PRINT: Dragon Status: AWAKENED - Prepare for battle!
-PRINT: ═══ PHASE 4: HERO ROSTER ═══
-PRINT: Full party assembled: 4 heroes ready!
-LOG: Party validation: Heroes present and accounted
-PRINT: Hero reporting for duty!
-PRINT: Hero reporting for duty!
-PRINT: Hero reporting for duty!
-PRINT: Hero reporting for duty!
-PRINT: ═══ PHASE 5: KINGDOM EXPLORATION ═══
-PRINT: Exploring location...
-PRINT: Exploring location...
-PRINT: Exploring location...
-PRINT: Exploring location...
-PRINT: Exploring location...
-PRINT: Exploring location...
-PRINT: Exploring location...
-PRINT: Exploring location...
-PRINT: Exploring location...
-PRINT: Exploring location...
-PRINT: Exploring location...
-PRINT: Exploring location...
-LOG: All 12 locations have been scouted
-PRINT: ═══ PHASE 6: REWARD CALCULATION ═══
-PRINT: Treasure bonus: MAXIMUM VALUE
-PRINT: Quest reward: LEGENDARY TIER
-LOG: Dragon penalty is manageable
-PRINT: ═══ PHASE 7: COMBAT ROUNDS ═══
-PRINT: Combat round in progress!
-PRINT: Combat round in progress!
-PRINT: Combat round in progress!
-LOG: All combat rounds completed
-PRINT: ═══ PHASE 8: SPECIAL CONDITIONS ═══
-PRINT: Current Phase: EXPLORATION
-LOG: Not yet final round
-PRINT: ═══ PHASE 9: SPECIAL EVENTS ═══
-PRINT: Event: Early game bonuses active
-LOG: Turn validation: Valid turn number
-PRINT: Processing event...
-PRINT: Processing event...
-PRINT: Processing event...
-PRINT: Processing event...
-PRINT: Processing event...
-PRINT: ═══ PHASE 10: TURN SUMMARY ═══
-PRINT: All phases completed successfully!
-LOG: Turn processing complete - Saving game state
-PRINT: ────────────────────────────────────────────────
-Player 1 (warrior) makes a strategic move
-Positional strategy: moving 3 square(s)
-Player 1 moves from d2 to a2
-Player 1 occupies a2
-Player 1: Position=a2, Strategy=warrior
-Player 2 (mage) makes a strategic move
-Positional strategy: moving 2 square(s)
-Player 2 moves from c1 to a1
-CAPTURE! Player 2 captures Player 4's piece on a1
-Captured piece returns to starting position e1
-Player 2: Position=a1, Strategy=mage
-Player 3 (rogue) makes a strategic move
-Positional strategy: moving 1 square(s)
-Player 3 moves from b2 to a2
-CAPTURE! Player 3 captures Player 1's piece on a2
-Captured piece returns to starting position e8
-Player 3: Position=a2, Strategy=rogue
-Player 4 (healer) makes a strategic move
-Positional strategy: moving 2 square(s)
-Player 4 moves from e1 to c1
-Player 4 occupies c1
-Player 4: Position=c1, Strategy=healer
+PRINT: Chess game begins!
+LOG: Strategic simulation running
+Player 1 (defensive) makes a strategic move
+Defensive strategy: moving 1 square(s)
+Player 1 moves from e1 to f1
+Player 1 occupies f1
+Player 1: Position=f1, Strategy=defensive
+Player 2 (aggressive) makes a strategic move
+Aggressive strategy: advancing 4 squares
+Player 2 moves from g7 to c8
+Player 2 occupies c8
+Player 2: Position=c8, Strategy=aggressive
 === CHESS BOARD STATE ===
-Player 1 (warrior): e8
-Player 2 (mage): a1
-Player 3 (rogue): a2
-Player 4 (healer): c1
+Player 1 (defensive): f1
+Player 2 (aggressive): c8
 ========================
 === Final Results ===
-Game: KingdomOfFantasia
+Game: ChessBoard
 Completed after 5 turns (max: 5)
 Final Player Status:
-  Player 1: Money=2500, Position=60, Strategy=warrior
-  Player 2: Money=2000, Position=0, Strategy=mage
-  Player 3: Money=1800, Position=8, Strategy=rogue
-  Player 4: Money=1500, Position=2, Strategy=healer
+  Player 1: Money=0, Position=5, Strategy=defensive
+  Player 2: Money=0, Position=58, Strategy=aggressive
 ===================
 BoardSim program executed successfully!
 === SIMULATION SUMMARY ===
