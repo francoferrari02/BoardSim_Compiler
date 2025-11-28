@@ -234,8 +234,8 @@ ComputationResult executeBoardSim(CompilerState * compilerState) {
 				}
 				
 				// Initialize game from AST
-				logError(_logger, "About to initialize game from AST");
-				logError(_logger, "AST root: %p", compilerState->abstractSyntaxtTree);
+				logDebugging(_logger, "About to initialize game from AST");
+				logDebugging(_logger, "AST root: %p", compilerState->abstractSyntaxtTree);
 				initializeGameFromAST(simState, compilerState);
 				
 				// Run the simulation
@@ -318,29 +318,29 @@ void initializeGameFromAST(SimulationState* state, CompilerState* compilerState)
 	
 	// Extract board from AST
 	ASTNode* current = (ASTNode*)compilerState->abstractSyntaxtTree;
-	logError(_logger, "Starting board extraction from AST...");
+	logDebugging(_logger, "Starting board extraction from AST...");
 	
-	logError(_logger, "AST root node type: %d", current ? current->nodeType : -1);
+	logDebugging(_logger, "AST root node type: %d", current ? current->nodeType : -1);
 	
 	int nodeCount = 0;
 	while (current != NULL) {
-		logError(_logger, "Checking node %d: type=%d, data=%p", nodeCount, current->nodeType, current->data);
-		logError(_logger, "Node %d: type=%d, data=%p", nodeCount++, current->nodeType, current->data);
+		logDebugging(_logger, "Checking node %d: type=%d, data=%p", nodeCount, current->nodeType, current->data);
+		logDebugging(_logger, "Node %d: type=%d, data=%p", nodeCount++, current->nodeType, current->data);
 		
 		// Check if this is a board node
 		if (current->nodeType == NODE_TYPE_BOARD_DEF) {
-			logError(_logger, "Found BOARD_DEF node! data=%p", current->data);
+			logDebugging(_logger, "Found BOARD_DEF node! data=%p", current->data);
 			if (current->data != NULL) {
 				BoardDef* boardDef = (BoardDef*)current->data;
-				logError(_logger, "BoardDef: id=%p, type=%p, size=%d", boardDef->id, boardDef->type, boardDef->size);
+				logDebugging(_logger, "BoardDef: id=%p, type=%p, size=%d", boardDef->id, boardDef->type, boardDef->size);
 				if (boardDef->id != NULL && boardDef->type != NULL) {
-					logError(_logger, "Creating board: id=%s, type=%s, size=%d", boardDef->id, boardDef->type, boardDef->size);
+					logDebugging(_logger, "Creating board: id=%s, type=%s, size=%d", boardDef->id, boardDef->type, boardDef->size);
 					state->board = createRuntimeBoard(boardDef->id, boardDef->type, boardDef->size);
 					if (state->board == NULL) {
 						logError(_logger, "Failed to create runtime board");
 						return;
 					}
-					logError(_logger, "Board created successfully");
+					logDebugging(_logger, "Board created successfully");
 					break;
 				} else {
 					logError(_logger, "BoardDef has NULL id or type");
@@ -365,7 +365,7 @@ void initializeGameFromAST(SimulationState* state, CompilerState* compilerState)
 	while (current != NULL) {
 		if (current->nodeType == NODE_TYPE_CELL_DEF && current->data != NULL) {
 			CellDef* cellDef = (CellDef*)current->data;
-			logError(_logger, "Found CELL_DEF node! index=%d, name=%s, cost=%d, rent=%d", 
+			logDebugging(_logger, "Found CELL_DEF node! index=%d, name=%s, cost=%d, rent=%d", 
 					 cellDef->index, cellDef->name, cellDef->cost, cellDef->rent);
 			
 			// Configure the cell in the board
@@ -380,7 +380,7 @@ void initializeGameFromAST(SimulationState* state, CompilerState* compilerState)
 				cell->name = strdup(cellDef->name);
 				cell->cost = cellDef->cost;
 				cell->rent = cellDef->rent;
-				logError(_logger, "Configured cell %d: %s (cost=%d, rent=%d)", 
+				logDebugging(_logger, "Configured cell %d: %s (cost=%d, rent=%d)", 
 						 cellDef->index, cell->name, cell->cost, cell->rent);
 			} else {
 				logError(_logger, "Cell index %d out of bounds for board size %d", 
@@ -396,11 +396,11 @@ void initializeGameFromAST(SimulationState* state, CompilerState* compilerState)
 	while (current != NULL) {
 		if (current->nodeType == NODE_TYPE_PLAYER_DEF && current->data != NULL) {
 			PlayerDef* playerDef = (PlayerDef*)current->data;
-			logError(_logger, "Found PLAYER_DEF node! id=%d, strategy=%s", playerDef->id, playerDef->strategy ? playerDef->strategy : "NULL");
+			logDebugging(_logger, "Found PLAYER_DEF node! id=%d, strategy=%s", playerDef->id, playerDef->strategy ? playerDef->strategy : "NULL");
 			Player* runtimePlayer = createRuntimePlayer(playerDef->id, playerDef->money, playerDef->position);
 			if (playerDef->strategy != NULL) {
 				runtimePlayer->strategy = strdup(playerDef->strategy);
-				logError(_logger, "Copied strategy to runtime player: %s", runtimePlayer->strategy);
+				logDebugging(_logger, "Copied strategy to runtime player: %s", runtimePlayer->strategy);
 			}
 			state->players[playerIndex++] = *runtimePlayer;
 		}
@@ -411,17 +411,17 @@ void initializeGameFromAST(SimulationState* state, CompilerState* compilerState)
 	// Extract dice from AST
 	current = (ASTNode*)compilerState->abstractSyntaxtTree;
 	int diceSides = 6; // Default dice sides (standard 6-sided die)
-	logError(_logger, "Starting dice extraction from AST...");
+	logDebugging(_logger, "Starting dice extraction from AST...");
 	while (current != NULL) {
 		if (current->nodeType == NODE_TYPE_DICE_DEF && current->data != NULL) {
 			DiceDef* diceDef = (DiceDef*)current->data;
-			logError(_logger, "Found DICE_DEF node! sides=%d", diceDef->sides);
+			logDebugging(_logger, "Found DICE_DEF node! sides=%d", diceDef->sides);
 			diceSides = diceDef->sides;
 			break;
 		}
 		current = current->next;
 	}
-	logError(_logger, "Dice extraction completed. Final diceSides=%d", diceSides);
+	logDebugging(_logger, "Dice extraction completed. Final diceSides=%d", diceSides);
 	state->dice = createRuntimeDice(diceSides);
 	
 	// Set max turns from global
@@ -455,7 +455,7 @@ Board* createRuntimeBoard(const char* id, const char* type, int size) {
 	// Cells will be added dynamically as they are defined
 	if (strcmp(type, "graph") == 0) {
 		board->cells = NULL; // Graph boards don't have fixed-size arrays
-		logError(_logger, "createRuntimeBoard: Created graph board (dynamic cells)");
+		logDebugging(_logger, "createRuntimeBoard: Created graph board (dynamic cells)");
 	} else {
 		board->cells = calloc(size, sizeof(Cell));
 		if (board->cells == NULL) {
@@ -478,7 +478,7 @@ Board* createRuntimeBoard(const char* id, const char* type, int size) {
 			board->cells[i].continent = NULL;
 			board->cells[i].armies = 0;
 		}
-		logError(_logger, "createRuntimeBoard: Created loop board with %d cells", size);
+		logDebugging(_logger, "createRuntimeBoard: Created loop board with %d cells", size);
 	}
 	
 	return board;

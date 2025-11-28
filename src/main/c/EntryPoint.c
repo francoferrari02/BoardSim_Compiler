@@ -142,5 +142,11 @@ const int main(const int length, const char ** arguments) {
 	stdout = originalStdout;
 	fclose(outputFile);
 	
+	if (compilationStatus == SUCCEEDED) {
+		fprintf(stderr, "Simulation completed successfully. Check simulation_log.txt for results.\n");
+	} else {
+		fprintf(stderr, "Simulation failed. Check debug.txt for details.\n");
+	}
+	
 	return compilationStatus;
 }

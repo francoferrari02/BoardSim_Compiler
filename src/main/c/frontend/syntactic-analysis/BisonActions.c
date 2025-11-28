@@ -301,7 +301,7 @@ SimulateBlock * SimulateBlockSemanticAction(int turns) {
 
 Statement * PrintStatementSemanticAction(char* message) {
 	_logSyntacticAnalyzerAction(__FUNCTION__);
-	logError(_logger, "PrintStatementSemanticAction called with message: %s", message ? message : "NULL");
+	logDebugging(_logger, "PrintStatementSemanticAction called with message: %s", message ? message : "NULL");
 	
 	// Use actual message from parser
 	Statement* statement = createStatement(STATEMENT_PRINT, message ? strdup(message) : strdup(""));
@@ -313,7 +313,7 @@ Statement * PrintStatementSemanticAction(char* message) {
 
 Statement * LogStatementSemanticAction(char* message) {
 	_logSyntacticAnalyzerAction(__FUNCTION__);
-	logError(_logger, "LogStatementSemanticAction called with message: %s", message ? message : "NULL");
+	logDebugging(_logger, "LogStatementSemanticAction called with message: %s", message ? message : "NULL");
 	
 	// Use actual message from parser
 	Statement* statement = createStatement(STATEMENT_LOG, message ? strdup(message) : strdup(""));
@@ -325,7 +325,7 @@ Statement * LogStatementSemanticAction(char* message) {
 
 Statement * IntVariableSemanticAction(char* name, int value) {
 	_logSyntacticAnalyzerAction(__FUNCTION__);
-	logError(_logger, "IntVariableSemanticAction called with name: %s, value: %d", name ? name : "NULL", value);
+	logDebugging(_logger, "IntVariableSemanticAction called with name: %s, value: %d", name ? name : "NULL", value);
 	
 	// Use actual variable name from parser
 	Statement* statement = createVariableStatement(VAR_TYPE_INT, name ? strdup(name) : strdup("var"), &value);
@@ -337,7 +337,7 @@ Statement * IntVariableSemanticAction(char* name, int value) {
 
 Statement * StringVariableSemanticAction(char* name, char* value) {
 	_logSyntacticAnalyzerAction(__FUNCTION__);
-	logError(_logger, "StringVariableSemanticAction called with name: %s, value: %s", name ? name : "NULL", value ? value : "NULL");
+	logDebugging(_logger, "StringVariableSemanticAction called with name: %s, value: %s", name ? name : "NULL", value ? value : "NULL");
 	
 	// Use actual variable name and value from parser
 	char* stringValue = value ? strdup(value) : strdup("");
@@ -350,7 +350,7 @@ Statement * StringVariableSemanticAction(char* name, char* value) {
 
 Statement * BoolVariableSemanticAction(char* name, char* value) {
 	_logSyntacticAnalyzerAction(__FUNCTION__);
-	logError(_logger, "BoolVariableSemanticAction called with name: %s, value: %s", name ? name : "NULL", value ? value : "NULL");
+	logDebugging(_logger, "BoolVariableSemanticAction called with name: %s, value: %s", name ? name : "NULL", value ? value : "NULL");
 	
 	// Parse boolean value from string
 	bool boolValue = (value != NULL && (strcmp(value, "true") == 0 || strcmp(value, "1") == 0));
@@ -363,7 +363,7 @@ Statement * BoolVariableSemanticAction(char* name, char* value) {
 
 Statement * IfStatementSemanticAction(Condition* condition, TokenLabel ifBody) {
 	_logSyntacticAnalyzerAction(__FUNCTION__);
-	logError(_logger, "IfStatementSemanticAction called");
+	logDebugging(_logger, "IfStatementSemanticAction called");
 	
 	// Get the last pending statement as the if body
 	Statement* bodyStatement = NULL;
@@ -381,7 +381,7 @@ Statement * IfStatementSemanticAction(Condition* condition, TokenLabel ifBody) {
 
 Statement * IfElseStatementSemanticAction(Condition* condition, TokenLabel ifBody, TokenLabel elseBody) {
 	_logSyntacticAnalyzerAction(__FUNCTION__);
-	logError(_logger, "IfElseStatementSemanticAction called");
+	logDebugging(_logger, "IfElseStatementSemanticAction called");
 	
 	// Get the last two pending statements: first is elseBody, second is ifBody
 	Statement* elseBodyStatement = NULL;
@@ -405,7 +405,7 @@ Statement * IfElseStatementSemanticAction(Condition* condition, TokenLabel ifBod
 
 Statement * ForStatementSemanticAction(char* var, int start, int end, TokenLabel body) {
 	_logSyntacticAnalyzerAction(__FUNCTION__);
-	logError(_logger, "ForStatementSemanticAction called with var: %s, start: %d, end: %d", var ? var : "NULL", start, end);
+	logDebugging(_logger, "ForStatementSemanticAction called with var: %s, start: %d, end: %d", var ? var : "NULL", start, end);
 	
 	// Get the last pending statement as the body
 	Statement* bodyStatement = NULL;
@@ -423,7 +423,7 @@ Statement * ForStatementSemanticAction(char* var, int start, int end, TokenLabel
 
 Statement * WhileStatementSemanticAction(Condition* condition, TokenLabel body) {
 	_logSyntacticAnalyzerAction(__FUNCTION__);
-	logError(_logger, "WhileStatementSemanticAction called");
+	logDebugging(_logger, "WhileStatementSemanticAction called");
 	
 	// Get the last pending statement as the body
 	Statement* bodyStatement = NULL;
@@ -460,13 +460,13 @@ Condition* ComparisonExpressionSemanticAction(char* left, int right, TokenLabel 
 	ComparisonExpression* expr = createComparisonExpression(left, right, op);
 	Condition* cond = createComparisonCondition(expr);
 	
-	logError(_logger, "ComparisonExpressionSemanticAction: %s %d %d", left ? left : "var", op, right);
+	logDebugging(_logger, "ComparisonExpressionSemanticAction: %s %d %d", left ? left : "var", op, right);
 	return cond;
 }
 
 Condition* IdentifierConditionSemanticAction(char* identifier) {
 	_logSyntacticAnalyzerAction(__FUNCTION__);
-	logError(_logger, "IdentifierConditionSemanticAction: %s", identifier ? identifier : "NULL");
+	logDebugging(_logger, "IdentifierConditionSemanticAction: %s", identifier ? identifier : "NULL");
 	return createIdentifierCondition(identifier);
 }
 
