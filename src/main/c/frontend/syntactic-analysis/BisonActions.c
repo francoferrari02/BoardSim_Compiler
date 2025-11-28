@@ -10,9 +10,13 @@ static Logger * _logger = NULL;
 static Statement* g_pendingStatements[100];
 static int g_pendingStatementCount = 0;
 
+// Tail pointer for O(1) AST node insertion
+static ASTNode* g_astTail = NULL;
+
 // Forward declarations for helper functions
 static void storeStatementForLater(Statement* statement);
 static void addPendingStatementsToSimulateBlock(SimulateBlock* simulateBlock);
+static void appendNodeToAST(ASTNode* newNode);
 
 /** Shutdown module's internal state. */
 void _shutdownBisonActionsModule() {
@@ -22,6 +26,8 @@ void _shutdownBisonActionsModule() {
 		_logger = NULL;
 	}
 	_compilerState = NULL;
+	g_astTail = NULL;  // Reset tail pointer for next compilation
+	g_pendingStatementCount = 0;
 }
 
 // Helper function to store statements for later addition
@@ -34,26 +40,25 @@ static void storeStatementForLater(Statement* statement) {
 	}
 }
 
-// Helper function to add all pending statements to simulate block
+// Helper function to add all pending statements to simulate block (O(1) insertion)
 static void addPendingStatementsToSimulateBlock(SimulateBlock* simulateBlock) {
 	logDebugging(_logger, "Adding %d pending statements to simulate block", g_pendingStatementCount);
 	
+	ASTNode* stmtTail = NULL;  // Local tail for statements list
 	int addedCount = 0;
+	
 	for (int i = 0; i < g_pendingStatementCount; i++) {
 		Statement* statement = g_pendingStatements[i];
 		if (statement != NULL) {
 			ASTNode* statementNode = createASTNode(statement, NODE_TYPE_STATEMENT);
 			
-			// Add to statements list
+			// O(1) insertion using tail pointer
 			if (simulateBlock->statements == NULL) {
 				simulateBlock->statements = statementNode;
+				stmtTail = statementNode;
 			} else {
-				// Add to end of list
-				ASTNode* current = simulateBlock->statements;
-				while (current->next != NULL) {
-					current = current->next;
-				}
-				current->next = statementNode;
+				stmtTail->next = statementNode;
+				stmtTail = statementNode;
 			}
 			addedCount++;
 			logDebugging(_logger, "Added pending statement %d to simulate block", i + 1);
@@ -64,6 +69,33 @@ static void addPendingStatementsToSimulateBlock(SimulateBlock* simulateBlock) {
 	g_pendingStatementCount = 0;
 	
 	logDebugging(_logger, "Successfully added %d statements to simulate block", addedCount);
+}
+
+// Helper function to append a node to AST in O(1) time using tail pointer
+static void appendNodeToAST(ASTNode* newNode) {
+	if (_compilerState == NULL || newNode == NULL) return;
+	
+	// Initialize AST root if needed
+	if (_compilerState->abstractSyntaxtTree == NULL) {
+		ASTNode* rootNode = createASTNode(NULL, NODE_TYPE_SIMULATE_BLOCK);
+		_compilerState->abstractSyntaxtTree = rootNode;
+		g_astTail = rootNode;
+		logDebugging(_logger, "Initialized AST root node");
+	}
+	
+	// O(1) insertion at tail
+	if (g_astTail != NULL) {
+		g_astTail->next = newNode;
+		g_astTail = newNode;
+	} else {
+		// Edge case: find tail (should not happen normally)
+		ASTNode* current = (ASTNode*)_compilerState->abstractSyntaxtTree;
+		while (current->next != NULL) {
+			current = current->next;
+		}
+		current->next = newNode;
+		g_astTail = newNode;
+	}
 }
 
 ModuleDestructor initializeBisonActionsModule(CompilerState * compilerState) {
@@ -154,8 +186,9 @@ Program * BoardSimProgramSemanticAction(TokenLabel token) {
 		ASTNode* rootNode = createASTNode(NULL, NODE_TYPE_SIMULATE_BLOCK);
 		logDebugging(_logger, "Created BoardSim AST root node with type: %d", rootNode->nodeType);
 		
-		// Store the AST root in compiler state
+		// Store the AST root in compiler state and initialize tail pointer
 		_compilerState->abstractSyntaxtTree = rootNode;
+		g_astTail = rootNode;
 		logDebugging(_logger, "Stored AST root in compiler state");
 	} else {
 		logDebugging(_logger, "AST root already exists, not overwriting");
@@ -168,87 +201,45 @@ Program * BoardSimProgramSemanticAction(TokenLabel token) {
 
 BoardDef * BoardDefSemanticAction(char* identifier, TokenLabel boardType, int size) {
 	_logSyntacticAnalyzerAction(__FUNCTION__);
-	logError(_logger, "BoardDefSemanticAction called with identifier: %s, boardType: %d, size: %d", identifier ? identifier : "NULL", boardType, size);
+	logDebugging(_logger, "BoardDefSemanticAction called with identifier: %s, boardType: %d, size: %d", identifier ? identifier : "NULL", boardType, size);
 	
 	// Determine board type string based on token
-	// GRAPH token has a specific value, LOOP has another
-	// If size is 0 and we have a graph board declaration, use "graph"
-	char* boardTypeStr;
-	if (size == 0) {
-		boardTypeStr = "graph";
-	} else {
-		boardTypeStr = "loop";
-	}
+	char* boardTypeStr = (size == 0) ? "graph" : "loop";
 	
 	// Create board with actual data from parser
 	BoardDef* boardDef = createBoardDef(identifier ? strdup(identifier) : strdup("DefaultBoard"), boardTypeStr, size);
 	
-	// Add to AST - initialize if not exists
-	if (_compilerState != NULL) {
-		if (_compilerState->abstractSyntaxtTree == NULL) {
-			// Initialize AST root if not exists
-			ASTNode* rootNode = createASTNode(NULL, NODE_TYPE_SIMULATE_BLOCK);
-			_compilerState->abstractSyntaxtTree = rootNode;
-			logError(_logger, "Initialized AST root in BoardDefSemanticAction");
-		}
-		
-		ASTNode* rootNode = (ASTNode*)_compilerState->abstractSyntaxtTree;
-		ASTNode* boardNode = createASTNode(boardDef, NODE_TYPE_BOARD_DEF);
-		
-		// Add to end of AST
-		if (rootNode->next == NULL) {
-			rootNode->next = boardNode;
-		} else {
-			ASTNode* current = rootNode;
-			while (current->next != NULL) {
-				current = current->next;
-			}
-			current->next = boardNode;
-		}
-		
-		logError(_logger, "Added board definition to AST: %s type %s size %d", identifier, boardTypeStr, size);
-		
-		// Increment global counter for game detection
-		g_parsedBoards++;
-	} else {
-		logError(_logger, "Failed to add board to AST - compiler state is NULL");
-	}
+	// Add to AST using O(1) insertion
+	ASTNode* boardNode = createASTNode(boardDef, NODE_TYPE_BOARD_DEF);
+	appendNodeToAST(boardNode);
+	
+	logDebugging(_logger, "Added board definition to AST: %s type %s size %d", identifier, boardTypeStr, size);
+	
+	// Increment global counter for game detection
+	g_parsedBoards++;
 	
 	return boardDef;
 }
 
 CellDef * CellDefSemanticAction(int index, char* name, int cost) {
 	_logSyntacticAnalyzerAction(__FUNCTION__);
-	logError(_logger, "CellDefSemanticAction called with index: %d, name: %s, cost: %d", index, name ? name : "NULL", cost);
+	logDebugging(_logger, "CellDefSemanticAction called with index: %d, name: %s, cost: %d", index, name ? name : "NULL", cost);
 	
 	// Create cell with actual name from parser
 	CellDef* cellDef = createCellDef(index, name ? strdup(name) : strdup("Cell"), cost, 0, NULL);
 	
-	// Add to AST
-	if (_compilerState != NULL && _compilerState->abstractSyntaxtTree != NULL) {
-		ASTNode* rootNode = (ASTNode*)_compilerState->abstractSyntaxtTree;
-		ASTNode* cellNode = createASTNode(cellDef, NODE_TYPE_CELL_DEF);
-		
-		// Add to end of AST
-		if (rootNode->next == NULL) {
-			rootNode->next = cellNode;
-		} else {
-			ASTNode* current = rootNode;
-			while (current->next != NULL) {
-				current = current->next;
-			}
-			current->next = cellNode;
-		}
-		
-		logDebugging(_logger, "Added cell definition to AST: %d - %s (cost=%d)", index, name, cost);
-	}
+	// Add to AST using O(1) insertion
+	ASTNode* cellNode = createASTNode(cellDef, NODE_TYPE_CELL_DEF);
+	appendNodeToAST(cellNode);
+	
+	logDebugging(_logger, "Added cell definition to AST: %d - %s (cost=%d)", index, name, cost);
 	
 	return cellDef;
 }
 
 PlayerDef * PlayerDefSemanticAction(int id, int money, int position, char* strategy) {
 	_logSyntacticAnalyzerAction(__FUNCTION__);
-	logError(_logger, "PlayerDefSemanticAction called with id: %d, strategy: %s", id, strategy ? strategy : "NULL");
+	logDebugging(_logger, "PlayerDefSemanticAction called with id: %d, strategy: %s", id, strategy ? strategy : "NULL");
 	
 	// Count the player for game detection
 	g_parsedPlayers++;
@@ -259,29 +250,14 @@ PlayerDef * PlayerDefSemanticAction(int id, int money, int position, char* strat
 	// Set strategy if provided (directly from parser)
 	if (strategy != NULL) {
 		playerDef->strategy = strdup(strategy);
-		logError(_logger, "PlayerDefSemanticAction: Set strategy to %s for player %d", strategy, id);
-	} else {
-		logError(_logger, "PlayerDefSemanticAction: No strategy provided for player %d", id);
+		logDebugging(_logger, "PlayerDefSemanticAction: Set strategy to %s for player %d", strategy, id);
 	}
 	
-	// Add to AST
-	if (_compilerState != NULL && _compilerState->abstractSyntaxtTree != NULL) {
-		ASTNode* rootNode = (ASTNode*)_compilerState->abstractSyntaxtTree;
-		ASTNode* playerNode = createASTNode(playerDef, NODE_TYPE_PLAYER_DEF);
-		
-		// Add to end of AST
-		if (rootNode->next == NULL) {
-			rootNode->next = playerNode;
-		} else {
-			ASTNode* current = rootNode;
-			while (current->next != NULL) {
-				current = current->next;
-			}
-			current->next = playerNode;
-		}
-		
-		logDebugging(_logger, "Added player definition to AST: %d (money=%d, position=%d, strategy=%s)", id, money, position, playerDef->strategy ? playerDef->strategy : "none");
-	}
+	// Add to AST using O(1) insertion
+	ASTNode* playerNode = createASTNode(playerDef, NODE_TYPE_PLAYER_DEF);
+	appendNodeToAST(playerNode);
+	
+	logDebugging(_logger, "Added player definition to AST: %d (money=%d, position=%d, strategy=%s)", id, money, position, playerDef->strategy ? playerDef->strategy : "none");
 	
 	return playerDef;
 }
@@ -295,34 +271,11 @@ DiceDef * DiceDefSemanticAction(int sides) {
 	// Create the dice definition
 	DiceDef* diceDef = createDiceDef(sides);
 	
-	// Add the dice definition to the AST
-	if (_compilerState != NULL) {
-		// Initialize AST root if it doesn't exist
-		if (_compilerState->abstractSyntaxtTree == NULL) {
-			ASTNode* rootNode = createASTNode(NULL, NODE_TYPE_SIMULATE_BLOCK);
-			_compilerState->abstractSyntaxtTree = rootNode;
-			logError(_logger, "Initialized AST root in DiceDefSemanticAction");
-		}
-		
-		// Create AST node for dice definition
-		ASTNode* diceNode = createASTNode(diceDef, NODE_TYPE_DICE_DEF);
-		
-		// Add to AST
-		ASTNode* rootNode = (ASTNode*)_compilerState->abstractSyntaxtTree;
-		if (rootNode->next == NULL) {
-			rootNode->next = diceNode;
-		} else {
-			ASTNode* current = rootNode;
-			while (current->next != NULL) {
-				current = current->next;
-			}
-			current->next = diceNode;
-		}
-		
-		logError(_logger, "Added dice definition to AST: %d sides", sides);
-	} else {
-		logError(_logger, "Failed to add dice to AST - compiler state is NULL");
-	}
+	// Add to AST using O(1) insertion
+	ASTNode* diceNode = createASTNode(diceDef, NODE_TYPE_DICE_DEF);
+	appendNodeToAST(diceNode);
+	
+	logDebugging(_logger, "Added dice definition to AST: %d sides", sides);
 	
 	return diceDef;
 }
@@ -334,31 +287,14 @@ SimulateBlock * SimulateBlockSemanticAction(int turns) {
 	// Create the simulate block
 	SimulateBlock* simulateBlock = createSimulateBlock(turns, NULL);
 	
-	// Add the simulate block as a separate node to the AST
-	if (_compilerState != NULL && _compilerState->abstractSyntaxtTree != NULL) {
-		ASTNode* rootNode = (ASTNode*)_compilerState->abstractSyntaxtTree;
-		ASTNode* simulateNode = createASTNode(simulateBlock, NODE_TYPE_SIMULATE_BLOCK);
-		
-		// Add to end of AST
-		if (rootNode->next == NULL) {
-			rootNode->next = simulateNode;
-		} else {
-			ASTNode* current = rootNode;
-			while (current->next != NULL) {
-				current = current->next;
-			}
-			current->next = simulateNode;
-		}
-		
-		logDebugging(_logger, "Added simulate block to AST with %d turns", turns);
-		
-		// Add all pending statements to the simulate block
-		addPendingStatementsToSimulateBlock(simulateBlock);
-		
-		logDebugging(_logger, "Simulate block created with %d turns", turns);
-	} else {
-		logDebugging(_logger, "Failed to assign simulate block - compiler state or AST is NULL");
-	}
+	// Add all pending statements to the simulate block (O(1) insertion)
+	addPendingStatementsToSimulateBlock(simulateBlock);
+	
+	// Add to AST using O(1) insertion
+	ASTNode* simulateNode = createASTNode(simulateBlock, NODE_TYPE_SIMULATE_BLOCK);
+	appendNodeToAST(simulateNode);
+	
+	logDebugging(_logger, "Added simulate block to AST with %d turns", turns);
 	
 	return simulateBlock;
 }

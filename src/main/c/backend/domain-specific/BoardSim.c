@@ -353,10 +353,11 @@ void initializeGameFromAST(SimulationState* state, CompilerState* compilerState)
 		current = current->next;
 	}
 	
+	// The Semantic Analyzer guarantees a valid board exists in the AST.
+	// If we reach here without a board, it's a critical compiler bug.
 	if (state->board == NULL) {
-		logError(_logger, "No board found in AST - creating default board");
-		// Create default board based on parsing context (avoid hardcoded name)
-		state->board = createRuntimeBoard("DefaultBoard", "loop", 4);
+		logError(_logger, "CRITICAL COMPILER BUG: Semantic analysis should have caught missing board definition");
+		return;
 	}
 	
 	// Extract and configure cells from AST
@@ -1327,7 +1328,9 @@ static int getVariableValue(const char* varName, SimulationState* state) {
 		}
 	}
 	
-	logDebugging(_logger, "Unknown variable: %s, defaulting to 0", varName);
+	// The Semantic Analyzer guarantees all variables are declared.
+	// If we reach here with an unknown variable, it's a critical compiler bug.
+	logError(_logger, "CRITICAL COMPILER BUG: Semantic analysis should have caught undefined variable '%s'", varName);
 	return 0;
 }
 

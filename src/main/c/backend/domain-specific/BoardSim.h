@@ -38,7 +38,6 @@ typedef struct Cell Cell;
 struct Event {
 	char* name;
 	char* trigger;
-	// Function pointer for event action will be added in Paso 5
 };
 
 struct Cell {
@@ -64,7 +63,6 @@ typedef struct {
 	char* id;
 	char* owns;
 	int armies;
-	// Add more piece properties as needed
 } Piece;
 
 typedef struct {
@@ -73,9 +71,8 @@ typedef struct {
 	int position;
 	int propertiesOwned;  // Count of properties owned by this player
 	int captures;         // Count of pieces captured (for Chess)
-	char* strategy;        // Player strategy
+	char* strategy;       // Player strategy
 	Piece* pieces;
-	// Add resources map later
 } Player;
 
 typedef struct {
@@ -84,7 +81,6 @@ typedef struct {
 
 typedef struct {
 	char* name;
-	// Rule check/apply functions will be added in Paso 5
 } Rule;
 
 /**
