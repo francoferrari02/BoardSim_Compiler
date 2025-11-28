@@ -286,15 +286,6 @@ SimulationState* createSimulationState() {
 		return NULL;
 	}
 	
-	// Open output file for logging
-	state->outputFile = fopen("simulation_log.txt", "w");
-	if (state->outputFile == NULL) {
-		logError(_logger, "Failed to open output file for logging");
-		free(state->players);
-		free(state);
-		return NULL;
-	}
-	
 	return state;
 }
 
@@ -307,9 +298,6 @@ void destroySimulationState(SimulationState* state) {
 	}
 	
 	free(state->players);
-	if (state->outputFile != NULL) {
-		fclose(state->outputFile);
-	}
 	free(state);
 }
 
@@ -1034,11 +1022,6 @@ void logSimulationEvent(SimulationState* state, const char* format, ...) {
 	
 	// Write to stdout (which is redirected to the output file in EntryPoint.c)
 	printf("%s\n", buffer);
-	
-	// Also log to simulation_log.txt if open
-	if (state->outputFile != NULL) {
-		fprintf(state->outputFile, "%s\n", buffer);
-	}
 	
 	va_end(args);
 }

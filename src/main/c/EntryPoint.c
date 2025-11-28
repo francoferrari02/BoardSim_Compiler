@@ -143,7 +143,7 @@ const int main(const int length, const char ** arguments) {
 	fclose(outputFile);
 	
 	if (compilationStatus == SUCCEEDED) {
-		fprintf(stderr, "Simulation completed successfully. Check simulation_log.txt for results.\n");
+		fprintf(stderr, "Simulation completed successfully. Check %s for results.\n", arguments[2]);
 	} else {
 		fprintf(stderr, "Simulation failed. Check debug.txt for details.\n");
 	}

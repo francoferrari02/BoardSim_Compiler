@@ -107,7 +107,6 @@ typedef struct {
 	int currentTurn;
 	int maxTurns;
 	bool gameActive;
-	FILE* outputFile;  // For logging simulation results
 	RuntimeVariable variables[MAX_RUNTIME_VARIABLES];
 	int variableCount;
 } SimulationState;
