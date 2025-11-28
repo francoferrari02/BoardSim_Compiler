@@ -1,0 +1,272 @@
+// ╔══════════════════════════════════════════════════════════════════════════════╗
+// ║                    EPIC ADVENTURE: THE QUEST FOR THE CROWN                   ║
+// ║                         BoardSim Ultimate Showcase                           ║
+// ╚══════════════════════════════════════════════════════════════════════════════╝
+//
+// Este test demuestra TODAS las características del compilador BoardSim:
+// - Tablero con múltiples celdas personalizadas
+// - Múltiples jugadores con diferentes estrategias
+// - Variables de todos los tipos (int, string, bool)
+// - Condicionales con TODOS los operadores (>, <, >=, <=, ==, !=)
+// - Bucles for con diferentes rangos
+// - Bucles while con condiciones
+// - Dados personalizados
+// - Simulación multi-turno
+
+// ═══════════════════════════════════════════════════════════════════════════════
+// CONFIGURACIÓN DEL TABLERO: Reino de Fantasia con 12 ubicaciones únicas
+// ═══════════════════════════════════════════════════════════════════════════════
+
+board KingdomOfFantasia loop 12;
+
+// Cada celda representa una ubicación única en el reino
+cell 0 "Castle Gate" cost 0 rent 100;
+cell 1 "Royal Treasury" cost 500 rent 200;
+cell 2 "Dragon Lair" cost 1000 rent 0;
+cell 3 "Enchanted Forest" cost 100 rent 50;
+cell 4 "Mystic Tower" cost 300 rent 150;
+cell 5 "Village Market" cost 50 rent 25;
+cell 6 "Ancient Ruins" cost 200 rent 100;
+cell 7 "Crystal Cave" cost 400 rent 175;
+cell 8 "Wizard Academy" cost 600 rent 250;
+cell 9 "Harbor Port" cost 350 rent 125;
+cell 10 "Mountain Peak" cost 800 rent 300;
+cell 11 "Secret Garden" cost 150 rent 75;
+
+// ═══════════════════════════════════════════════════════════════════════════════
+// JUGADORES: 4 héroes con diferentes roles y estrategias
+// ═══════════════════════════════════════════════════════════════════════════════
+
+player 1 money 2500 position 0 strategy "warrior";
+player 2 money 2000 position 3 strategy "mage";
+player 3 money 1800 position 6 strategy "rogue";
+player 4 money 1500 position 9 strategy "healer";
+
+// ═══════════════════════════════════════════════════════════════════════════════
+// DADOS: Dado de 20 caras (D20) para aventura épica
+// ═══════════════════════════════════════════════════════════════════════════════
+
+dice 20 sides;
+
+// ═══════════════════════════════════════════════════════════════════════════════
+// SIMULACIÓN: 5 turnos de aventura épica
+// ═══════════════════════════════════════════════════════════════════════════════
+
+simulate 5 turns {
+    
+    // ─────────────────────────────────────────────────────────────────────────
+    // INICIALIZACIÓN Y MENSAJE DE BIENVENIDA
+    // ─────────────────────────────────────────────────────────────────────────
+    
+    print "╔════════════════════════════════════════════════════════════╗";
+    print "║     EPIC ADVENTURE: THE QUEST FOR THE CROWN                ║";
+    print "╚════════════════════════════════════════════════════════════╝";
+    log "Game engine initialized - Kingdom of Fantasia loaded";
+    
+    // ─────────────────────────────────────────────────────────────────────────
+    // DECLARACIÓN DE VARIABLES DEL JUEGO
+    // ─────────────────────────────────────────────────────────────────────────
+    
+    // Variables de configuración
+    int maxGold = 10000;
+    int minGold = 100;
+    int treasureBonus = 500;
+    int dragonPenalty = 300;
+    int questReward = 750;
+    
+    // Variables de estado
+    int currentPhase = 1;
+    int dangerLevel = 5;
+    int heroCount = 4;
+    int roundNumber = 1;
+    
+    // Variables de texto
+    string kingdomName = "Fantasia";
+    string questName = "Crown of Ages";
+    string currentSeason = "Summer";
+    string difficultyMode = "Legendary";
+    
+    // Variables booleanas de estado
+    bool questActive = true;
+    bool dragonAwake = true;
+    bool treasureFound = false;
+    bool finalBattle = false;
+    
+    // ─────────────────────────────────────────────────────────────────────────
+    // FASE 1: VERIFICACIÓN DE ESTADO INICIAL
+    // ─────────────────────────────────────────────────────────────────────────
+    
+    print "═══ PHASE 1: INITIAL STATUS CHECK ═══";
+    log "Checking game state variables...";
+    
+    // Verificar que la quest está activa
+    if (questActive) then {
+        print "Quest Status: ACTIVE - The Crown awaits!";
+    }
+    
+    // Verificar configuración de oro
+    if (maxGold > 5000) then {
+        print "Gold Economy: HIGH STAKES MODE";
+    }
+    
+    if (minGold < 500) then {
+        log "Warning: Low minimum gold threshold detected";
+    }
+    
+    // ─────────────────────────────────────────────────────────────────────────
+    // FASE 2: EVALUACIÓN DE RIQUEZA DE JUGADORES
+    // ─────────────────────────────────────────────────────────────────────────
+    
+    print "═══ PHASE 2: WEALTH EVALUATION ═══";
+    
+    // score = promedio de dinero de jugadores = (2500+2000+1800+1500)/4 = 1950
+    
+    if (score >= 1500) then {
+        print "Kingdom Treasury: PROSPEROUS";
+    }
+    
+    if (score >= 1000) then {
+        log "Economic Status: Stable economy confirmed";
+    }
+    
+    if (score < 3000) then {
+        print "Growth Potential: Room for expansion";
+    }
+    
+    // ─────────────────────────────────────────────────────────────────────────
+    // FASE 3: SISTEMA DE PELIGRO Y AMENAZAS
+    // ─────────────────────────────────────────────────────────────────────────
+    
+    print "═══ PHASE 3: THREAT ASSESSMENT ═══";
+    
+    if (dangerLevel > 3) then {
+        print "Alert: High danger level detected!";
+    }
+    
+    if (dangerLevel <= 10) then {
+        log "Danger within acceptable parameters";
+    }
+    
+    if (dragonAwake) then {
+        print "Dragon Status: AWAKENED - Prepare for battle!";
+    }
+    
+    // ─────────────────────────────────────────────────────────────────────────
+    // FASE 4: CONTEO DE HÉROES Y RECURSOS
+    // ─────────────────────────────────────────────────────────────────────────
+    
+    print "═══ PHASE 4: HERO ROSTER ═══";
+    
+    if (heroCount == 4) then {
+        print "Full party assembled: 4 heroes ready!";
+    }
+    
+    if (heroCount != 0) then {
+        log "Party validation: Heroes present and accounted";
+    }
+    
+    // Bucle para anunciar cada héroe
+    for hero in 1 to 4 {
+        print "Hero reporting for duty!";
+    }
+    
+    // ─────────────────────────────────────────────────────────────────────────
+    // FASE 5: EXPLORACIÓN DEL REINO
+    // ─────────────────────────────────────────────────────────────────────────
+    
+    print "═══ PHASE 5: KINGDOM EXPLORATION ═══";
+    
+    // Explorar las 12 ubicaciones del reino
+    for location in 1 to 12 {
+        print "Exploring location...";
+    }
+    
+    log "All 12 locations have been scouted";
+    
+    // ─────────────────────────────────────────────────────────────────────────
+    // FASE 6: SISTEMA DE RECOMPENSAS
+    // ─────────────────────────────────────────────────────────────────────────
+    
+    print "═══ PHASE 6: REWARD CALCULATION ═══";
+    
+    if (treasureBonus >= 500) then {
+        print "Treasure bonus: MAXIMUM VALUE";
+    }
+    
+    if (questReward > 700) then {
+        print "Quest reward: LEGENDARY TIER";
+    }
+    
+    if (dragonPenalty < 500) then {
+        log "Dragon penalty is manageable";
+    }
+    
+    // ─────────────────────────────────────────────────────────────────────────
+    // FASE 7: RONDAS DE COMBATE
+    // ─────────────────────────────────────────────────────────────────────────
+    
+    print "═══ PHASE 7: COMBAT ROUNDS ═══";
+    
+    // 3 rondas de combate (cada for ejecuta 1 sentencia)
+    for round in 1 to 3 {
+        print "Combat round in progress!";
+    }
+    
+    log "All combat rounds completed";
+    
+    // ─────────────────────────────────────────────────────────────────────────
+    // FASE 8: VERIFICACIÓN DE CONDICIONES ESPECIALES
+    // ─────────────────────────────────────────────────────────────────────────
+    
+    print "═══ PHASE 8: SPECIAL CONDITIONS ═══";
+    
+    // Verificar fase actual
+    if (currentPhase == 1) then {
+        print "Current Phase: EXPLORATION";
+    }
+    
+    // Verificar número de ronda
+    if (roundNumber != 5) then {
+        log "Not yet final round";
+    }
+    
+    // Verificar estado de tesoro
+    if (treasureFound) then {
+        print "Treasure has been claimed!";
+    }
+    
+    // El while con condición falsa NO debe ejecutar
+    while (finalBattle) {
+        print "THIS SHOULD NOT APPEAR - finalBattle is false";
+    }
+    
+    // ─────────────────────────────────────────────────────────────────────────
+    // FASE 9: EVENTOS ESPECIALES
+    // ─────────────────────────────────────────────────────────────────────────
+    
+    print "═══ PHASE 9: SPECIAL EVENTS ═══";
+    
+    // Eventos basados en turno (turn es variable built-in)
+    if (turn <= 5) then {
+        print "Event: Early game bonuses active";
+    }
+    
+    if (turn >= 1) then {
+        log "Turn validation: Valid turn number";
+    }
+    
+    // Bucle de eventos
+    for event in 1 to 5 {
+        print "Processing event...";
+    }
+    
+    // ─────────────────────────────────────────────────────────────────────────
+    // FASE 10: RESUMEN Y CIERRE
+    // ─────────────────────────────────────────────────────────────────────────
+    
+    print "═══ PHASE 10: TURN SUMMARY ═══";
+    print "All phases completed successfully!";
+    log "Turn processing complete - Saving game state";
+    print "────────────────────────────────────────────────";
+}
+
